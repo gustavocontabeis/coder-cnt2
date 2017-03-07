@@ -64,5 +64,5 @@ SUPERÁVIT ANTES DAS RECEITAS/DESPESAS FINANCEIRAS
 RECEITAS/DESPESAS FINANCEIRAS
 	Receitas Financeiras
 	(-) Despesas Financeiras
-	Total Líquido das Receitas/Despesas Financeiras
+	Total Líquido das Receitas/Despesas Financeiras 
 SUPERÁVIT DO EXERCÍCIO
