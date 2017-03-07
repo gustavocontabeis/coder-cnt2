@@ -1,0 +1,68 @@
+ATIVO CIRCULANTE
+Disponível
+Caixas e Equivalentes
+Bancos Contas Correntes
+Aplicações Financeiras
+Bancos Contas Aplicações
+Outros Créditos
+Despesas Antecipadas
+ATIVO NÃO CIRCULANTE
+Imobilizado
+Valores Originais
+Despesas Antecipadas
+PASSIVO CIRCULANTE
+Obrigações Trabalhistas e Sociais
+Salários a Pagar
+INSS a Recolher
+FGTS a Recolher
+IRRF a Recolher
+Obrigações Fiscais e Tributárias
+PIS a Recolher
+PASSIVO NÃO CIRCULANTE
+PATRIMÔNIO SOCIAL
+Superávits Acumulados
+
+
+
+
+
+RECEITAS DE ENSINO
+	Receitas de Ensino
+		Receitas de Projetos
+	(-) Devoluções/Descontos
+		(-) Devoluções de Projetos
+	Total das Receitas de Ensino
+
+OUTRAS RECEITAS
+	Demais Receitas
+	Total das Outras Receitas
+
+TOTAL DAS RECEITAS
+
+(-) CUSTOS E DESPESAS
+	(-) Despesas com Colaboradores/Pessoal
+		(-) Salários e Ordenados
+	(-) Despesas com Prestadores de Serviços
+		(-) Serviços de Terceiros - PF/PJ
+	(-) Despesas com Impostos e Contribuições
+		(-) Encargos com FGTS e INSS
+	(-) Despesas Administrativas e Gerais
+		(-) Despesas com Alimentação
+		(-) Despesas com Limpeza
+		(-) Despesas com Higiene
+		(-) Despesas com Manutenção Predial - Estrutural
+		(-) Despesas com Manutenção Predial - Não Estrutural
+		(-) Despesas com Material Pedagógico - Expediente - Recreação
+		(-) Despesas com Utensílios
+		(-) Despesas com Equipamento e Material Permanente
+		(-) Despesas com Serviços de Manutenção Predial
+	(-) Despesas de Depreciação e Amortização
+		(-) Despesas de Depreciação e Amortização
+	(-) Demais Despesas
+	(-) Total dos Custos e Despesas
+SUPERÁVIT ANTES DAS RECEITAS/DESPESAS FINANCEIRAS
+RECEITAS/DESPESAS FINANCEIRAS
+	Receitas Financeiras
+	(-) Despesas Financeiras
+	Total Líquido das Receitas/Despesas Financeiras
+SUPERÁVIT DO EXERCÍCIO
