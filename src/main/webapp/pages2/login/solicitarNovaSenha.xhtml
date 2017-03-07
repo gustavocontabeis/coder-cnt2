@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/basico.xhtml">
+
+	<ui:define name="pageTitle">..:: Solicitar nova senha ::..</ui:define>
+
+	<ui:define name="body">
+
+		<f:metadata>
+			<f:viewParam name="id" value="#{usuarioManagedBean.id}" converter="javax.faces.Long" />
+			<f:event type="preRenderView" listener="#{usuarioManagedBean.listener}" />
+		</f:metadata>
+
+		<p:growl />
+		<h:form id="usuario">
+			<p:focus />
+			<div class="ui-fluid">
+				<p:panelGrid id="pgUsuario" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+
+					<p:outputLabel for="email" value="#{labels['usuario.email']}" />
+					<p:inputText id="email" value="#{usuarioManagedBean.entity.email}" required="true" size="50" maxlength="50" />
+
+				</p:panelGrid>
+			</div>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton action="#{usuarioManagedBean.solicitarNovaSenha}" value="Solicitar nova senha" update="@all" />
+					<p:commandButton action="/pages/login/login.jsf" value="Voltar para o login" ajax="false" immediate="true"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Título ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form id="perfil">
+			<p:fieldset id="FSperfil" style="margin-bottom:5px">
+				<p:focus />
+				<dl class="form">
+					<dt class="label"><p:outputLabel for="id" value="#{labels['perfil.id']}" rendered="#{not empty perfilManagedBean.perfil.id}" /></dt>
+					<dd class="field">
+						<h:outputText id="id" value="#{perfilManagedBean.perfil.id}" styleClass="ui-widget" >
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+						</h:outputText>
+						<h:inputHidden  id="idHidden" value="#{perfilManagedBean.perfil.id}" />
+					</dd>
+					<dd class="message"><p:message for="id" /></dd>
+
+					<dt class="label"><p:outputLabel for="nome" value="#{labels['perfil.nome']}" /></dt>
+					<dd class="field"><p:inputText id="nome" value="#{perfilManagedBean.perfil.nome}" required="true" size="15" maxlength="15" /></dd>
+					<dd class="message"><p:message for="nome" /></dd>
+
+					<dt class="label"><p:outputLabel for="descricao" value="#{labels['perfil.descricao']}" /></dt>
+					<dd class="field"><p:inputTextarea id="descricao" value="#{perfilManagedBean.perfil.descricao}" required="true" rows="5" cols="100" /></dd>
+					<dd class="message"><p:message for="descricao" /></dd>
+
+					<dt class="label">&nbsp;</dt>
+					<dd class="field">
+						<p:commandButton actionListener="#{perfilManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty perfilManagedBean.perfil.id}" />
+						<p:commandButton actionListener="#{perfilManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{perfilManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty perfilManagedBean.perfil.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					</dd>
+				</dl>
+			</p:fieldset>
+		</h:form>
+		<h:form id="perfilList">
+			<p:dataTable var="item" value="#{perfilManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}"
+							selectionMode="single" selection="#{perfilManagedBean.perfil}" rowKey="#{item.id}" lazy="true" >
+							<p:ajax event="rowSelect" update="@all" />
+							
+				<p:column headerText="#{labels['perfil.id']}" width="80" rendered="false">
+					<p:commandButton actionListener="#{perfilManagedBean.selecionar}" icon="ui-icon ui-icon-pencil" ajax="false">
+						<f:setPropertyActionListener target="#{perfilManagedBean.perfil}" value="#{item}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="#{labels['perfil.nome']}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['perfil.descricao']}">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

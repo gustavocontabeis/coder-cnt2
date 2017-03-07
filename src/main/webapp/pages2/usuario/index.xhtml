@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Usuário ::..</ui:define>
+
+	<ui:define name="body">
+
+		<f:metadata>
+			<f:viewParam name="id" value="#{usuarioManagedBean.id}" converter="javax.faces.Long" />
+			<f:event type="preRenderView" listener="#{usuarioManagedBean.listener}" />
+		</f:metadata>
+
+		<p:growl />
+		<h:form id="usuario">
+			<p:focus />
+			<div class="ui-fluid">
+				<p:panelGrid id="pgUsuario" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+
+					<p:outputLabel for="id" value="#{labels['usuario.id']}" />
+					<p:column>
+						<h:outputText id="id" value="#{usuarioManagedBean.entity.id}" styleClass="ui-widget">
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false" />
+						</h:outputText>
+						<h:inputHidden id="idHidden" value="#{usuarioManagedBean.entity.id}" />
+					</p:column>
+
+					<p:outputLabel for="login" value="#{labels['usuario.login']}" />
+					<p:inputText id="login" value="#{usuarioManagedBean.entity.login}" required="true" size="50" maxlength="50" styleClass="#{not empty usuarioManagedBean.entity.id?'ui-state-disabled':''}"  readonly="#{not empty usuarioManagedBean.entity.id}"/>
+
+					<p:outputLabel for="email" value="#{labels['usuario.email']}" />
+					<p:inputText id="email" value="#{usuarioManagedBean.entity.email}" required="true" size="50" maxlength="50" />
+
+					<p:outputLabel for="senha" value="#{labels['usuario.senha']}" rendered="#{empty usuarioManagedBean.entity.id}" />
+					<p:password id="senha" value="#{usuarioManagedBean.entity.senha}" required="true" maxlength="15" feedback="true" rendered="#{empty usuarioManagedBean.entity.id}" />
+
+					<p:outputLabel for="confirmeSenha" value="#{labels['usuario.confirmeSenha']}" rendered="#{empty usuarioManagedBean.entity.id}" />
+					<p:password id="confirmeSenha" value="#{usuarioManagedBean.confirmeSenha}" required="true" maxlength="15" feedback="true" rendered="#{empty usuarioManagedBean.entity.id}" />
+
+					<p:outputLabel for="inativo" value="#{labels['usuario.inativo']}" />
+					<p:calendar id="inativo" value="#{usuarioManagedBean.entity.dtInativo}" required="false" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999" />
+					
+					<p:outputLabel for="perfis" value="#{labels['usuario.perfis']}" />
+					<p:selectManyCheckbox id="perfis" value="#{usuarioManagedBean.selecionados}" required="false" immediate="true">
+						<f:selectItems value="#{usuarioManagedBean.perfisAcesso}" var="item" itemLabel="#{item.descricao}" itemValue="#{item.nome}" />
+					</p:selectManyCheckbox>
+
+				</p:panelGrid>
+			</div>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton actionListener="#{usuarioManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty usuarioManagedBean.entity.id}" immediate="true"  />
+					<p:commandButton actionListener="#{usuarioManagedBean.salvar}" value="Salvar" update="@all" />
+					<p:commandButton actionListener="#{usuarioManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty usuarioManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+		<h:form id="usuarioList">
+			<p:dataTable var="item" value="#{usuarioManagedBean.model}" emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" selectionMode="single"
+				selection="#{usuarioManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true">
+				
+				<p:ajax event="rowSelect" update="@all" />
+
+				<p:column headerText="#{labels['usuario.inativo']}">
+					<h:outputText value="#{item.dtInativo}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.login']}">
+					<h:outputText value="#{item.login}" />
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.dtSenha']}">
+					<h:outputText value="#{item.dtSenha}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.dtUltimoAcesso']}">
+					<h:outputText value="#{item.dtUltimoAcesso}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.perfis']}">
+					<h:outputText value="#{item.perfis}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

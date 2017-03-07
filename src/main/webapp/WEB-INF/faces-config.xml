@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	
+	<application>
+
+		<message-bundle>ValidationMessages</message-bundle>
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
+<!-- 
+		<locale-config>
+			<supported-locale>pt_BR</supported-locale>
+			<supported-locale>en_US</supported-locale>
+		</locale-config>
+ -->
+		
+		<resource-bundle>
+			<base-name>labels</base-name>
+			<var>labels</var>
+		</resource-bundle>
+	</application>
+
+	<navigation-rule>
+		<from-view-id>/construtora.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{construtoraManagedBean.novo}</from-action>
+			<from-outcome>S</from-outcome>
+			<to-view-id>/construtora.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>imovelimagem</from-outcome>
+			<to-view-id>/pages/imovelimagem/imovelimagem.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<application>
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+	</application>
+
+</faces-config>

@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<f:metadata>
+        <f:viewParam name="id" value="#{lancamentoManagedBean.id}" converter="javax.faces.Long"/>
+        <f:event type="preRenderView"  listener="#{lancamentoManagedBean.listener}" />
+    </f:metadata>
+
+	<ui:define name="pageTitle">..:: Cadastro de Lançamentos ::..</ui:define>
+
+	<ui:define name="body">
+	<style type="text/css">
+		xdiv {
+			border: solid 1px red;
+		}
+	</style>
+	<!-- 
+	<script type="text/javascript">
+		function historico(){
+			console.log('historico');
+			$('#lancamento-historico').focus();
+			var value = $('#lancamento-historico').val();
+			console.log(value);
+		}
+	</script>
+	 -->
+		<p:growl />
+		<p:tabView id="tv">
+			<p:tab title="Cadastro de lançamentos">
+				<h:form id="lancamento">
+					<h:inputHidden id="idHidden" value="#{lancamentoManagedBean.entity.id}" />		
+					<div class="ui-fluid">
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+								<p:outputLabel for="id" value="#{labels['lancamento.id']}" />
+								<p:inputText id="id" value="#{lancamentoManagedBean.entity.id}" disabled="true" />
+							</div>
+							<div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+								<p:outputLabel for="exercicio" value="#{labels['lancamento.exercicio']}" />
+								<p:selectOneMenu id="exercicio" value="#{lancamentoManagedBean.entity.exercicio}" disabled="true">
+									<f:selectItem itemLabel="[Selecione]" />
+									<f:selectItems value="#{lancamentoManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.empresa.razaoSocial} - #{obj.ano}" />
+									<f:converter converterId="baseEntityConverter" />
+									<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Exercicio" />
+									<f:attribute name="list" value="#{lancamentoManagedBean.exercicios}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						</div>
+		
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+								<p:outputLabel for="date" value="#{labels['lancamento.date']}" />
+								<p:calendar id="date" value="#{lancamentoManagedBean.entity.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999" mindate="#{config2ManagedBean.de}" maxdate="#{config2ManagedBean.ate}"/>
+						    </div>
+						    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+						    	<p:outputLabel for="lancamentoPadrao" value="Lançamento padrão" />
+								<p:autoComplete id="lancamentoPadrao" value="#{lancamentoManagedBean.lancamentoPadrao}" completeMethod="#{lancamentoManagedBean.getPopularAutocompleteLancamentoPadrao}"
+				                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
+				                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+				                        <p:ajax event="itemSelect" listener="#{lancamentoManagedBean.onItemSelect}" update="debito,credito,pgHistorico" onsuccess="$('#tv-lancamento-historico').focus();" />
+										<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.LancamentoPadrao" />
+										<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.LancamentoPadraoDAO" />
+						            <p:column>
+						                <h:outputText value="#{obj.nome}" />
+						            </p:column>
+						        </p:autoComplete>
+						    </div>
+						    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						</div>
+						    
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-3">
+						    	<p:outputLabel for="debito" value="#{labels['lancamento.debito']}" />
+								<p:autoComplete id="debito" value="#{lancamentoManagedBean.entity.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+				                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
+				                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+										<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+										<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+						            <p:column>
+						                <h:outputText value="#{obj.id}" />
+						            </p:column>
+						            <p:column>
+						                <h:outputText value="#{obj.estrutura}" />
+						            </p:column>
+						            <p:column>
+						                <h:outputText value="#{obj.nome}" />
+						            </p:column>
+						        </p:autoComplete>
+						    </div>
+						    <div class="ui-g-12 ui-md-6 ui-lg-3">
+								<p:outputLabel for="credito" value="#{labels['lancamento.credito']}" />
+								<p:selectOneMenu id="creditoX" value="#{lancamentoManagedBean.entity.credito}" rendered="false">
+									<f:selectItem itemLabel="[Selecione]" />
+									<f:selectItems value="#{lancamentoManagedBean.popularComboConta}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
+									<f:converter converterId="baseEntityConverter" />
+									<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+									<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
+								</p:selectOneMenu>
+								<p:autoComplete id="credito" value="#{lancamentoManagedBean.entity.credito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+				                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
+				                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+										<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+										<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+						            <p:column>
+						                <h:outputText value="#{obj.id}" />
+						            </p:column>
+						            <p:column>
+						                <h:outputText value="#{obj.estrutura}" />
+						            </p:column>
+						            <p:column>
+						                <h:outputText value="#{obj.nome}" />
+						            </p:column>
+						        </p:autoComplete>
+						    </div>
+						    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						</div>
+					
+						<div class="ui-g">
+							<div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+								<p:outputLabel for="historico" value="#{labels['lancamento.historico']}" />
+								<h:panelGroup id="pgHistorico">
+								<p:inputTextarea id="historico" value="#{lancamentoManagedBean.entity.historico}" required="true" rows="5" cols="100"
+									completeMethod="#{lancamentoManagedBean.getPopularAutocompleteHistoricoPadrao}" >
+									</p:inputTextarea>
+									<script type="text/javascript">
+										historico();
+									</script>
+								</h:panelGroup>
+						    </div>
+						    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+								<p:outputLabel for="valor" value="#{labels['lancamento.valor']}" />
+								<p:inputNumber id="valor" value="#{lancamentoManagedBean.entity.valor}" required="true" 
+								decimalSeparator="," 
+								thousandSeparator="."
+								decimalPlaces="2" 
+								emptyValue="0"
+								dir="RTL"
+								/>
+						    </div>
+						    <div class="ui-g-12 ui-md-0 ui-lg-3"></div>
+						</div>
+						    
+					</div>
+					<p:toolbar>
+						<p:toolbarGroup>
+							<p:commandButton id="novo" actionListener="#{lancamentoManagedBean.novo}" value="Novo" update="@all" disabled="#{empty lancamentoManagedBean.entity.id}" oncomplete="$(function(){PrimeFaces.focus('lancamento-date');});" />
+							<p:commandButton id="salvar" actionListener="#{lancamentoManagedBean.salvar}" value="Salvar" update="@form -tv-lancamentoList" oncomplete="$(function(){PrimeFaces.focus('lancamento-novo');});" />
+							<p:commandButton actionListener="#{lancamentoManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty lancamentoManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+							<p:commandButton actionListener="#{lancamentoManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty lancamentoManagedBean.entity.id}" />
+						</p:toolbarGroup>
+					</p:toolbar>
+				</h:form>			
+			</p:tab>
+			<p:tab id="t2"  title="listagem de lançamentos">
+				<h:form id="lancamentoList">
+				<p:dataTable var="item" value="#{lancamentoManagedBean.model}" emptyMessage="#{labels['cfg.table.empty']}" 
+							paginator="true" rows="#{labels['cfg.table.rows']}" paginatorTemplate="#{labels['cfg.table.template']}"
+					rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}" 
+					selectionMode="single" 
+					selection="#{lancamentoManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true">
+	
+					<p:ajax event="rowSelect" update="@all" reflow="true" />
+	
+					<p:column headerText="#{labels['lancamento.id']}" width="40" sortBy="#{item.id}">
+						<h:outputText value="#{item.id}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.date']}" width="70" sortBy="#{item.date}">
+						<h:outputText value="#{item.date}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.debito']}">
+						<h:outputText value="#{item.debito.estrutura}-#{item.debito.nome}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.credito']}">
+						<h:outputText value="#{item.credito.estrutura}-#{item.credito.nome}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.historico']}">
+						<h:outputText value="#{item.historico}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.lancamentoTipo']}" width="60">
+						<h:outputText value="#{item.lancamentoTipo}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['lancamento.valor']}" styleClass="numerico" width="120" sortBy="#{item.valor}">
+						<h:outputText value="#{item.valor}">
+							<f:convertNumber type="number" minFractionDigits="2" maxFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+	
+				</p:dataTable>
+			</h:form>
+		</p:tab>
+		</p:tabView>
+		<script type="text/javascript">
+			function historico(){
+			console.log('historico!');
+				$('#tv-lancamento-historico').keypress(function(event) {
+					console.log('key! '+event.which);
+					  if (event.which == 0) {
+						console.log('tab!');
+					    this.value = this.value + "\n";
+					    console.log(this.value.indexOf('_'));
+					    var indexOf = this.value.indexOf('_');
+					    console.log("indexOf", indexOf);
+					    if(indexOf != -1){
+						    event.preventDefault();
+					    }
+					    var pos = indexOf;
+					    if(indexOf != -1){
+					    	while(this.value.charAt(pos) === '_'){
+					    		pos++;
+					    	} 
+					    	console.log("pos", pos);
+						}
+					    this.selectionStart = indexOf;
+					    this.selectionEnd = pos;
+					  }
+				});
+				$('#tv-lancamento-historico').focus();
+				$('#tv-lancamento-historico').focus();
+			}
+		</script>
+
+	</ui:define>
+
+</ui:composition>
+</html>

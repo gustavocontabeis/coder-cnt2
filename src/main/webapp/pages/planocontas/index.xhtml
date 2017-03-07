@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Cadastro de Planos de Contas ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form id="planoContas">
+			<div class="ui-fluid">
+				<p:focus />
+                <p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+					<p:outputLabel for="id" value="#{labels['planoContas.id']}" />
+					<p:column>
+                        <h:outputText id="id" value="#{planoContasManagedBean.planoContas.id}" styleClass="ui-widget" >
+                            <f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+                        </h:outputText>
+                        <h:inputHidden  id="idHidden" value="#{planoContasManagedBean.planoContas.id}" />
+					</p:column>
+
+					<p:outputLabel for="nome" value="#{labels['planoContas.nome']}" />
+					<p:inputText id="nome" value="#{planoContasManagedBean.planoContas.nome}" required="true" size="80" maxlength="150" />
+
+				</p:panelGrid>
+			</div>			
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton actionListener="#{planoContasManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty planoContasManagedBean.planoContas.id}" />
+					<p:commandButton actionListener="#{planoContasManagedBean.salvar}" value="Salvar" update="@all" />
+					<p:commandButton actionListener="#{planoContasManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty planoContasManagedBean.planoContas.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+		
+		<h:form id="planoContasList">
+			<p:dataTable var="item" value="#{planoContasManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
+							selectionMode="single" selection="#{planoContasManagedBean.planoContas}" rowKey="#{item.id}" lazy="true" reflow="true">
+							<p:ajax event="rowSelect" update="@all" />
+				<p:column headerText="#{labels['planoContas.id']}" width="80">
+					<h:outputText value="#{item.id}" />
+				</p:column>
+
+				<p:column headerText="#{labels['planoContas.nome']}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

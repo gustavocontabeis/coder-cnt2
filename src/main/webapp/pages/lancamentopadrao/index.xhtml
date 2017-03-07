@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<f:metadata>
+        <f:viewParam name="id" value="#{lancamentoPadraoManagedBean.id}" converter="javax.faces.Long"/>
+        <f:event type="preRenderView"  listener="#{lancamentoPadraoManagedBean.listener}" />
+    </f:metadata>
+
+	<ui:define name="pageTitle">..:: Cadastro de Lançamentos Padrões ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form id="lancamento">
+			<h:inputHidden id="idHidden" value="#{lancamentoPadraoManagedBean.entity.id}" />		
+			<div class="ui-fluid">
+				<div class="ui-g">
+				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-12">
+						<p:outputLabel for="id" value="#{labels['lancamentoPadrao.id']}" />
+						<p:inputText id="id" value="#{lancamentoPadraoManagedBean.entity.id}" disabled="true" />
+					</div>
+				</div>
+
+				<div class="ui-g">
+				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-12">
+						<p:outputLabel for="nome" value="#{labels['lancamentoPadrao.nome']}" />
+						<p:inputText id="nome" value="#{lancamentoPadraoManagedBean.entity.nome}" required="true" maxlength="60" />
+				    </div>
+				</div>
+				    
+				<div class="ui-g">
+				    <div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel for="debito" value="#{labels['lancamentoPadrao.debito']}" />
+						<p:autoComplete id="debito" value="#{lancamentoPadraoManagedBean.entity.debito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
+		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.id}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.estrutura}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.nome}" />
+				            </p:column>
+				        </p:autoComplete>
+				    </div>
+				    <div class="ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel for="credito" value="#{labels['lancamentoPadrao.credito']}" />
+						<p:autoComplete id="credito" value="#{lancamentoPadraoManagedBean.entity.credito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
+		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
+		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.id}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.estrutura}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.nome}" />
+				            </p:column>
+				        </p:autoComplete>
+				    </div>
+				</div>
+			
+				<div class="ui-g">
+				    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+						<p:outputLabel for="historicoPadrao" value="#{labels['lancamentoPadrao.historicoPadrao']}" />
+						<p:autoComplete id="historicoPadrao" value="#{lancamentoPadraoManagedBean.entity.historicoPadrao}" 
+								completeMethod="#{lancamentoPadraoManagedBean.getPopularAutocompleteHistoricoPadrao}"
+		                        var="obj" itemLabel="#{obj.historico}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
+		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
+								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.HistoricoPadraoDAO" />
+				            <p:column>
+				                <h:outputText value="#{obj.id}" />
+				            </p:column>
+				            <p:column>
+				                <h:outputText value="#{obj.historico}" />
+				            </p:column>
+				        </p:autoComplete>
+				    </div>
+				</div>
+				    
+			</div>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton actionListener="#{lancamentoPadraoManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty lancamentoPadraoManagedBean.entity.id}" />
+					<p:commandButton actionListener="#{lancamentoPadraoManagedBean.salvar}" value="Salvar" update="@all" />
+					<p:commandButton actionListener="#{lancamentoPadraoManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty lancamentoPadraoManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					<p:commandButton actionListener="#{lancamentoPadraoManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty lancamentoPadraoManagedBean.entity.id}" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+		<h:form id="lancamentoPadraoList">
+			<p:dataTable var="item" value="#{lancamentoPadraoManagedBean.model}" emptyMessage="#{labels['cfg.table.empty']}" 
+						paginator="true" rows="#{labels['cfg.table.rows']}" paginatorTemplate="#{labels['cfg.table.template']}"
+						rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}" 
+						selectionMode="single" rowKey="#{item.id}" lazy="true" reflow="true"
+						selection="#{lancamentoPadraoManagedBean.entity}" 
+				>
+
+				<p:ajax event="rowSelect" update="@all" reflow="true" />
+
+				<p:column headerText="#{labels['lancamentoPadrao.id']}">
+					<h:outputText value="#{item.id}" />
+				</p:column>
+
+				<p:column headerText="#{labels['lancamentoPadrao.nome']}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['lancamentoPadrao.debito']}">
+					<h:outputText value="#{item.debito.estrutura}-#{item.debito.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['lancamentoPadrao.credito']}">
+					<h:outputText value="#{item.credito.estrutura}-#{item.credito.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['lancamentoPadrao.historicoPadrao']}">
+					<h:outputText value="#{item.historicoPadrao.historico}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+</html>

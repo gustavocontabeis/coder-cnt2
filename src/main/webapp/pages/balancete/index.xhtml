@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Balancete de Verificação ::..</ui:define>
+
+	<ui:define name="body">
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			.SINTETICA-1{
+				font-weight: bold;
+				font-style: italic;
+				font-size: 22 !important;
+			}
+			.SINTETICA-2{
+				font-weight: bold;
+				font-size: 18 !important;
+				font-stretch:wider; 
+			}
+			.SINTETICA-3{
+				font-weight: bold;
+			}
+		</style>
+		<p:messages />
+		<p:lightBox iframe="true" id="lighbox3" >
+		    <h:outputLink value="${request.contextPath}/pages/lancamentos/popup.jsf" title="Cadastro de lançamentos">
+		        <h:outputText value="Lançamentos" />
+		    </h:outputLink>
+		</p:lightBox>
+		<div align="center">
+			<h:outputText value="Balançete de verificação" />
+			<br />
+			<h:outputFormat value="#{balanceteManagedBean.balancete.exercicio.empresa.razaoSocial}" />
+			<br />
+			<h:outputFormat value="Período de {0, date} até {1, date}">
+				<f:param value="#{balanceteManagedBean.balancete.de}" />
+				<f:param value="#{balanceteManagedBean.balancete.ate}" />
+			</h:outputFormat>
+		</div>
+		<br />
+		<p:dataTable value="#{balanceteManagedBean.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty balanceteManagedBean.balancete.saldos}" width="100%"
+			styleClass="destacarLinha" resizableColumns="true">
+			<p:column width="40">
+				<f:facet name="header">
+					<h:outputText value="Editar" />
+				</f:facet>
+				<h:outputLink value="../conta/index.jsf?id=#{obj.conta.id}" title="Editar conta">
+					<i class="fa fa-pencil"></i>
+				</h:outputLink>
+			</p:column>
+			<p:column width="90">
+				<f:facet name="header">
+					<h:outputText value="Estrutura" />
+				</f:facet>
+				<h:outputText value="#{obj.conta.estrutura}" />
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Conta" />
+				</f:facet>
+				<h:outputText value="#{obj.conta.nome}" title="Cod.Conta: #{obj.conta.id}, nível: #{obj.conta.id}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}" style="padding:#{obj.conta.nivel*4}px" />
+			</p:column>
+			<p:column style="text-align: right;">
+				<f:facet name="header">
+					<h:outputText value="Saldo Inicial" />
+				</f:facet>
+				<h:outputText value="#{obj.saldoInicialContabil}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel} #{not obj.saldoInicialPositivo?'red':''}" />
+			</p:column>
+			<p:column style="text-align: right;">
+				<f:facet name="header">
+					<h:outputText value="Débito" />
+				</f:facet>
+				<h:outputText value="#{obj.debito}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}">
+					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
+				</h:outputText>
+			</p:column>
+			<p:column style="text-align: right;">
+				<f:facet name="header">
+					<h:outputText value="Credito" />
+				</f:facet>
+				<h:outputText value="#{obj.credito}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel}">
+					<f:convertNumber minFractionDigits="2" groupingUsed="true" />
+				</h:outputText>
+			</p:column>
+			<p:column style="text-align: right;">
+				<f:facet name="header">
+					<h:outputText value="Saldo Final" />
+				</f:facet>
+				<h:outputText value="#{obj.saldoFinalContabil}" styleClass="#{obj.conta.contaTipo}-#{obj.conta.nivel} #{not obj.saldoFinalPositivo?'red':''}" />
+			</p:column>
+			<p:column width="40">
+				<f:facet name="header">
+					<h:outputText value="Editar" />
+				</f:facet>
+				<h:outputLink value="../razao/index.jsf?id=#{obj.conta.id}" rendered="#{obj.conta.contaTipo ne 'SINTETICA'}" title="Consultar Razão">
+					<i class="fa fa-pencil"></i>
+				</h:outputLink>
+			</p:column>
+		</p:dataTable>
+		
+	</ui:define>
+
+</ui:composition>
+</html>

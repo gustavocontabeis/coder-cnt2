@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Exercícios ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form id="exercicio">
+			<p:focus />
+			<div class="ui-fluid">
+              <p:panelGrid id="pgExercicio" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+					<p:outputLabel for="id" value="#{labels['exercicio.id']}" />
+					<p:column>
+						<h:outputText id="id" value="#{exercicioManagedBean.exercicio.id}" styleClass="ui-widget">
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false" />
+						</h:outputText>
+						<h:inputHidden id="idHidden" value="#{exercicioManagedBean.exercicio.id}" />
+					</p:column>
+
+					<p:outputLabel for="empresa" value="#{labels['exercicio.empresa']}" />
+					<p:selectOneMenu id="empresa" value="#{exercicioManagedBean.exercicio.empresa}" required="true">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{exercicioManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
+						<f:attribute name="list" value="#{exercicioManagedBean.empresas}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="ano" value="#{labels['exercicio.ano']}" />
+					<p:inputMask id="ano" value="#{exercicioManagedBean.exercicio.ano}" required="true" mask="9999">
+						<f:convertNumber type="number" integerOnly="true" />
+					</p:inputMask>
+
+					<p:outputLabel for="planoContas" value="#{labels['exercicio.planosContas']}" />
+					<p:selectOneMenu id="planoContas" value="#{exercicioManagedBean.exercicio.planoContas}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{exercicioManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.PlanoContas" />
+						<f:attribute name="list" value="#{exercicioManagedBean.planocontas}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="fechado" value="#{labels['exercicio.fechado']}" />
+					<p:selectBooleanCheckbox id="fechado" value="#{exercicioManagedBean.exercicio.fechado}" />
+
+              </p:panelGrid>
+              </div>
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton actionListener="#{exercicioManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty exercicioManagedBean.exercicio.id}" />
+						<p:commandButton actionListener="#{exercicioManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{exercicioManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty exercicioManagedBean.exercicio.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					</p:toolbarGroup>
+				</p:toolbar>
+		</h:form>
+		
+		<h:form id="exercicioList">
+			<p:dataTable var="item" value="#{exercicioManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
+							selectionMode="single" selection="#{exercicioManagedBean.exercicio}" rowKey="#{item.id}" lazy="true" >
+							<p:ajax event="rowSelect" update="@all" reflow="true"/>
+							
+				<p:column headerText="#{labels['exercicio.id']}" width="80">
+					<h:outputText value="#{item.id}" />
+				</p:column>
+				
+				<p:column headerText="#{labels['exercicio.empresa']}">
+					<h:outputText value="#{item.empresa.razaoSocial}" />
+				</p:column>
+				
+				<p:column headerText="#{labels['exercicio.ano']}" styleClass="numerico">
+					<h:outputText value="#{item.ano}" >
+						<f:convertNumber type="number" minFractionDigits="0" groupingUsed="false" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{labels['exercicio.fechado']}">
+					<p:selectBooleanCheckbox value="#{item.fechado}" disabled="true" /> 
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

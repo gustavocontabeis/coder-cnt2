@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/basico.xhtml">
+
+	<ui:define name="pageTitle">..:: Consultar ::..</ui:define>
+
+	<ui:define name="body">
+		<style type="text/css">
+			dt.label {
+			    width: 200px;
+			}
+		</style>
+		<p:growl />
+		<h:form id="logradouro">
+			<p:fieldset id="FSlogradouro" style="margin-bottom:5px">
+				<p:focus />
+				<dl class="form">
+				
+					<dt class="label"><p:outputLabel for="id" value="#{labels['logradouro.id']}" rendered="#{not empty logradouroManagedBean.logradouro.id}" /></dt>
+					<dd class="field">
+						<h:outputText id="id" value="#{logradouroManagedBean.logradouro.id}" styleClass="ui-widget" >
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+						</h:outputText>
+						<h:inputHidden  id="idHidden" value="#{logradouroManagedBean.logradouro.id}" />
+					</dd>
+					<dd class="message"><p:message for="id" /></dd>
+
+					<dt class="label"><p:outputLabel for="uf" value="#{labels['logradouro.uf']}" /></dt>
+					<dd class="field"><p:selectOneMenu id="uf" value="#{logradouroManagedBean.uf}" required="true">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{logradouroManagedBean.popularComboUF}" var="obj" itemValue="#{obj}" />
+						<p:ajax event="change" update="municipio" />
+					</p:selectOneMenu></dd>
+					<dd class="message"><p:message for="uf" /></dd>
+
+					<dt class="label"><p:outputLabel for="municipio" value="#{labels['logradouro.municipio']}" /></dt>
+					<dd class="field"><p:selectOneMenu id="municipio" value="#{logradouroManagedBean.municipio.id}" required="true">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{logradouroManagedBean.popularComboMunicipio}" var="obj" itemValue="#{obj.id}" itemLabel="#{obj.nome}" />
+						<p:ajax event="change" update="bairro" />
+					</p:selectOneMenu></dd>
+					<dd class="message"><p:message for="municipio" /></dd>
+
+					<dt class="label"><p:outputLabel for="bairro" value="#{labels['logradouro.bairro']}" /></dt>
+					<dd class="field"><p:selectOneMenu id="bairro" value="#{logradouroManagedBean.bairro.id}" required="true">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{logradouroManagedBean.popularComboBairro}" var="obj" itemValue="#{obj.id}" itemLabel="#{obj.nome}" />
+					</p:selectOneMenu></dd>
+					<dd class="message"><p:message for="bairro" /></dd>
+
+					<dt class="label"><p:outputLabel for="tipo" value="#{labels['logradouro.tipo']}" /></dt>
+					<dd class="field"><p:selectOneMenu id="tipo" value="#{logradouroManagedBean.logradouro.tipo}" required="true">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{logradouroManagedBean.popularComboTipo}" var="obj" itemValue="#{obj}" />
+					</p:selectOneMenu></dd>
+					<dd class="message"><p:message for="uf" /></dd>
+
+					<dt class="label"><p:outputLabel for="nome" value="#{labels['logradouro.nome']}" /></dt>
+					<dd class="field"><p:inputText id="nome" value="#{logradouroManagedBean.logradouro.nome}" required="true" size="40" maxlength="80" /></dd>
+					<dd class="message"><p:message for="nome" /></dd>
+
+					<dt class="label">&nbsp;</dt>
+					<dd class="field">
+						<p:commandButton actionListener="#{logradouroManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty logradouroManagedBean.logradouro.id}" />
+						<p:commandButton actionListener="#{logradouroManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{logradouroManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty logradouroManagedBean.logradouro.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{logradouroManagedBean.closeDialog()}" value="closeDialog" />
+					</dd>
+				</dl>
+			</p:fieldset>
+		</h:form>
+		<h:form id="logradouroList">
+			<p:dataTable var="item" value="#{logradouroManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}"
+							selectionMode="single" selection="#{logradouroManagedBean.logradouro}" rowKey="#{item.id}" lazy="true" >
+							
+							<p:ajax event="rowSelect" update="@all" />
+							
+				<p:column headerText="#{labels['logradouro.id']}" width="80">
+					<p:commandButton actionListener="#{logradouroManagedBean.selecionar}" icon="ui-icon ui-icon-pencil" ajax="false">
+						<f:setPropertyActionListener target="#{logradouroManagedBean.logradouro}" value="#{item}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="#{labels['logradouro.uf']}">
+					<h:outputText value="#{item.bairro.municipio.uf}" />
+				</p:column>
+
+				<p:column headerText="#{labels['logradouro.municipio']}">
+					<h:outputText value="#{item.bairro.municipio.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['logradouro.bairro']}">
+					<h:outputText value="#{item.bairro.nome}" />
+				</p:column>
+
+				<p:column headerText="#{labels['logradouro.nome']}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+		<!-- incluir no resource bundle: 
+logradouro.municipio=Municipio
+logradouro=Logradouro
+logradouro.uf=Uf
+logradouro.id=Id
+logradouro.bairro=Bairro
+logradouro.nome=Nome
+		--> 
+
+		
+	</ui:define>
+
+</ui:composition>
+</html>

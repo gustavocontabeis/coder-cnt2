@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<f:metadata>
+        <f:viewParam name="id" value="#{razaoManagedBean.id}" converter="javax.faces.Long"/>
+        <f:event type="preRenderView"  listener="#{razaoManagedBean.listener}" />
+    </f:metadata>
+
+	<ui:define name="pageTitle">..:: Consulta Razão ::..</ui:define>
+
+	<ui:define name="body">
+		<p:messages />
+		<div align="center">
+			<h:outputText value="Razão da conta: #{razaoManagedBean.razao.conta.nome}" />
+		</div>
+		<div align="center">
+			<h:outputText value="#{razaoManagedBean.razao.exercicio.empresa.razaoSocial}" />
+		</div>
+		<div align="center">
+			<h:outputLabel value=" de " for="de" />
+			<h:outputText id="de" value="#{razaoManagedBean.razao.de}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+			<h:outputLabel value=" até " for="ate" />
+			<h:outputText id="ate" value="#{razaoManagedBean.razao.ate}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</div>
+		<br/>
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			#saldosRazao>div.ui-datatable-header{
+				text-align: right;
+			}
+			#saldosRazao>div.ui-datatable-footer{
+				text-align: right;
+			}
+		</style>
+		<p:dataTable id="saldosRazao" value="#{razaoManagedBean.razao.saldosRazao}" var="obj" columnClasses="texto, texto, texto, numerico, numerico" width="100%"
+					emptyMessage="#{labels['cfg.table.empty']}">
+			<f:facet name="header">
+		        <h:outputText value="Saldo Inicial #{razaoManagedBean.razao.saldoInicialContabil}" styleClass="#{razaoManagedBean.razao.saldoInicialPositivo?'':'red'}" />
+		        
+		    </f:facet>
+			<f:facet name="footer">
+		        <h:outputText value="Saldo Final #{razaoManagedBean.razao.saldoFinalContabil}" styleClass="#{razaoManagedBean.razao.saldoFinalPositivo?'':'red'}" />
+		    </f:facet>
+			<p:column width="30">
+				<f:facet name="header">
+					<h:outputText value="Cod." />
+				</f:facet>
+				<h:outputText value="#{obj.idLancamento}" />
+			</p:column>
+			<p:column width="70">
+				<f:facet name="header">
+					<h:outputText value="Data" />
+				</f:facet>
+				<h:outputText value="#{obj.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Histórico" />
+				</f:facet>
+				<h:outputText value="#{obj.historico}" />
+			</p:column>
+			<p:column style="text-align: right;" width="110">
+				<f:facet name="header">
+					<h:outputText value="Débito" />
+				</f:facet>
+				<h:outputText value="#{obj.vlrDebito}">
+					<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
+				</h:outputText>
+			</p:column>
+			<p:column  style="text-align: right;" width="110">
+				<f:facet name="header">
+					<h:outputText value="Crédito" />
+				</f:facet>
+				<h:outputText value="#{obj.vlrCredito}">
+					<f:convertNumber type="number" minFractionDigits="2" locale="pt_BR" />
+				</h:outputText>
+			</p:column>
+			<p:column width="40">
+				<f:facet name="header">
+					<h:outputText value="Editar" />
+				</f:facet>
+				<h:outputLink value="#{request.contextPath}/pages/lancamentos/index.jsf?id=#{obj.idLancamento}">
+					<i class="fa fa-pencil"></i>
+				</h:outputLink>
+			</p:column>
+		</p:dataTable>
+	</ui:define>
+
+</ui:composition>
+</html>

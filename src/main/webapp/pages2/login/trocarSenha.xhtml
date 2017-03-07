@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Trocar senha ::..</ui:define>
+
+	<ui:define name="body">
+
+		<f:metadata>
+			<f:viewParam name="id" value="#{usuarioManagedBean.id}" converter="javax.faces.Long" />
+			<f:event type="preRenderView" listener="#{usuarioManagedBean.listener}" />
+		</f:metadata>
+
+		<p:growl />
+		<h:form id="usuario">
+			<p:focus />
+			<div class="ui-fluid">
+				<p:panelGrid id="pgUsuario" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+
+					<p:outputLabel for="id" value="#{labels['usuario.id']}" />
+					<p:column>
+						<h:outputText id="id" value="#{usuarioManagedBean.entity.id}" styleClass="ui-widget">
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false" />
+						</h:outputText>
+						<h:inputHidden id="idHidden" value="#{usuarioManagedBean.entity.id}" />
+					</p:column>
+
+					<p:outputLabel for="login" value="#{labels['usuario.login']}" />
+					<p:inputText id="login" value="#{usuarioManagedBean.entity.login}" required="true" size="50" maxlength="50" styleClass="#{not empty usuarioManagedBean.entity.id?'ui-state-disabled':''}"  readonly="#{not empty usuarioManagedBean.entity.id}"/>
+
+					<p:outputLabel for="senhaAnterior" value="Senha anterior" />
+					<p:password id="senhaAnterior" value="#{usuarioManagedBean.senhaAnterior}" required="true" maxlength="15" feedback="true" />
+
+					<p:outputLabel for="novaSenha" value="#{labels['usuario.senha']}" />
+					<p:password id="novaSenha" value="#{usuarioManagedBean.entity.senha}" required="true" maxlength="15" feedback="true" />
+
+					<p:outputLabel for="confirmeSenha" value="#{labels['usuario.confirmeSenha']}" />
+					<p:password id="confirmeSenha" value="#{usuarioManagedBean.confirmeSenha}" required="true" maxlength="15" feedback="true" />
+
+				</p:panelGrid>
+			</div>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton actionListener="#{usuarioManagedBean.trocarSenha}" value="Alterar senha" update="@all" />
+				</p:toolbarGroup>
+			</p:toolbar>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+</html>

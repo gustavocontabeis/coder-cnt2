@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/basico.xhtml">
+
+	<ui:define name="pageTitle">..:: Login ::..</ui:define>
+
+	<ui:define name="body">
+	<style type="text/css">
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</style>
+		<h:form>
+			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			<p:focus />			
+			<table width="100%">
+				<tr>
+					<td width="30%"></td>
+					<td align="center" valign="middle" >
+						<h:outputText value="#{param['msg']}" />
+						<p:panel header="Login">
+							<h:panelGrid columns="2" cellpadding="5">
+								<h:outputLabel for="username" value="Username:" />
+								<p:inputText id="username" value="#{loginManagedBean.username}"
+									required="true" label="username" />
+			
+								<h:outputLabel for="password" value="Password:" />
+								<p:password id="password" value="#{loginManagedBean.password}"
+									required="true" label="password" />
+			
+								<f:facet name="footer">
+									<p:commandButton value="Login" ajax="false" actionListener="#{loginManagedBean.login}" />
+									<p:commandButton value="Login-Desenv" ajax="false" immediate="true" actionListener="#{loginManagedBean.loginDesenv}" rendered="#{facesContext.application.projectStage == 'Development'}" />
+									<p:commandButton value="Recuperar Senha" ajax="false" action="/pages/login/solicitarNovaSenha.xhtml" immediate="true" />
+								</f:facet>
+							</h:panelGrid>
+						</p:panel>
+					</td>
+					<td width="30%"></td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

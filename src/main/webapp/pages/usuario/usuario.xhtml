@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" 
+xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Título ::..</ui:define>
+
+	<ui:define name="body">
+		<style type="text/css">
+			dt.label {
+			    width: 200px;
+			}
+			dd.field {
+			    float: none;
+			    clear: none;
+			}
+			dd.message {
+			    float: none;
+			    clear: none;
+			}
+		</style>
+		<p:growl />
+		<h:form id="usuario">
+			<p:fieldset id="FSusuario" style="margin-bottom:5px">
+				<p:focus />
+				<dl class="form">
+					<dt class="label"><p:outputLabel for="id" value="#{labels['usuario.id']}" rendered="#{not empty usuarioManagedBean.usuario.id}" /></dt>
+					<dd class="field">
+						<h:outputText id="id" value="#{usuarioManagedBean.usuario.id}" styleClass="ui-widget" >
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+						</h:outputText>
+						<h:inputHidden  id="idHidden" value="#{usuarioManagedBean.usuario.id}" />
+					</dd>
+					<dd class="message"><p:message for="id" /></dd>
+
+					<dt class="label"><p:outputLabel for="inativo" value="#{labels['usuario.inativo']}" /></dt>
+					<dd class="field"><p:selectBooleanCheckbox id="inativo" value="#{usuarioManagedBean.usuario.inativo}" /></dd>
+					<dd class="message"><p:message for="inativo" /></dd>
+
+					<dt class="label"><p:outputLabel for="login" value="#{labels['usuario.login']}" /></dt>
+					<dd class="field"><p:inputText id="login" value="#{usuarioManagedBean.usuario.login}" required="true" size="50" maxlength="50" /></dd>
+					<dd class="message"><p:message for="login" /></dd>
+					
+					
+					<dt class="label"><p:outputLabel for="senha" value="#{labels['usuario.senha']}" rendered="#{empty usuarioManagedBean.usuario.id}" /></dt>
+					<dd class="field"><p:password id="senha" value="#{usuarioManagedBean.usuario.senha}" required="true" maxlength="15" feedback="true" rendered="#{empty usuarioManagedBean.usuario.id}" /></dd>
+					<dd class="message"><p:message for="senha" rendered="#{empty usuarioManagedBean.usuario.id}" /></dd>
+
+					<dt class="label"><p:outputLabel for="confirmeSenha" value="#{labels['usuario.confirmeSenha']}" rendered="#{empty usuarioManagedBean.usuario.id}" /></dt>
+					<dd class="field"><p:password id="confirmeSenha" value="#{usuarioManagedBean.confirmeSenha}" required="true" maxlength="15" feedback="true" rendered="#{empty usuarioManagedBean.usuario.id}" /></dd>
+					<dd class="message"><p:message for="confirmeSenha" rendered="#{empty usuarioManagedBean.usuario.id}" /></dd>
+
+					<dt class="label"><p:outputLabel for="perfis" value="#{labels['usuario.perfis']}" /></dt>
+					<dd class="field">
+						<p:selectManyCheckbox id="perfis" value="#{usuarioManagedBean.sel}" required="false" immediate="true">
+							<f:attribute name="tipo" value="br.com.imob.model.entity.usuarios.UsuarioPerfil" />
+							<f:attribute name="itens" value="#{usuarioManagedBean.usuariosPerfil}" />
+							<f:selectItems value="#{usuarioManagedBean.usuariosPerfil}" var="item" itemLabel="#{item.perfil.descricao}" itemValue="#{item.perfil.id}" />
+						</p:selectManyCheckbox>
+					</dd>
+					<dd class="message"><p:message for="perfis" /></dd>
+
+					<dt class="label">&nbsp;</dt>
+					<dd class="field">
+						<p:commandButton actionListener="#{usuarioManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty usuarioManagedBean.usuario.id}" immediate="true"/>
+						<p:commandButton actionListener="#{usuarioManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{usuarioManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty usuarioManagedBean.usuario.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					</dd>
+				</dl>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="perfilList">
+		</h:form>
+		
+		<h:form id="usuarioList">
+			<p:dataTable var="item" value="#{usuarioManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}"
+							selectionMode="single" selection="#{usuarioManagedBean.usuario}" rowKey="#{item.id}" lazy="true" >
+				<p:ajax event="rowSelect" update="@all" />
+
+				<p:column headerText="#{labels['usuario.inativo']}">
+					<h:selectBooleanCheckbox value="#{item.inativo}" readonly="true"  disabled="true" />
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.login']}">
+					<h:outputText value="#{item.login}" />
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.dtSenha']}">
+					<h:outputText value="#{item.dtSenha}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="#{labels['usuario.dtUltimoAcesso']}">
+					<h:outputText value="#{item.dtUltimoAcesso}" >
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

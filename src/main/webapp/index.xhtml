@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<f:facet name="first">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</f:facet>
+	<title><ui:insert name="pageTitle">..:: Coder - contabilidade ::..</ui:insert></title>
+	<span id="contextPath" style="display: none;">${request.contextPath}</span>
+	<style type="text/css">
+		.ui-widget {
+		    font-size: ${loginManagedBean.fontSize};
+		}
+		.centered {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="${request.contextPath}/lib/css/estilo.css" />
+	<script type="text/javascript" src="${request.contextPath}/lib/js/funcoes.js"></script>
+</h:head>
+<h:body>
+	<f:view>
+		<f:loadBundle basename="labels" var="labels" />
+			<h:panelGroup rendered="true">
+				<a href="${request.contextPath}/pages/login/login.jsf">
+					<img src="lib/img/contabilidade-1.jpg" alt="Entrar" class="centered" width="1000"/>
+					<!-- 
+					<img src="lib/img/contabilidade-3.jpg" alt="Entrar" class="centered" />
+					<img src="lib/img/contabilidade-2.jpeg" alt="Entrar" class="centered"/>
+					<img src="lib/img/contabilidade-4.jpg" alt="Entrar" class="centered" />
+					<img src="lib/img/contabilidade-5.png" alt="Entrar" class="centered"/>
+					 -->
+				</a>
+			</h:panelGroup>
+			<p:carousel autoPlayInterval="2000" responsive="true" effect="easeInStrong" circular="true" numVisible="1" rendered="false">
+				<h:panelGroup layout="block" style="text-align:center;">
+						<p:graphicImage value="/lib/img/contabilidade-1.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-2.jpeg" width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-3.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-4.jpg"  width="600" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" style="text-align:center;">
+					<p:graphicImage value="/lib/img/contabilidade-5.png"  width="600" />
+				</h:panelGroup>
+			</p:carousel>
+
+	</f:view>
+</h:body>
+</html>

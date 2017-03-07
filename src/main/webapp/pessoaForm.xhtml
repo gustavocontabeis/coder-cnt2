@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/basico.xhtml">
+
+	<ui:define name="pageTitle">..:: Título ::..</ui:define>
+
+	<ui:define name="body">
+		<style type="text/css">
+			dt.label {
+			    width: 200px;
+			}
+		</style>
+		<p:growl />
+		<h:form id="pessoa">
+			<p:fieldset id="FSpessoa" style="margin-bottom:5px">
+				<p:focus />
+				<dl class="form">
+				
+					<dt class="label"><p:outputLabel for="id" value="#{labels['pessoa.id']}" rendered="#{not empty pessoaManagedBean.pessoa.id}" /></dt>
+					<dd class="field">
+						<h:outputText id="id" value="#{pessoaManagedBean.pessoa.id}" styleClass="ui-widget" >
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+						</h:outputText>
+						<h:inputHidden  id="idHidden" value="#{pessoaManagedBean.pessoa.id}" />
+					</dd>
+					<dd class="message"><p:message for="id" /></dd>
+
+					<dt class="label"><p:outputLabel for="nome" value="#{labels['pessoa.nome']}" /></dt>
+					<dd class="field"><p:inputText id="nome" value="#{pessoaManagedBean.pessoa.nome}" required="true" size="50" maxlength="50" /></dd>
+					<dd class="message"><p:message for="nome" /></dd>
+
+					<dt class="label"><p:outputLabel for="dtNascimento" value="#{labels['pessoa.dtNascimento']}" /></dt>
+					<dd class="field"><p:calendar id="dtNascimento" value="#{pessoaManagedBean.pessoa.dtNascimento}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" /></dd>
+					<dd class="message"><p:message for="dtNascimento" /></dd>
+
+					<dt class="label"><p:outputLabel for="email" value="#{labels['pessoa.email']}" /></dt>
+					<dd class="field"><p:inputText id="email" value="#{pessoaManagedBean.pessoa.email}" required="true" size="60" maxlength="60" /></dd>
+					<dd class="message"><p:message for="email" /></dd>
+
+					<dt class="label"><p:outputLabel for="telefonePrincipal" value="#{labels['pessoa.telefonePrincipal']}" /></dt>
+					<dd class="field"><p:inputMask id="telefonePrincipal" value="#{pessoaManagedBean.pessoa.telefonePrincipal}" mask="(99)9999-9999" required="true" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="telefonePrincipal" /></dd>
+
+					<dt class="label"><p:outputLabel for="telefoneSecundario" value="#{labels['pessoa.telefoneSecundario']}" /></dt>
+					<dd class="field"><p:inputMask id="telefoneSecundario" value="#{pessoaManagedBean.pessoa.telefoneSecundario}" mask="(99)9999-9999" required="false" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="telefoneSecundario" /></dd>
+
+					<dt class="label"><p:outputLabel for="ramal" value="#{labels['pessoa.ramal']}" /></dt>
+					<dd class="field"><p:inputText id="ramal" value="#{pessoaManagedBean.pessoa.ramal}" required="false" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="ramal" /></dd>
+
+					<!-- Documentos -->
+					<p:separator />
+
+					<dt class="label"><p:outputLabel for="nacionalidade" value="#{labels['pessoa.nacionalidade']}" /></dt>
+					<dd class="field"><p:inputText id="nacionalidade" value="#{pessoaManagedBean.pessoa.nacionalidade}" required="true" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="nacionalidade" /></dd>
+
+					<dt class="label"><p:outputLabel for="cpf" value="#{labels['pessoa.cpf']}" /></dt>
+					<dd class="field"><p:inputMask id="cpf" value="#{pessoaManagedBean.pessoa.cpf}" required="true" mask="999.999.999-99" size="14" maxlength="14" /></dd>
+					<dd class="message"><p:message for="cpf" /></dd>
+
+					<dt class="label"><p:outputLabel for="rg" value="#{labels['pessoa.rg']}" /></dt>
+					<dd class="field"><p:inputText id="rg" value="#{pessoaManagedBean.pessoa.rg}" required="true" size="15" maxlength="15" /></dd>
+					<dd class="message"><p:message for="rg" /></dd>
+
+					<dt class="label"><p:outputLabel for="orgaoEmissor" value="#{labels['pessoa.orgaoEmissor']}" /></dt>
+					<dd class="field"><p:inputText id="orgaoEmissor" value="#{pessoaManagedBean.pessoa.orgaoEmissor}" required="true" size="15" maxlength="15" /></dd>
+					<dd class="message"><p:message for="orgaoEmissor" /></dd>
+
+					<dt class="label"><p:outputLabel for="profissao" value="#{labels['pessoa.profissao']}" /></dt>
+					<dd class="field"><p:inputText id="profissao" value="#{pessoaManagedBean.pessoa.profissao}" required="false" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="profissao" /></dd>
+
+					<dt class="label"><p:outputLabel for="estadoCivil" value="#{labels['pessoa.estadoCivil']}" /></dt>
+					<dd class="field"><p:inputText id="estadoCivil" value="#{pessoaManagedBean.pessoa.estadoCivil}" required="false" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="estadoCivil" /></dd>
+
+					<dt class="label"><p:outputLabel for="regimeCasamento" value="#{labels['pessoa.regimeCasamento']}" /></dt>
+					<dd class="field"><p:inputText id="regimeCasamento" value="#{pessoaManagedBean.pessoa.regimeCasamento}" required="false" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="regimeCasamento" /></dd>
+
+					<!-- Endereço -->
+					<p:separator />
+					
+					<dt class="label"><p:outputLabel for="enderecoLogradouro" value="#{labels['pessoa.enderecoLogradouro']}" /></dt>
+					<dd class="field"><p:inputText id="enderecoLogradouro" value="#{pessoaManagedBean.pessoa.enderecoLogradouro}" required="true" size="60" maxlength="60" /></dd>
+					<dd class="message"><p:message for="enderecoLogradouro" /></dd>
+
+					<dt class="label"><p:outputLabel for="enderecoNumero" value="#{labels['pessoa.enderecoNumero']}" /></dt>
+					<dd class="field"><p:inputText id="enderecoNumero" value="#{pessoaManagedBean.pessoa.enderecoNumero}" required="true" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="enderecoNumero" /></dd>
+
+					<dt class="label"><p:outputLabel for="enderecoComplemento" value="#{labels['pessoa.enderecoComplemento']}" /></dt>
+					<dd class="field"><p:inputText id="enderecoComplemento" value="#{pessoaManagedBean.pessoa.enderecoComplemento}" required="false" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="enderecoComplemento" /></dd>
+
+					<dt class="label"><p:outputLabel for="enderecoBloco" value="#{labels['pessoa.enderecoBloco']}" /></dt>
+					<dd class="field"><p:inputText id="enderecoBloco" value="#{pessoaManagedBean.pessoa.enderecoBloco}" required="false" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="enderecoBloco" /></dd>
+
+					<dt class="label"><p:outputLabel for="bairro" value="#{labels['pessoa.bairro']}" /></dt>
+					<dd class="field"><p:inputText id="bairro" value="#{pessoaManagedBean.pessoa.bairro}" required="true" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="bairro" /></dd>
+
+					<dt class="label"><p:outputLabel for="cidade" value="#{labels['pessoa.cidade']}" /></dt>
+					<dd class="field"><p:inputText id="cidade" value="#{pessoaManagedBean.pessoa.cidade}" required="true" size="30" maxlength="30" /></dd>
+					<dd class="message"><p:message for="cidade" /></dd>
+
+					<dt class="label"><p:outputLabel for="cep" value="#{labels['pessoa.cep']}" /></dt>
+					<dd class="field"><p:inputMask id="cep" value="#{pessoaManagedBean.pessoa.cep}" mask="99.999-999" required="true" size="10" maxlength="10" /></dd>
+					<dd class="message"><p:message for="cep" /></dd>
+
+					<dt class="label"><p:outputLabel for="uf" value="#{labels['pessoa.uf']}" /></dt>
+					<dd class="field"><p:inputText id="uf" value="#{pessoaManagedBean.pessoa.uf}" required="true" size="2" maxlength="2" /></dd>
+					<dd class="message"><p:message for="uf" /></dd>
+
+					<!-- ========================= -->
+
+					<dt class="label">&nbsp;</dt>
+					<dd class="field">
+						<p:commandButton actionListener="#{pessoaManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty pessoaManagedBean.pessoa.id}" />
+						<p:commandButton actionListener="#{pessoaManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{pessoaManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty pessoaManagedBean.pessoa.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{pessoaManagedBean.fecharDialog()}" value="Enviar" disabled="#{empty pessoaManagedBean.pessoa.id}" />
+					</dd>
+				</dl>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

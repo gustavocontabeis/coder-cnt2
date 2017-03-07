@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<f:metadata>
+        <f:viewParam name="id" value="#{contaManagedBean.id}" converter="javax.faces.Long"/>
+        <f:event type="preRenderView"  listener="#{contaManagedBean.listener}" />
+    </f:metadata>
+    
+	<ui:define name="pageTitle">..:: Cadastro de Contas Contábeis ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form id="conta">
+			<p:focus />
+			<div class="ui-fluid">
+				<p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+
+					<p:outputLabel for="id" value="#{labels['conta.id']}"/>
+					<p:column>
+						<h:outputText id="id" value="#{contaManagedBean.entity.id}" styleClass="ui-widget" >
+							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+						</h:outputText>
+						<h:inputHidden  id="idHidden" value="#{contaManagedBean.entity.id}" />
+					</p:column>
+					
+					<p:outputLabel for="estrutura" value="#{labels['conta.estrutura']}" />
+					<p:inputMask id="estrutura" value="#{contaManagedBean.entity.estrutura}" required="true" size="20" maxlength="20" mask="9.9.9.99.99.99.99"/>
+
+					<p:outputLabel for="nome" value="#{labels['conta.nome']}" />
+					<p:inputText id="nome" value="#{contaManagedBean.entity.nome}" required="true" />
+
+					<p:outputLabel for="descricao" value="#{labels['conta.descricao']}" />
+					<p:inputText id="descricao" value="#{contaManagedBean.entity.descricao}" required="false" />
+
+					<p:outputLabel for="contaTipo" value="#{labels['conta.contaTipo']}" />
+					<p:selectOneMenu id="contaTipo" value="#{contaManagedBean.entity.contaTipo}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{contaManagedBean.popularComboContaTipo}" var="obj" itemValue="#{obj}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="contaOrigem" value="#{labels['conta.contaOrigem']}" />
+					<p:selectOneMenu id="contaOrigem" value="#{contaManagedBean.entity.contaOrigem}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{contaManagedBean.popularComboContaOrigem}" var="obj" itemValue="#{obj}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
+					<p:selectOneMenu id="empresa" value="#{contaManagedBean.entity.empresa}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{contaManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
+						<f:attribute name="list" value="#{contaManagedBean.empresas}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="planoContas" value="#{labels['conta.planoContas']}" />
+					<p:selectOneMenu id="planoContas" value="#{contaManagedBean.entity.planoContas}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{contaManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.PlanoContas" />
+						<f:attribute name="list" value="#{contaManagedBean.planocontas}" />
+					</p:selectOneMenu>
+
+					</p:panelGrid>
+				</div>
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty contaManagedBean.entity.id}" />
+						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@all" />
+						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" />
+					</p:toolbarGroup>
+				</p:toolbar>
+			</h:form>
+			<h:form id="contaList">
+				<p:dataTable var="item" value="#{contaManagedBean.model}" 
+								emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
+								paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
+								selectionMode="single" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true">
+								<p:ajax event="rowSelect" update="@all" />
+								
+					<p:column headerText="#{labels['conta.id']}" width="40">
+						<h:outputText value="#{item.id}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.estrutura']}" width="100" sortBy="#{item.estrutura}">
+						<h:outputText value="#{item.estrutura}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.nivel']}" styleClass="numerico"  width="40">
+						<h:outputText value="#{item.nivel}" >
+							<f:convertNumber type="number" minFractionDigits="0" />
+						</h:outputText>
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.nome']}">
+						<h:outputText value="#{item.nome}" style="padding:#{item.nivel*3}px"/>
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.contaOrigem']}" width="80">
+						<h:outputText value="#{item.contaOrigem}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.contaTipo']}" width="80">
+						<h:outputText value="#{item.contaTipo}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.descricao']}">
+						<h:outputText value="#{item.descricao}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.planoContas']}">
+						<h:outputText value="#{item.planoContas.nome}" />
+					</p:column>
+	
+					<p:column headerText="#{labels['conta.empresa']}">
+						<h:outputText value="#{item.empresa.razaoSocial}" />
+					</p:column>
+	
+				</p:dataTable>
+			</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

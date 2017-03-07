@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Configurações ::..</ui:define>
+
+	<ui:define name="body">
+		<p:growl />
+		<h:form>
+			<p:focus />
+			<div class="">
+				<p:panelGrid id="pgConf" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10" >
+		
+					<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
+					<p:selectOneMenu id="empresa" value="#{config2ManagedBean.empresa}" required="false" >
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{config2ManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
+						<f:attribute name="list" value="#{config2ManagedBean.empresas}" />
+						<p:ajax event="change" update="@all" listener="#{config2ManagedBean.aoSelecionarEmpresa}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="exercicio" value="#{labels['exercicio.ano']}" />
+					<p:selectOneMenu id="exercicio" value="#{config2ManagedBean.exercicio}" required="false">
+						<f:selectItem itemLabel="[Selecione]" />
+						<f:selectItems value="#{config2ManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.ano}" />
+						<f:converter converterId="baseEntityConverter"/>
+						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Exercicio" />
+						<f:attribute name="list" value="#{config2ManagedBean.exercicios}" />
+						<p:ajax event="change" update="periodo" listener="#{config2ManagedBean.aoSelecionarExercicio}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel for="periodo" value="Período" />
+					<p:column>
+						<p:selectOneMenu id="periodo" value="#{config2ManagedBean.periodo}" required="false">
+							<f:selectItem itemLabel="[Selecione]" />
+							
+							<f:selectItem itemValue="a" itemLabel="Anual" />
+							
+							<f:selectItem itemValue="1s" itemLabel="1º Semestre" />
+							<f:selectItem itemValue="2s" itemLabel="2º Semestre" />
+							
+							<f:selectItem itemValue="1t" itemLabel="1º Trimestre" />
+							<f:selectItem itemValue="2t" itemLabel="2º Trimestre" />
+							<f:selectItem itemValue="3t" itemLabel="3º Trimestre" />
+							<f:selectItem itemValue="4t" itemLabel="4º Trimestre" />
+							
+							<f:selectItem itemValue="1b" itemLabel="1º Bimestre" />
+							<f:selectItem itemValue="2b" itemLabel="2º Bimestre" />
+							<f:selectItem itemValue="3b" itemLabel="3º Bimestre" />			
+							<f:selectItem itemValue="4b" itemLabel="4º Bimestre" />
+							<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
+							<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
+							
+							<p:ajax event="change" update="@all" listener="#{config2ManagedBean.selecionarPeriodo}" />
+						</p:selectOneMenu>
+						
+						<h:panelGroup rendered="#{not empty config2ManagedBean.de and not empty config2ManagedBean.ate}">
+							<span style="margin-left: 10px;">
+								<h:outputFormat value="Período de {0, date} até {1, date}">
+									<f:param value="#{config2ManagedBean.de}" />
+									<f:param value="#{config2ManagedBean.ate}" />
+								</h:outputFormat>
+							</span>
+						</h:panelGroup>
+						
+					</p:column>
+					
+					<p:outputLabel for="template" value="Layout" />
+					<p:selectOneButton id="template" value="#{loginManagedBean.template}">
+						<p:ajax event="change" update="@all" immediate="true" />
+						<f:selectItem itemLabel="Menu Superior" itemValue="layout-1" />
+						<f:selectItem itemLabel="Menu Esquerdo" itemValue="layout-2" />
+					</p:selectOneButton>
+					
+					<p:column />
+					
+					<p:commandButton id="salvarConfiguracao" actionListener="#{config2ManagedBean.salvarConfiguracao}" value="Salvar esta configuração (opcional)" required="false" title="Sempre que você se logar, esta configuração estará selecionada." />
+					
+				</p:panelGrid>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>
