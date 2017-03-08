@@ -35,6 +35,8 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 				+ "inner join fetch obj.historicoPadrao hp "
 				+ "where obj.id = :id"),
 		@NamedQuery(name="LancamentoPadrao-buscarPorNome", query="select obj from LancamentoPadrao obj where upper(obj.nome) like upper(:nome)"),
+		@NamedQuery(name="LancamentoPadrao-list", query="select obj from LancamentoPadrao obj "),
+		@NamedQuery(name="LancamentoPadrao-porId", query="select obj from LancamentoPadrao obj where obj.id=:id")
 })
 public class LancamentoPadrao extends BaseEntity {
 	

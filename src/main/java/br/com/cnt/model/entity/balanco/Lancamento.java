@@ -31,7 +31,9 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 		@Index(name="INDEX_LANCAMENTO_HISTORICO", columnList = "HISTORICO")
 	})
 @NamedQueries(value={
-	@NamedQuery(name="Lancamento-buscar", query="select obj from Lancamento obj inner join fetch obj.exercicio ex inner join fetch obj.debito d inner join fetch obj.credito c where obj.id = :id")
+	@NamedQuery(name="Lancamento-buscar", query="select obj from Lancamento obj inner join fetch obj.exercicio ex inner join fetch obj.debito d inner join fetch obj.credito c where obj.id = :id"),
+	@NamedQuery(name="Lancamento-list", query="select obj from Lancamento obj "),
+	@NamedQuery(name="Lancamento-porId", query="select obj from Lancamento obj where obj.id=:id")
 })
 public class Lancamento extends BaseEntity {
 	

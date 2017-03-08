@@ -22,6 +22,8 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 @NamedQueries(value={
 		@NamedQuery(name="HistoricoPadrao-buscar", query="select obj from HistoricoPadrao obj where obj.id = :id"),
 		@NamedQuery(name="HistoricoPadrao-buscarPorHistorico", query="select obj from HistoricoPadrao obj where upper(obj.historico) like upper(:historico)"),
+		@NamedQuery(name="HistoricoPadrao-list", query="select obj from HistoricoPadrao obj "),
+		@NamedQuery(name="HistoricoPadrao-porId", query="select obj from HistoricoPadrao obj where obj.id=:id")
 })
 public class HistoricoPadrao extends BaseEntity {
 	

@@ -32,11 +32,14 @@ import br.com.cnt.model.utils.ContaUtil;
 		@Index(name="INDEX_CONTA_ESTRUTURA", columnList = "ESTRUTURA"),
 	})
 @NamedQueries(value={
-		@NamedQuery(name="Conta-buscar", 
-				query="select obj from Conta obj "
-						+ "left join fetch obj.empresa e "
-						+ "left join fetch obj.planoContas pc "
-						+ "where obj.id = :id")})
+				@NamedQuery(name="Conta-list", query="select obj from Conta obj "),
+				@NamedQuery(name="Conta-porId", query="select obj from Conta obj where obj.id=:id"),
+				@NamedQuery(name="Conta-buscar", query="select obj from Conta obj "
+														+ "left join fetch obj.empresa e "
+														+ "left join fetch obj.planoContas pc "
+														+ "where obj.id = :id")
+		}
+)
 public class Conta extends BaseEntity implements Comparable<Conta>{
 	
 	private static final long serialVersionUID = 1L;
