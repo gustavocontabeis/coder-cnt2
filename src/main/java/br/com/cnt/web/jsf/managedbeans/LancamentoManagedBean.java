@@ -1,38 +1,29 @@
 package br.com.cnt.web.jsf.managedbeans;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ComponentSystemEvent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 
-import br.com.coder.arqprime.model.dao.app.BaseDAO;
-import br.com.coder.arqprime.model.dao.app.DaoException;
-import br.com.coder.arqprime.model.entity.BaseEntity;
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.HistoricoPadraoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoPadraoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
-import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.HistoricoPadrao;
 import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.LancamentoPadrao;
 import br.com.cnt.model.entity.balanco.LancamentoTipo;
-import br.com.coder.arqprime.model.utils.Filtro;
-import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
+import br.com.coder.arqprime.model.dao.app.BaseDAO;
+import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 
 //@ManagedBean @ViewScoped
@@ -177,8 +168,11 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 
 	@Override
 	protected Lancamento novo() {
+		
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+
 		entity = new Lancamento();
-		Exercicio exercicio = null;
+		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
 		entity.setExercicio(exercicio);
 		lancamentoPadrao = null;
 		return entity;

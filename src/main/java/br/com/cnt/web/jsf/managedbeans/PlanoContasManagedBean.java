@@ -17,7 +17,8 @@ import br.com.coder.arqprime.model.utils.Filtro;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 
 //@ManagedBean @ViewScoped
-@javax.inject.Named @javax.faces.view.ViewScoped
+@javax.inject.Named 
+@javax.faces.view.ViewScoped
 public class PlanoContasManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;

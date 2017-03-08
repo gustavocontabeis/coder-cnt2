@@ -84,7 +84,5 @@ public class LancamentoPadraoManagedBean extends CrudManagedBean<LancamentoPadra
 		return new ArrayList<Conta>();
 	}
 	
-
-
 }
 

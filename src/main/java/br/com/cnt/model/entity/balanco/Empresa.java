@@ -18,6 +18,8 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 		@Index(name="INDEX_EMPRESA_CNPJ", columnList = "CNPJ"),
 	})
 @NamedQueries(value={
+		@NamedQuery(name="Empresa-porId", query="select obj from Empresa obj where obj.id=:id"),
+		@NamedQuery(name="Empresa-list", query="select obj from Empresa obj "),
 		@NamedQuery(name="todosEmpresa", query="select obj from Empresa obj ")
 	})
 public class Empresa extends BaseEntity {

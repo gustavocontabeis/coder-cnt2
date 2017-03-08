@@ -18,8 +18,10 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 @Entity
 @Table(name="PLANO_CONTAS")
 @NamedQueries(value={
+		@NamedQuery(name="PlanoContas-list", query="select obj from PlanoContas obj "),
+		@NamedQuery(name="PlanoContas-porId", query="select obj from PlanoContas obj where obj.id=:id"),
 		@NamedQuery(name="todosPlanoContas", query="from PlanoContas")
-})
+	})
 public class PlanoContas extends BaseEntity {
 	
  	private static final long serialVersionUID = 1L;

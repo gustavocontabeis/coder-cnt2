@@ -8,12 +8,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,8 +39,10 @@ import br.com.coder.arqprime.model.utils.StringUtil;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.LoginManagedBean;
 
-@Named 
+@javax.inject.Named
 @javax.enterprise.context.SessionScoped
+//@javax.inject.Named
+//@javax.faces.view.ViewScoped
 public class Config2ManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;
@@ -67,8 +67,9 @@ public class Config2ManagedBean extends BaseManagedBean {
 	@Inject private ConfiguracaoDAO configuracaoDAO;
 	
 	@PostConstruct
-	private void init(){
+	private void init() throws DaoException, IOException{
 		empresas = getPopularComboEmpresa();
+		buscarConfiguracoesUsuario();
 	}
 
 	public List<Empresa> getPopularComboEmpresa() {
@@ -228,6 +229,22 @@ public class Config2ManagedBean extends BaseManagedBean {
 	}
 
 	private void buscarConfiguracoesUsuario() throws DaoException, IOException {
+		
+		boolean ok = false;
+		if(usuario!=null && usuario.getId()!=null){
+			ok = true;
+		}
+		
+		if(!ok){
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+			HttpSession session = request.getSession();
+			usuario = (Usuario) session.getAttribute("usuario");
+			if(usuario == null)
+				return;
+		}
+		
+
 		
 		String chave = String.format(ConfiguracaoUtil.CONFIG_USUARIO, usuario.getId());
 		Configuracao config = configuracaoDAO.buscarPorChave(chave);

@@ -19,14 +19,14 @@
               <p:panelGrid id="pgExercicio" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
 					<p:outputLabel for="id" value="#{labels['exercicio.id']}" />
 					<p:column>
-						<h:outputText id="id" value="#{exercicioManagedBean.exercicio.id}" styleClass="ui-widget">
+						<h:outputText id="id" value="#{exercicioManagedBean.entity.id}" styleClass="ui-widget">
 							<f:convertNumber type="number" integerOnly="true" groupingUsed="false" />
 						</h:outputText>
-						<h:inputHidden id="idHidden" value="#{exercicioManagedBean.exercicio.id}" />
+						<h:inputHidden id="idHidden" value="#{exercicioManagedBean.entity.id}" />
 					</p:column>
 
 					<p:outputLabel for="empresa" value="#{labels['exercicio.empresa']}" />
-					<p:selectOneMenu id="empresa" value="#{exercicioManagedBean.exercicio.empresa}" required="true">
+					<p:selectOneMenu id="empresa" value="#{exercicioManagedBean.entity.empresa}" required="true">
 						<f:selectItem itemLabel="[Selecione]" />
 						<f:selectItems value="#{exercicioManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
 						<f:converter converterId="baseEntityConverter"/>
@@ -35,12 +35,12 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel for="ano" value="#{labels['exercicio.ano']}" />
-					<p:inputMask id="ano" value="#{exercicioManagedBean.exercicio.ano}" required="true" mask="9999">
+					<p:inputMask id="ano" value="#{exercicioManagedBean.entity.ano}" required="true" mask="9999">
 						<f:convertNumber type="number" integerOnly="true" />
 					</p:inputMask>
 
 					<p:outputLabel for="planoContas" value="#{labels['exercicio.planosContas']}" />
-					<p:selectOneMenu id="planoContas" value="#{exercicioManagedBean.exercicio.planoContas}" required="false">
+					<p:selectOneMenu id="planoContas" value="#{exercicioManagedBean.entity.planoContas}" required="false">
 						<f:selectItem itemLabel="[Selecione]" />
 						<f:selectItems value="#{exercicioManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
 						<f:converter converterId="baseEntityConverter"/>
@@ -49,15 +49,15 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel for="fechado" value="#{labels['exercicio.fechado']}" />
-					<p:selectBooleanCheckbox id="fechado" value="#{exercicioManagedBean.exercicio.fechado}" />
+					<p:selectBooleanCheckbox id="fechado" value="#{exercicioManagedBean.entity.fechado}" />
 
               </p:panelGrid>
               </div>
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton actionListener="#{exercicioManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty exercicioManagedBean.exercicio.id}" />
+						<p:commandButton actionListener="#{exercicioManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty exercicioManagedBean.entity.id}" />
 						<p:commandButton actionListener="#{exercicioManagedBean.salvar}" value="Salvar" update="@all" />
-						<p:commandButton actionListener="#{exercicioManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty exercicioManagedBean.exercicio.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{exercicioManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty exercicioManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
 					</p:toolbarGroup>
 				</p:toolbar>
 		</h:form>
@@ -66,7 +66,7 @@
 			<p:dataTable var="item" value="#{exercicioManagedBean.model}" 
 							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
 							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
-							selectionMode="single" selection="#{exercicioManagedBean.exercicio}" rowKey="#{item.id}" lazy="true" >
+							selectionMode="single" selection="#{exercicioManagedBean.entity}" rowKey="#{item.id}" lazy="true" >
 							<p:ajax event="rowSelect" update="@all" reflow="true"/>
 							
 				<p:column headerText="#{labels['exercicio.id']}" width="80">

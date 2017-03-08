@@ -10,11 +10,11 @@
         jdbc:hsqldb:hsql://localhost/mydb
         jdbc:hsqldb:file:/home/gustavo/Downloads/hdqldb
         
-    -->
         <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
         <property name="connection.url">jdbc:hsqldb:file:./contabilidade01</property>
         <property name="connection.username">sa</property>
         <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+    -->
         
     <!-- ..:: MySQL ::.. 
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
@@ -25,12 +25,12 @@
         -->
         
     <!-- ..:: PostgreSQL ::.. 
+    -->
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="connection.url">jdbc:postgresql://localhost:5432/contabilidade</property>
     <property name="connection.username">postgres</property>
     <property name="hibernate.connection.password">1q2w3e4r</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    -->
         
     <!-- JDBC connection pool (use the built-in) -->
     <property name="connection.pool_size">5</property>

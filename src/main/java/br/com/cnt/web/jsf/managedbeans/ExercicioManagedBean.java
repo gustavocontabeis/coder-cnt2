@@ -71,6 +71,14 @@ public class ExercicioManagedBean extends CrudManagedBean<Exercicio, ExercicioDA
 		this.planocontas = planocontas;
 	}
 
+	public List<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setEmpresas(List<Empresa> empresas) {
+		this.empresas = empresas;
+	}
+
 	@Override
 	protected Exercicio novo() {
 		entity = new Exercicio();
