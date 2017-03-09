@@ -39,7 +39,7 @@ public class AppServletContextListener implements ServletContextListener{
 		usuario.setPerfis("USU-ADM,WEB,USU");
 		String generate = GenerateMD5.generateMD5("123");
 		usuario.setSenha(generate);
-		//new UsuarioDAO().salvar(usuario);
+		new UsuarioDAO().salvar(usuario);
 		
 	}
 
