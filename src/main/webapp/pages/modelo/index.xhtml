@@ -6,10 +6,14 @@
 	<ui:define name="pageTitle">..:: Título ::..</ui:define>
 
 	<ui:define name="body">
-		<p:messages />
+		<p:growl showDetail="true"/>
 		<!-- 
 			form
-		 -->		
+		 -->	
+		 <h:form id="f">
+		 <p:focus for="teste"></p:focus>
+		 <p:inputText id="teste"></p:inputText>	
+		 </h:form>
 	</ui:define>
 
 </ui:composition>

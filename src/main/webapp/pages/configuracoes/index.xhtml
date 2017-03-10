@@ -6,35 +6,35 @@
 	<ui:define name="pageTitle">..:: Configurações ::..</ui:define>
 
 	<ui:define name="body">
-		<p:growl />
+		<p:growl showDetail="true"/>
 		<h:form>
 			<p:focus />
 			<div class="">
 				<p:panelGrid id="pgConf" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10" >
 		
 					<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
-					<p:selectOneMenu id="empresa" value="#{config2ManagedBean.empresa}" required="false" >
+					<p:selectOneMenu id="empresa" value="#{contabilidadeSessionManagedBean.empresa}" required="false" >
 						<f:selectItem itemLabel="[Selecione]" />
-						<f:selectItems value="#{config2ManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+						<f:selectItems value="#{contabilidadeSessionManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
 						<f:converter converterId="baseEntityConverter"/>
 						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
-						<f:attribute name="list" value="#{config2ManagedBean.empresas}" />
-						<p:ajax event="change" update="@all" listener="#{config2ManagedBean.aoSelecionarEmpresa}" />
+						<f:attribute name="list" value="#{contabilidadeSessionManagedBean.empresas}" />
+						<p:ajax event="change" update="@all" listener="#{contabilidadeSessionManagedBean.aoSelecionarEmpresa}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="exercicio" value="#{labels['exercicio.ano']}" />
-					<p:selectOneMenu id="exercicio" value="#{config2ManagedBean.exercicio}" required="false">
+					<p:selectOneMenu id="exercicio" value="#{contabilidadeSessionManagedBean.exercicio}" required="false">
 						<f:selectItem itemLabel="[Selecione]" />
-						<f:selectItems value="#{config2ManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.ano}" />
+						<f:selectItems value="#{contabilidadeSessionManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.ano}" />
 						<f:converter converterId="baseEntityConverter"/>
 						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Exercicio" />
-						<f:attribute name="list" value="#{config2ManagedBean.exercicios}" />
-						<p:ajax event="change" update="periodo" listener="#{config2ManagedBean.aoSelecionarExercicio}" />
+						<f:attribute name="list" value="#{contabilidadeSessionManagedBean.exercicios}" />
+						<p:ajax event="change" update="periodo" listener="#{contabilidadeSessionManagedBean.aoSelecionarExercicio}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel for="periodo" value="Período" />
 					<p:column>
-						<p:selectOneMenu id="periodo" value="#{config2ManagedBean.periodo}" required="false">
+						<p:selectOneMenu id="periodo" value="#{contabilidadeSessionManagedBean.periodo}" required="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							
 							<f:selectItem itemValue="a" itemLabel="Anual" />
@@ -54,14 +54,14 @@
 							<f:selectItem itemValue="5b" itemLabel="5º Bimestre" />
 							<f:selectItem itemValue="6b" itemLabel="6º Bimestre" />
 							
-							<p:ajax event="change" update="@all" listener="#{config2ManagedBean.selecionarPeriodo}" />
+							<p:ajax event="change" update="@all" listener="#{contabilidadeSessionManagedBean.selecionarPeriodo}" />
 						</p:selectOneMenu>
 						
-						<h:panelGroup rendered="#{not empty config2ManagedBean.de and not empty config2ManagedBean.ate}">
+						<h:panelGroup rendered="#{not empty contabilidadeSessionManagedBean.de and not empty contabilidadeSessionManagedBean.ate}">
 							<span style="margin-left: 10px;">
 								<h:outputFormat value="Período de {0, date} até {1, date}">
-									<f:param value="#{config2ManagedBean.de}" />
-									<f:param value="#{config2ManagedBean.ate}" />
+									<f:param value="#{contabilidadeSessionManagedBean.de}" />
+									<f:param value="#{contabilidadeSessionManagedBean.ate}" />
 								</h:outputFormat>
 							</span>
 						</h:panelGroup>
@@ -77,7 +77,7 @@
 					
 					<p:column />
 					
-					<p:commandButton id="salvarConfiguracao" actionListener="#{config2ManagedBean.salvarConfiguracao}" value="Salvar esta configuração (opcional)" required="false" title="Sempre que você se logar, esta configuração estará selecionada." />
+					<p:commandButton id="salvarConfiguracao" actionListener="#{contabilidadeSessionManagedBean.salvarConfiguracao}" value="Salvar esta configuração (opcional)" required="false" title="Sempre que você se logar, esta configuração estará selecionada." />
 					
 				</p:panelGrid>
 			</div>

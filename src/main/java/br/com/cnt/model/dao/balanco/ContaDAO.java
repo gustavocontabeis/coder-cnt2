@@ -98,7 +98,7 @@ public class ContaDAO extends BaseDAO<Conta> {
  	@Override
  	public Conta buscar(Long id) throws DaoException {
  		Session session = getSession();
- 		Query query = session.getNamedQuery("Conta-buscar");
+ 		Query query = session.getNamedQuery("Conta-porId");
  		query.setLong("id", id);
  		Conta singleResult = (Conta) query.getSingleResult();
  		session.close();

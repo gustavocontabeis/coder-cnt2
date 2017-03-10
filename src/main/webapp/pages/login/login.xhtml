@@ -21,12 +21,12 @@
 	</style>
 		<h:form>
 			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-			
+			<p:focus />			
 			<table width="100%">
 				<tr>
 					<td width="30%"></td>
 					<td align="center" valign="middle" >
-						${param['msg']}
+						<h:outputText value="#{param['msg']}" />
 						<p:panel header="Login">
 							<h:panelGrid columns="2" cellpadding="5">
 								<h:outputLabel for="username" value="Username:" />
@@ -40,6 +40,7 @@
 								<f:facet name="footer">
 									<p:commandButton value="Login" ajax="false" actionListener="#{loginManagedBean.login}" />
 									<p:commandButton value="Login-Desenv" ajax="false" immediate="true" actionListener="#{loginManagedBean.loginDesenv}" rendered="#{facesContext.application.projectStage == 'Development'}" />
+									<p:commandButton value="Recuperar Senha" ajax="false" action="/pages/login/solicitarNovaSenha.xhtml" immediate="true" />
 								</f:facet>
 							</h:panelGrid>
 						</p:panel>

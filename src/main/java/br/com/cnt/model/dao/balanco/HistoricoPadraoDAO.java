@@ -17,7 +17,7 @@ public class HistoricoPadraoDAO extends BaseDAO<HistoricoPadrao> {
 	@Override
  	public HistoricoPadrao buscar(Long id) throws DaoException {
  		Session session = getSession();
- 		Query query = session.getNamedQuery("HistoricoPadrao-buscar");
+ 		Query query = session.getNamedQuery("HistoricoPadrao-porId");
  		query.setLong("id", id);
  		HistoricoPadrao singleResult = (HistoricoPadrao) query.getSingleResult();
  		session.close();

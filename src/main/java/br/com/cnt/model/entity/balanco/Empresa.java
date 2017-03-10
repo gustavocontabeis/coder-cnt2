@@ -20,7 +20,7 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 @NamedQueries(value={
 		@NamedQuery(name="Empresa-porId", query="select obj from Empresa obj where obj.id=:id"),
 		@NamedQuery(name="Empresa-list", query="select obj from Empresa obj "),
-		@NamedQuery(name="todosEmpresa", query="select obj from Empresa obj ")
+		//@NamedQuery(name="todosEmpresa", query="select obj from Empresa obj ")
 	})
 public class Empresa extends BaseEntity {
 	

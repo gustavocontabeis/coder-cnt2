@@ -43,7 +43,7 @@ import br.com.coder.arqprime.web.jsf.managedbeans.app.LoginManagedBean;
 @javax.enterprise.context.SessionScoped
 //@javax.inject.Named
 //@javax.faces.view.ViewScoped
-public class Config2ManagedBean extends BaseManagedBean {
+public class ContabilidadeSessionManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;
 
