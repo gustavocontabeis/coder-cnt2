@@ -7,9 +7,9 @@
 	<groupId>br.com.coder</groupId>
 	<artifactId>coder-cnt2</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>coder-cnt2</name>
-	<url>http://maven.apache.org</url>
+	<url>http://codersistemas.com.br/contabilidade/</url>
 
 	<dependencies>
 
