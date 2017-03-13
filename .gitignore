@@ -3,3 +3,6 @@ org.eclipse*
 /.classpath
 /.project
 /.settings
+/mem.log
+/mem.properties
+/mem.script
