@@ -18,6 +18,9 @@
 		.ui-widget {
 		    font-size: ${loginManagedBean.fontSize};
 		}
+		body {
+			background-color: white;
+		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="${request.contextPath}/lib/css/estilo.css" />
 	<script type="text/javascript" src="${request.contextPath}/lib/js/funcoes.js"></script>
@@ -27,8 +30,8 @@
 		<f:loadBundle basename="labels" var="labels" />
 		<div class="ui-g">
 		    <div class="ui-g-12">
-				<h:outputText value="#{loginManagedBean.empresa.razaoSocial}" rendered="#{not empty loginManagedBean.empresa}" />
-				<h:outputText value=" - #{loginManagedBean.exercicio.ano}" rendered="#{not empty loginManagedBean.exercicio}" /> 
+				<h:outputText value="#{contabilidadeSessionManagedBean.empresa.razaoSocial}" rendered="#{not empty contabilidadeSessionManagedBean.empresa}" />
+				<h:outputText value=" - #{contabilidadeSessionManagedBean.exercicio.ano}" rendered="#{not empty contabilidadeSessionManagedBean.exercicio}" /> 
 			</div>
 		</div>
 		<ui:insert name="body">Body template</ui:insert>

@@ -78,7 +78,8 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 
 	public List<Conta> buscarConta(String param) {
 		if (StringUtils.isNotBlank(param)) {
-			Exercicio exercicio = null;
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
 			List<Conta> buscar2 = contaDAO.buscar(exercicio, param);
 			return buscar2; 
 		}

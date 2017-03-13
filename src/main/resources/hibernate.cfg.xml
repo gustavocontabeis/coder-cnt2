@@ -51,7 +51,7 @@
     /scripts/Empresa.sql, 
     /scripts/PlanoContas.sql, 
     /scripts/Exercicio-postgres.sql, 
-    /scripts/Contas-1-comercio.sql,
+    /scripts/Contas-1-comercio-ordem.sql,
     /scripts/import-hsql.sql,
     /scripts/LancamentoPadrao.sql, 
     </property>

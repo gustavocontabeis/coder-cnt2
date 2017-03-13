@@ -41,7 +41,7 @@ public class AppServletContextListener implements ServletContextListener{
 				for (int i = 0; i < linhas.length; i++) {
 					String linha = linhas[i];
 					if(i == 0){
-						insert.append(linha+") values (");
+						insert.append(linha+" values (");
 					}else{
 						String x = insert.toString()+linha+");";
 						System.out.println(x);
@@ -67,7 +67,7 @@ public class AppServletContextListener implements ServletContextListener{
 		usuario.setPerfis("USU-ADM,WEB,USU");
 		String generate = GenerateMD5.generateMD5("123");
 		usuario.setSenha(generate);
-		//new UsuarioDAO().salvar(usuario);
+		new UsuarioDAO().salvar(usuario);
 		
 	}
 

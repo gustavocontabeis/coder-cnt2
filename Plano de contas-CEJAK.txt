@@ -1,68 +1,99 @@
-ATIVO CIRCULANTE
-Disponível
-Caixas e Equivalentes
-Bancos Contas Correntes
-Aplicações Financeiras
-Bancos Contas Aplicações
-Outros Créditos
-Despesas Antecipadas
-ATIVO NÃO CIRCULANTE
-Imobilizado
-Valores Originais
-Despesas Antecipadas
-PASSIVO CIRCULANTE
-Obrigações Trabalhistas e Sociais
-Salários a Pagar
-INSS a Recolher
-FGTS a Recolher
-IRRF a Recolher
-Obrigações Fiscais e Tributárias
-PIS a Recolher
-PASSIVO NÃO CIRCULANTE
-PATRIMÔNIO SOCIAL
-Superávits Acumulados
+ATIVO
+	ATIVO CIRCULANTE
+		Disponível
+			Caixas e Equivalentes
+				Bancos Contas Correntes
+			Aplicações Financeiras
+				Bancos Contas Aplicações
+		Outros Créditos
+			Despesas Antecipadas
+	ATIVO NÃO CIRCULANTE
+		Imobilizado
+			Valores Originais
+				Despesas Antecipadas
 
+---------------------------------------------------------------------------
+PASSIVO
+	PASSIVO CIRCULANTE
+		Obrigações Trabalhistas e Sociais
+			Salários a Pagar
+			INSS a Recolher
+			FGTS a Recolher
+			IRRF a Recolher
+		Obrigações Fiscais e Tributárias
+			PIS a Recolher
+	PASSIVO NÃO CIRCULANTE
+	PATRIMÔNIO SOCIAL
+		Superávits Acumulados
+---------------------------------------------------------------------------
+RESULTADO
+	RECEITAS DE ENSINO
+		Receitas de Ensino
+			Receitas de Projetos
+		(-) Devoluções/Descontos
+			(-) Devoluções de Projetos
+		Total das Receitas de Ensino
 
+	OUTRAS RECEITAS
+		Demais Receitas
+		Total das Outras Receitas
 
+	TOTAL DAS RECEITAS
 
-
-RECEITAS DE ENSINO
-	Receitas de Ensino
-		Receitas de Projetos
-	(-) Devoluções/Descontos
-		(-) Devoluções de Projetos
-	Total das Receitas de Ensino
-
-OUTRAS RECEITAS
-	Demais Receitas
-	Total das Outras Receitas
-
-TOTAL DAS RECEITAS
-
-(-) CUSTOS E DESPESAS
-	(-) Despesas com Colaboradores/Pessoal
-		(-) Salários e Ordenados
-	(-) Despesas com Prestadores de Serviços
-		(-) Serviços de Terceiros - PF/PJ
-	(-) Despesas com Impostos e Contribuições
-		(-) Encargos com FGTS e INSS
-	(-) Despesas Administrativas e Gerais
-		(-) Despesas com Alimentação
-		(-) Despesas com Limpeza
-		(-) Despesas com Higiene
-		(-) Despesas com Manutenção Predial - Estrutural
-		(-) Despesas com Manutenção Predial - Não Estrutural
-		(-) Despesas com Material Pedagógico - Expediente - Recreação
-		(-) Despesas com Utensílios
-		(-) Despesas com Equipamento e Material Permanente
-		(-) Despesas com Serviços de Manutenção Predial
-	(-) Despesas de Depreciação e Amortização
+	(-) CUSTOS E DESPESAS
+		(-) Despesas com Colaboradores/Pessoal
+			(-) Salários e Ordenados
+		(-) Despesas com Prestadores de Serviços
+			(-) Serviços de Terceiros - PF/PJ
+		(-) Despesas com Impostos e Contribuições
+			(-) Encargos com FGTS e INSS
+		(-) Despesas Administrativas e Gerais
+			(-) Despesas com Alimentação
+			(-) Despesas com Limpeza
+			(-) Despesas com Higiene
+			(-) Despesas com Manutenção Predial - Estrutural
+			(-) Despesas com Manutenção Predial - Não Estrutural
+			(-) Despesas com Material Pedagógico - Expediente - Recreação
+			(-) Despesas com Utensílios
+			(-) Despesas com Equipamento e Material Permanente
+			(-) Despesas com Serviços de Manutenção Predial
 		(-) Despesas de Depreciação e Amortização
-	(-) Demais Despesas
-	(-) Total dos Custos e Despesas
-SUPERÁVIT ANTES DAS RECEITAS/DESPESAS FINANCEIRAS
-RECEITAS/DESPESAS FINANCEIRAS
-	Receitas Financeiras
-	(-) Despesas Financeiras
-	Total Líquido das Receitas/Despesas Financeiras 
-SUPERÁVIT DO EXERCÍCIO
+			(-) Despesas de Depreciação e Amortização
+		(-) Demais Despesas
+		(-) Total dos Custos e Despesas
+	SUPERÁVIT ANTES DAS RECEITAS/DESPESAS FINANCEIRAS
+	RECEITAS/DESPESAS FINANCEIRAS
+		Receitas Financeiras
+		(-) Despesas Financeiras
+		Total Líquido das Receitas/Despesas Financeiras 
+	SUPERÁVIT DO EXERCÍCIO
+	(+)/(-) AJUSTES DE EXERCÍCIOS ANTERIORES
+
+
+
+
+
+
+
+ATIVIDADE OPERACIONAIS
+	RESULTADO LÍQUIDO AJUSTADO
+		Superávit do Exercício
+		Despesas/Receitas que Não Afetam o Caixa
+	VARIAÇÕES DOS ATIVOS
+		Redução (Aumento) nas Aplicações Financeiras
+		Redução (Aumento) nas Despesas do Exercício Seguinte
+	VARIAÇÕES DOS PASSIVOS
+		Aumento (Redução) das Obrigações Trabalhistas e Sociais
+		Aumento (Redução) de Outras Obrigações
+		Aumento (Redução) das Obrigações Fiscais e Tributárias
+CAIXA LÍQUIDO GERADO (APLICADO) NAS ATIVIDADES OPERACIONAIS
+ATIVIDADES DE INVESTIMENTOS
+	CAIXA LÍQUIDO GERADO (APLICADO) NAS ATIVIDADES DE INVESTIMENTOS
+	Aquisição de Imobilizado
+FLUXO DE CAIXA GERADO (APLICADO) NO EXERCÍCIO
+	Caixa e Equivalentes no Início do Período
+	Caixa e Equivalentes no Final do Período
+AUMENTO (REDUÇÃO) DE CAIXA E EQUIVALENTES DE CAIXA
+
+
+

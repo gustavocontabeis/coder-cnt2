@@ -8,16 +8,16 @@
 	<ui:define name="body">
 		<p:growl showDetail="true"/>
 		<h:form id="lancamento">
-			<h:inputHidden id="idHidden" value="#{lancamentoManagedBean.lancamento.id}" />		
+			<h:inputHidden id="idHidden" value="#{lancamentoManagedBean.entity.id}" />		
 			<div class="ui-fluid">
 				<div class="ui-g">
-				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+				    <div class="ui-g-2">
 						<p:outputLabel for="id" value="#{labels['lancamento.id']}" />
-						<p:inputText id="id" value="#{lancamentoManagedBean.lancamento.id}" disabled="true" />
+						<p:inputText id="id" value="#{lancamentoManagedBean.entity.id}" disabled="true" />
 					</div>
-					<div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+					<div class="ui-g-10">
 						<p:outputLabel for="exercicio" value="#{labels['lancamento.exercicio']}" />
-						<p:selectOneMenu id="exercicio" value="#{lancamentoManagedBean.lancamento.exercicio}" disabled="true">
+						<p:selectOneMenu id="exercicio" value="#{lancamentoManagedBean.entity.exercicio}" disabled="true">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{lancamentoManagedBean.exercicios}" var="obj" itemValue="#{obj}" itemLabel="#{obj.empresa.razaoSocial} - #{obj.ano}" />
 							<f:converter converterId="baseEntityConverter" />
@@ -25,30 +25,29 @@
 							<f:attribute name="list" value="#{lancamentoManagedBean.exercicios}" />
 						</p:selectOneMenu>
 					</div>
-					<div class="ui-g-12 ui-md-0 ui-lg-6"></div>
 				</div>
 
 				<div class="ui-g">
-				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+				    <div class="ui-g-2">
 						<p:outputLabel for="date" value="#{labels['lancamento.date']}" />
-						<p:calendar id="date" value="#{lancamentoManagedBean.lancamento.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999"/>
+						<p:calendar id="date" value="#{lancamentoManagedBean.entity.date}" required="true" size="10" maxlength="10" pattern="dd/MM/yyyy" locale="pt" mask="99/99/9999"/>
 				    </div>
-				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+				    <div class="ui-g-10">
+				    	
 				    </div>
-				    <div class="ui-g-12 ui-md-0 ui-lg-6"></div>
 				</div>
 				    
 				<div class="ui-g">
-				    <div class="ui-g-12 ui-md-6 ui-lg-3">
+				    <div class="ui-g-6 ui-md-6 ui-lg-6">
 						<p:outputLabel for="debito" value="#{labels['lancamento.debito']}" />
-						<p:selectOneMenu id="debitox" value="#{lancamentoManagedBean.lancamento.debito}" required="false" rendered="false">
+						<p:selectOneMenu id="debitox" value="#{lancamentoManagedBean.entity.debito}" required="false" rendered="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{lancamentoManagedBean.contas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
 							<f:converter converterId="baseEntityConverter" />
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
 						</p:selectOneMenu>
-						<p:autoComplete id="debito" value="#{lancamentoManagedBean.lancamento.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+						<p:autoComplete id="debito" value="#{lancamentoManagedBean.entity.debito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
@@ -63,16 +62,16 @@
 				            </p:column>
 				        </p:autoComplete>
 				    </div>
-				    <div class="ui-g-12 ui-md-6 ui-lg-3">
+				    <div class="ui-g-6 ui-md-6 ui-lg-6">
 						<p:outputLabel for="credito" value="#{labels['lancamento.credito']}" />
-						<p:selectOneMenu id="creditoX" value="#{lancamentoManagedBean.lancamento.credito}" rendered="false">
+						<p:selectOneMenu id="creditoX" value="#{lancamentoManagedBean.entity.credito}" rendered="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{lancamentoManagedBean.popularComboConta}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura} - #{obj.nome}" itemDisabled="#{obj.contaTipo == 'SINTETICA'}" />
 							<f:converter converterId="baseEntityConverter" />
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 							<f:attribute name="list" value="#{lancamentoManagedBean.contas}" />
 						</p:selectOneMenu>
-						<p:autoComplete id="credito" value="#{lancamentoManagedBean.lancamento.credito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
+						<p:autoComplete id="credito" value="#{lancamentoManagedBean.entity.credito}" completeMethod="#{lancamentoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" >
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
@@ -90,13 +89,18 @@
 				</div>
 			
 				<div class="ui-g">
-				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-5">
+				    <div class="ui-g-12">
 						<p:outputLabel for="historico" value="#{labels['lancamento.historico']}" />
-						<p:inputTextarea id="historico" value="#{lancamentoManagedBean.lancamento.historico}" required="true" rows="5" cols="100" />
+						<p:inputTextarea id="historico" value="#{lancamentoManagedBean.entity.historico}" required="true" rows="5" cols="100" />
 				    </div>
-				    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-1">
+				</div>
+				
+				<div class="ui-g">
+					<div class="ui-g-9">
+					</div>
+				    <div class="ui-g-3">
 						<p:outputLabel for="valor" value="#{labels['lancamento.valor']}" />
-						<p:inputNumber id="valor" value="#{lancamentoManagedBean.lancamento.valor}" required="true" 
+						<p:inputNumber id="valor" value="#{lancamentoManagedBean.entity.valor}" required="true" 
 						decimalSeparator="," 
 						thousandSeparator="."
 						decimalPlaces="2" 
@@ -109,10 +113,10 @@
 			</div>
 			<p:toolbar>
 				<p:toolbarGroup>
-					<p:commandButton actionListener="#{lancamentoManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty lancamentoManagedBean.lancamento.id}" />
+					<p:commandButton actionListener="#{lancamentoManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty lancamentoManagedBean.entity.id}" />
 					<p:commandButton actionListener="#{lancamentoManagedBean.salvar}" value="Salvar" update="@all" />
-					<p:commandButton actionListener="#{lancamentoManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty lancamentoManagedBean.lancamento.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
-					<p:commandButton actionListener="#{lancamentoManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty lancamentoManagedBean.lancamento.id}" />
+					<p:commandButton actionListener="#{lancamentoManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty lancamentoManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					<p:commandButton actionListener="#{lancamentoManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty lancamentoManagedBean.entity.id}" />
 				</p:toolbarGroup>
 			</p:toolbar>
 		</h:form>

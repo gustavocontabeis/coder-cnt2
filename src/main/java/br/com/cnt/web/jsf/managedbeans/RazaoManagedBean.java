@@ -7,11 +7,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.RazaoDAO;
+import br.com.cnt.model.dto.ConfiguracaoUsuarioDTO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.Razao;
@@ -42,9 +44,10 @@ public class RazaoManagedBean extends BaseManagedBean{
 			e.printStackTrace();
 		}
 		
-		Exercicio exercicio = null;//loginBean.getExercicio();
-		Date de = null;// = loginBean.getDe();
-		Date ate = null;// = loginBean.getAte();
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
+		Date de = (Date) session.getAttribute("de");
+		Date ate = (Date) session.getAttribute("ate");
 		
 		this.razao = new RazaoDAO().retornarRazao(conta, de, ate);
 		this.razao.setDe(de);

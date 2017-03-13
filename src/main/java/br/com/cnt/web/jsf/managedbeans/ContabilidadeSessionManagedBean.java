@@ -39,10 +39,10 @@ import br.com.coder.arqprime.model.utils.StringUtil;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.LoginManagedBean;
 
-@javax.inject.Named
-@javax.enterprise.context.SessionScoped
 //@javax.inject.Named
-//@javax.faces.view.ViewScoped
+//@javax.enterprise.context.SessionScoped
+@javax.inject.Named
+@javax.faces.view.ViewScoped
 public class ContabilidadeSessionManagedBean extends BaseManagedBean {
 
 	private static final long serialVersionUID = 1L;
@@ -244,11 +244,10 @@ public class ContabilidadeSessionManagedBean extends BaseManagedBean {
 				return;
 		}
 		
-
-		
 		String chave = String.format(ConfiguracaoUtil.CONFIG_USUARIO, usuario.getId());
 		Configuracao config = configuracaoDAO.buscarPorChave(chave);
 		if(config != null){
+			
 			ConfiguracaoUsuarioDTO configDTO = (ConfiguracaoUsuarioDTO) JSONUtil.toObject(config.getValor(), ConfiguracaoUsuarioDTO.class);
 			empresa = empresaDAO.buscar(configDTO.getEmpresa());
 			popularComboExercicio();
@@ -256,6 +255,13 @@ public class ContabilidadeSessionManagedBean extends BaseManagedBean {
 			periodo = configDTO.getPeriodo();
 			template = configDTO.getTemplate();
 			selecionarPeriodo();
+			
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+			session.setAttribute("config", configDTO);
+			session.setAttribute("exercicio", exercicio);
+			session.setAttribute("de", de);
+			session.setAttribute("ate", ate);
+			
 		}
 		
 	}

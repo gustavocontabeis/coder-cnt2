@@ -130,7 +130,7 @@ public class ContaDAO extends BaseDAO<Conta> {
 			sb.append(" and id = :id");
 		} else {
 			params.put("nome", '%'+param.toUpperCase()+'%');
-			sb.append(" and upper(nome) like :nome");
+			sb.append(" and upper(obj.nome) like :nome");
 		}
 		
 		params.put("contaTipo", ContaTipo.ANALITICA);
