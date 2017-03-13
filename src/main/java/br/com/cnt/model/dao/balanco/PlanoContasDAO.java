@@ -37,6 +37,7 @@ public class PlanoContasDAO extends BaseDAO<PlanoContas> {
  			hql += "or conta.empresa.id = :empresa ";
  		if(exercicio.getPlanoContas()!=null)
  			hql += "or conta.planoContas.id = :planoContas ";
+ 		hql += " order by conta.estrutura, conta.ordem, conta.nome ";
  		
  		Session session = getSession();
  		Query query = session.createQuery(hql.replace("where or", "where "));

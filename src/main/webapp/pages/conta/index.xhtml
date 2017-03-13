@@ -11,11 +11,29 @@
 	<ui:define name="pageTitle">..:: Cadastro de Contas Contábeis ::..</ui:define>
 
 	<ui:define name="body">
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			.SINTETICA-1{
+				font-weight: bold;
+				font-style: italic;
+				font-size: 22 !important;
+			}
+			.SINTETICA-2{
+				font-weight: bold;
+				font-size: 18 !important;
+				font-stretch:wider; 
+			}
+			.SINTETICA-3{
+				font-weight: bold;
+			}
+		</style>
 		<p:growl showDetail="true"/>
 		<h:form id="conta">
 			<p:focus />
 			<div class="ui-fluid">
-				<p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+				<p:panelGrid id="pgConta" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
 
 					<p:outputLabel for="id" value="#{labels['conta.id']}"/>
 					<p:column>
@@ -27,6 +45,9 @@
 					
 					<p:outputLabel for="estrutura" value="#{labels['conta.estrutura']}" />
 					<p:inputMask id="estrutura" value="#{contaManagedBean.entity.estrutura}" required="true" size="20" maxlength="20" mask="9.9.9.99.99.99.99"/>
+
+					<p:outputLabel for="ordem" value="#{labels['conta.ordem']}" />
+					<p:inputMask id="ordem" value="#{contaManagedBean.entity.ordem}" required="false" />
 
 					<p:outputLabel for="nome" value="#{labels['conta.nome']}" />
 					<p:inputText id="nome" value="#{contaManagedBean.entity.nome}" required="true" />
@@ -76,10 +97,16 @@
 				</p:toolbar>
 			</h:form>
 			<h:form id="contaList">
-				<p:dataTable var="item" value="#{contaManagedBean.model}" 
-								emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
-								paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
-								selectionMode="single" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true">
+				<p:dataTable var="item" 
+								value="#{contaManagedBean.model}" 
+								emptyMessage="#{labels['cfg.table.empty']}" 
+								paginator="true" 
+								rows="#{labels['cfg.table.rows']}" 
+								paginatorTemplate="#{labels['cfg.table.template']}" 
+								rowsPerPageTemplate="#{labels['cfg.table.template.pages']},500" 
+								paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
+								selectionMode="single" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true"
+								>
 								<p:ajax event="rowSelect" update="@all" />
 								
 					<p:column headerText="#{labels['conta.id']}" width="40">
@@ -90,13 +117,17 @@
 						<h:outputText value="#{item.estrutura}" />
 					</p:column>
 	
+					<p:column headerText="#{labels['conta.ordem']}" width="50" sortBy="#{item.ordem}">
+						<h:outputText value="#{item.ordem}" />
+					</p:column>
+	
 					<p:column headerText="#{labels['conta.nivel']}" styleClass="numerico"  width="40">
 						<h:outputText value="#{item.nivel}" >
 							<f:convertNumber type="number" minFractionDigits="0" />
 						</h:outputText>
 					</p:column>
 	
-					<p:column headerText="#{labels['conta.nome']}">
+					<p:column headerText="#{labels['conta.nome']}" sortBy="#{item.nome}" styleClass="#{item.contaTipo}-#{item.nivel}" >
 						<h:outputText value="#{item.nome}" style="padding:#{item.nivel*3}px"/>
 					</p:column>
 	
@@ -104,7 +135,7 @@
 						<h:outputText value="#{item.contaOrigem}" />
 					</p:column>
 	
-					<p:column headerText="#{labels['conta.contaTipo']}" width="80">
+					<p:column headerText="#{labels['conta.contaTipo']}" width="80" styleClass="#{item.contaTipo}-#{item.nivel}">
 						<h:outputText value="#{item.contaTipo}" />
 					</p:column>
 	

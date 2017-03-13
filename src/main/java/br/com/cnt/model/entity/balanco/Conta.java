@@ -25,6 +25,10 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 import br.com.cnt.model.utils.ContaUtil;
 
 
+/**
+ * @author caixa
+ *
+ */
 @Entity
 @Table(name="CONTAS", 
 	indexes={
@@ -55,6 +59,9 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
  	@Column(name="NIVEL", length=1,  nullable=false)
  	private Integer nivel;
  	
+ 	@Column(name="ORDEM", nullable=true)
+ 	private Integer ordem;
+
  	@Column(name="NOME", length=150,  nullable=false)
  	private String nome;
  
@@ -172,6 +179,13 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 	public void setEstrutura(String estrutura) {
 		this.estrutura = estrutura;
 	}
+	public Integer getOrdem() {
+		return ordem;
+	}
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
+	}
+	
 	public Integer getNivel() {
 		//return nivel;
 		return ContaUtil.retornarNivel(this);
@@ -179,6 +193,7 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
+	
 
 	@Override
 	public int compareTo(Conta conta) {
@@ -192,5 +207,12 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 	public boolean isFilho(Conta conta){
 		return ContaUtil.isFilho(this, conta);
 	}
+
+	@Override
+	public String toString() {
+		return "Conta [id=" + id + ", estrutura=" + estrutura + ", nome=" + nome + "]";
+	}
 	
+	
+
 }
