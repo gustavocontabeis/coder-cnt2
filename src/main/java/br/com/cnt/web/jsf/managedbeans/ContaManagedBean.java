@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.primefaces.event.ReorderEvent;
 
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
@@ -21,6 +22,7 @@ import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
+import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 
 @Named @ViewScoped
@@ -79,6 +81,33 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 			e.printStackTrace();
 			message(e);
 		}
+	}
+	
+	public void onRowReorder(ReorderEvent event) throws DaoException {
+		Object source = event.getSource();
+		
+		int fromIndex = event.getFromIndex();
+		int toIndex = event.getToIndex();
+		
+		Conta fromConta = list.get(fromIndex);
+		Conta toConta = list.get(toIndex);
+		
+		String fromContaEstrutura = fromConta.getEstrutura();
+		Integer fromContaConta = fromConta.getOrdem();
+		
+		String toContaEstrutura = toConta.getEstrutura();
+		Integer toContaConta = toConta.getOrdem();
+		
+		fromConta.setEstrutura(toContaEstrutura);
+		fromConta.setOrdem(toContaConta);
+		
+		//toConta.setEstrutura(fromContaEstrutura);
+		//toConta.setOrdem(fromContaConta);
+		
+		entity = fromConta;
+		salvar(null);
+		entity = toConta;
+		salvar(null);
 	}
 
 	public ContaOrigem[] getPopularComboContaOrigem() {

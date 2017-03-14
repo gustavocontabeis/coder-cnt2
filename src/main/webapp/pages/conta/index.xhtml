@@ -30,8 +30,8 @@
 			}
 		</style>
 		<p:growl showDetail="true"/>
-		<span onclick="PF('dialogLancamentos').show()">OK</span>
-		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis">
+		<p:button value="Novo" icon="" onclick="PF('dialogLancamentos').show();return false;" />
+		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis" modal="true" appendTo="@(body)">
 		<h:form id="conta">
 			<p:focus />
 			<div class="ui-fluid">
@@ -120,19 +120,30 @@
 			</h:form>
 			</p:dialog>
 			<h:form id="contaList">
+				<!-- selectionMode="none" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" 
+				ajax event="rowSelect" update="-conta" onsuccess="PF('dialogLancamentos').show()" />
+				-->
 				<p:dataTable var="item" 
 								value="#{contaManagedBean.model}" 
 								emptyMessage="#{labels['cfg.table.empty']}" 
 								paginator="true" 
-								rows="50" 
+								rows="20" 
 								paginatorTemplate="#{labels['cfg.table.template']}" 
 								rowsPerPageTemplate="#{labels['cfg.table.template.pages']},500" 
 								paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
-								selectionMode="single" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" lazy="true" reflow="true"
+								lazy="true" reflow="true"
+								draggableRows="true"
 								>
-								<p:ajax event="rowSelect" update="-conta" onsuccess="PF('dialogLancamentos').show()" />
 								
-					<p:column headerText="#{labels['conta.id']}" width="40">
+								<p:ajax event="rowReorder" listener="#{contaManagedBean.onRowReorder}" update="contaList" />
+								
+					<p:column style="width:32px;text-align: center">
+			             <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="View">
+			                <f:setPropertyActionListener value="#{item}" target="#{contaManagedBean.entity}" />
+			            </p:commandButton>
+			        </p:column>
+        
+        			<p:column headerText="#{labels['conta.id']}" width="40">
 						<h:outputText value="#{item.id}" />
 					</p:column>
 	
@@ -151,9 +162,6 @@
 	
 					<p:column headerText="#{labels['conta.planoContas']}">
 						<h:outputText value="#{item.planoContas.nome}" />
-					</p:column>
-	
-					<p:column headerText="#{labels['conta.empresa']}">
 						<h:outputText value="#{item.empresa.razaoSocial}" />
 					</p:column>
 	
