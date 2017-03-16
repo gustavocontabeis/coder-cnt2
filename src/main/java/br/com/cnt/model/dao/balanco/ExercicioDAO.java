@@ -26,7 +26,7 @@ public class ExercicioDAO extends BaseDAO<Exercicio> {
 
 	public List<Exercicio> buscarTodos() {
  		Session session = getSession();
- 		Query query = session.createQuery("select obj from Exercicio obj");
+ 		Query query = session.createQuery("select obj from Exercicio obj order by obj.empresa.razaoSocial, obj.ano");
  		List list = query.list();
 		session.close();
 		return list;

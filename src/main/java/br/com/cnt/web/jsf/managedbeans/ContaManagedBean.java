@@ -1,24 +1,25 @@
 package br.com.cnt.web.jsf.managedbeans;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.event.ReorderEvent;
 
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
+import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.PlanoContasDAO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Empresa;
+import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
@@ -33,11 +34,15 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	private static final long serialVersionUID = 1L;
 
 	private List<Empresa> empresas;
+	private PlanoContas planoconta;
 	private List<PlanoContas> planocontas;
+	private Exercicio exercicio;
+	private List<Exercicio>exercicios;
 
 	@Inject private ContaDAO dao;
 	@Inject private EmpresaDAO empresaDAO;
 	@Inject private PlanoContasDAO planoContasDAO;
+	@Inject private ExercicioDAO exercicioDAO;
 
 	@PostConstruct
 	private void init() {
@@ -45,6 +50,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		novo(null);
 		empresas = getPopularComboEmpresa();
 		planocontas = getPopularComboPlanoContas();
+		//exercicios = getPopularComboExercicio();
 	}
 	
 	@Override
@@ -62,25 +68,44 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		entity.setNivel(ContaUtil.retornarNivel(entity));
 		return true;
 	}
+	
+//	@Override
+//	protected Map<String, Object> getFilters() {
+//		if(exercicio !=null){
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("empresa.id", exercicio.getEmpresa().getId());
+//			map.put("planoContas.id", exercicio.getPlanoContas().getId());
+//			return map;
+//		}
+//		return super.getFilters();
+//	}
 
-	public void clonar(ActionEvent evt) {
+	@Override
+	protected Integer getQuantidade2() {
 		try {
-			Conta conta = (Conta) BeanUtils.cloneBean(entity);
-			conta.setId(null);
-			this.entity = conta;
-		} catch (IllegalAccessException e) {
+			if(entity != null 
+					&& ((entity.getEmpresa()!=null && entity.getEmpresa().getId()!=null) 
+							|| ((entity.getPlanoContas()!=null && entity.getPlanoContas().getId()!=null) ))){
+				return dao.getQuantidade2(entity);
+			}
+		} catch (DaoException e) {
 			e.printStackTrace();
-			message(e);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			message(e);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			message(e);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-			message(e);
 		}
+		return null;
+	}
+	
+	@Override
+	protected List<Conta> buscar2() {
+		try {
+			if(entity != null 
+					&& ((entity.getEmpresa()!=null && entity.getEmpresa().getId()!=null) 
+							|| ((entity.getPlanoContas()!=null && entity.getPlanoContas().getId()!=null) ))){
+				return dao.buscar2(entity);
+			}
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public void onRowReorder(ReorderEvent event) throws DaoException {
@@ -127,6 +152,11 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		return planocontas;
 	}
 
+	public List<Exercicio> getPopularComboExercicio() {
+		exercicios = exercicioDAO.buscarTodos();
+		return exercicios;
+	}
+
 	public List<PlanoContas> getPlanocontas() {
 		return planocontas;
 	}
@@ -137,6 +167,30 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 
 	public List<Empresa> getEmpresas() {
 		return empresas;
+	}
+
+	public Exercicio getExercicio() {
+		return exercicio;
+	}
+
+	public void setExercicio(Exercicio exercicio) {
+		this.exercicio = exercicio;
+	}
+
+	public List<Exercicio> getExercicios() {
+		return exercicios;
+	}
+
+	public void setExercicios(List<Exercicio> exercicios) {
+		this.exercicios = exercicios;
+	}
+
+	public PlanoContas getPlanoConta() {
+		return planoconta;
+	}
+
+	public void setPlanoConta(PlanoContas planoConta) {
+		this.planoconta = planoConta;
 	}
 
 }

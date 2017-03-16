@@ -31,6 +31,37 @@
 		</style>
 		<p:growl showDetail="true"/>
 		<p:button value="Novo" icon="" onclick="PF('dialogLancamentos').show();return false;" />
+		<p:button value="Filtro" icon="" onclick="PF('dialogFiltros').show();return false;" />
+		
+		<p:dialog widgetVar="dialogFiltros" header="Filtros" modal="true" appendTo="@(body)">
+			<h:form id="formFiltro">
+				<div class="ui-fluid">
+              		<p:panelGrid id="pgExercicio" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+              		
+						<p:outputLabel for="planoContas" value="#{labels['conta.planoContas']}" />
+						<p:selectOneMenu id="planoContas" value="#{contaManagedBean.entity.planoContas}" required="false">
+							<f:selectItem itemLabel="[Selecione]" />
+							<f:selectItems value="#{contaManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
+							<f:converter converterId="baseEntityConverter"/>
+							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.PlanoContas" />
+							<f:attribute name="list" value="#{contaManagedBean.planocontas}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
+						<p:selectOneMenu id="empresa" value="#{contaManagedBean.entity.empresa}" required="false">
+							<f:selectItem itemLabel="[Selecione]" />
+							<f:selectItems value="#{contaManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+							<f:converter converterId="baseEntityConverter"/>
+							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
+							<f:attribute name="list" value="#{contaManagedBean.empresas}" />
+						</p:selectOneMenu>
+						
+						<p:column />
+						<p:commandButton value="Filtrar" update="main" />
+					</p:panelGrid>
+				</div>
+			</h:form>
+		</p:dialog>
 		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis" modal="true" appendTo="@(body)">
 		<h:form id="conta">
 			<p:focus />
@@ -111,7 +142,7 @@
 			</div>
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty contaManagedBean.entity.id}" />
+						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="true" update="conta" disabled="#{empty contaManagedBean.entity.id}" />
 						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@all" />
 						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
 						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" />
@@ -138,15 +169,11 @@
 								<p:ajax event="rowReorder" listener="#{contaManagedBean.onRowReorder}" update="contaList" />
 								
 					<p:column style="width:32px;text-align: center">
-			             <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="View">
+			             <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="Código: #{item.id}">
 			                <f:setPropertyActionListener value="#{item}" target="#{contaManagedBean.entity}" />
 			            </p:commandButton>
 			        </p:column>
         
-        			<p:column headerText="#{labels['conta.id']}" width="40">
-						<h:outputText value="#{item.id}" />
-					</p:column>
-	
 					<p:column headerText="#{labels['conta.estrutura']}" width="100" sortBy="#{item.estrutura}">
 						<h:outputText value="#{item.estrutura}-#{item.ordem}" />
 					</p:column>
@@ -155,9 +182,9 @@
 						<h:outputText value="#{item.nome}" style="padding:#{item.nivel*3}px" title="#{item.descricao}"/>
 					</p:column>
 	
-					<p:column headerText="#{labels['conta.contaTipo']}" width="80" styleClass="#{item.contaTipo}-#{item.nivel}">
-						<h:outputText title="#{item.contaOrigem}" styleClass="#{item.contaOrigem eq 'DEVEDORA'? 'fa fa-caret-square-o-left' : 'fa fa-caret-square-o-right' }"/>  |  
-						<h:outputText title="#{item.contaTipo}"   styleClass="#{item.contaTipo eq 'ANALITICA' ? 'fa fa-circle': 'fa fa-circle-o'}" />
+					<p:column headerText="#{labels['conta.contaTipo']}" width="80" styleClass="#{item.contaTipo}-#{item.nivel}" style="text-align: center;">
+						<h:outputText title="#{item.contaOrigem}" value="#{item.contaOrigem eq 'DEVEDORA'? 'D' : 'C' }"/>  |  
+						<h:outputText title="#{item.contaTipo}"   value="#{item.contaTipo eq 'ANALITICA' ? 'A': 'S'}" />
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.planoContas']}">

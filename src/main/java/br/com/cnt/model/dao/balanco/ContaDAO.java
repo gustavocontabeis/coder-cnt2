@@ -150,5 +150,67 @@ public class ContaDAO extends BaseDAO<Conta> {
 		session.close();
 		return list;
 	}
+
+	public Integer getQuantidade2(Conta conta) throws DaoException {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select count(obj) from Conta obj ");
+		sb.append(" left join obj.planoContas pc ");
+		sb.append(" left join obj.empresa emp ");
+		sb.append(" where pc.id = :pc or emp.id = :emp");
+		
+		Session session = getSession();
+		Query query = session.createQuery(sb.toString());
+		
+		if(conta.getPlanoContas()!=null && conta.getPlanoContas().getId() != null){
+			query.setParameter("pc", conta.getPlanoContas().getId());
+		}else{
+			query.setParameter("pc", 0L);
+		}
+		if(conta.getEmpresa()!= null && conta.getEmpresa().getId() != null){
+			query.setParameter("emp", conta.getEmpresa().getId());
+		}else{
+			query.setParameter("emp", 0L);
+		}
+	
+		List<Long> list = query.list();
+		session.close();
+		
+		if(!list.isEmpty()){
+			Long next = list.iterator().next();
+			return next.intValue();
+		}
+		
+		return null;
+	}
+
+	public List<Conta> buscar2(Conta conta) throws DaoException {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("select obj from Conta obj ");
+		sb.append(" left join fetch obj.planoContas pc ");
+		sb.append(" left join fetch obj.empresa emp ");
+		sb.append(" where pc.id = :pc or emp.id = :emp");
+		sb.append(" order by obj.estrutura,  obj.ordem");
+		
+		Session session = getSession();
+		Query query = session.createQuery(sb.toString());
+		
+		if(conta.getPlanoContas() != null && conta.getPlanoContas().getId() != null){
+			query.setParameter("pc", conta.getPlanoContas().getId());
+		}else{
+			query.setParameter("pc", 0L);
+		}
+		if(conta.getEmpresa() != null && conta.getEmpresa().getId() != null){
+			query.setParameter("emp", conta.getEmpresa().getId());
+		}else{
+			query.setParameter("emp", 0L);
+		}
+	
+		List<Conta> list = query.list();
+		session.close();
+		
+		return list;
+	}
 }
  
