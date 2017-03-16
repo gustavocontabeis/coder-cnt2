@@ -20,7 +20,7 @@ public class AppServletContextListener implements ServletContextListener{
 	@Override
     public void contextInitialized(ServletContextEvent event) {
         try {
-			inicializarDados();
+			inicializarDados(); 
 			importarArquivosCSV();
 		} catch (DaoException e) {
 			e.printStackTrace();

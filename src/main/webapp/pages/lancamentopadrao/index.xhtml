@@ -33,6 +33,7 @@
 				    <div class="ui-g-12 ui-md-6 ui-lg-3">
 						<p:outputLabel for="debito" value="#{labels['lancamentoPadrao.debito']}" />
 						<p:autoComplete id="debito" value="#{lancamentoPadraoManagedBean.entity.debito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
+								required="true"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true"
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
@@ -52,6 +53,7 @@
 						<p:outputLabel for="credito" value="#{labels['lancamentoPadrao.credito']}" />
 						<p:autoComplete id="credito" value="#{lancamentoPadraoManagedBean.entity.credito}" completeMethod="#{lancamentoPadraoManagedBean.buscarConta}"
 		                        var="obj" itemLabel="#{obj.nome}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
+		                        required="true"
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 								<f:attribute name="dao" value="br.com.cnt.model.dao.balanco.ContaDAO" />
@@ -73,6 +75,7 @@
 						<p:outputLabel for="historicoPadrao" value="#{labels['lancamentoPadrao.historicoPadrao']}" />
 						<p:autoComplete id="historicoPadrao" value="#{lancamentoPadraoManagedBean.entity.historicoPadrao}" 
 								completeMethod="#{lancamentoPadraoManagedBean.getPopularAutocompleteHistoricoPadrao}"
+								required="true"
 		                        var="obj" itemLabel="#{obj.historico}" itemValue="#{obj}" converter="baseEntityConverter" forceSelection="true" 
 		                        emptyMessage="Nenhuma conta encontrada com este parâmetro.">
 								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
