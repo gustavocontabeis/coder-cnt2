@@ -143,9 +143,10 @@
 				<p:toolbar>
 					<p:toolbarGroup>
 						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="true" update="conta" disabled="#{empty contaManagedBean.entity.id}" />
-						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@all" />
-						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@form -contaList" />
+						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="main" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
 						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" />
+						<p:button value="Fechar" icon="" onclick="PF('dialogLancamentos').hide();return false;" />
 					</p:toolbarGroup>
 				</p:toolbar>
 			</h:form>
