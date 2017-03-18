@@ -71,5 +71,24 @@ public class ContaUtilTest {
 	public void testIsPai() {
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	public void testRetornarEstruturaFilho() {
+		assertTrue("1.1.0.00.00.00".equals(ContaUtil.retornarEstruturaFilho("1.0.0.00.00.00")));
+		assertTrue("1.1.1.00.00.00".equals(ContaUtil.retornarEstruturaFilho("1.1.0.00.00.00")));
+		assertTrue("2.1.1.00.00.00".equals(ContaUtil.retornarEstruturaFilho("2.1.0.00.00.00")));
+		assertTrue("1.1.1.01.00.00".equals(ContaUtil.retornarEstruturaFilho("1.1.1.00.00.00")));
+		assertTrue("1.1.1.03.01.00".equals(ContaUtil.retornarEstruturaFilho("1.1.1.03.00.00")));
+	}
+
+	@Test
+	public void testRetornarEstruturaAbaixo() {
+		assertTrue("2.0.0.00.00.00".equals(ContaUtil.retornarEstruturaAbaixo("1.0.0.00.00.00")));
+		assertTrue("1.2.0.00.00.00".equals(ContaUtil.retornarEstruturaAbaixo("1.1.0.00.00.00")));
+		assertTrue("2.2.0.00.00.00".equals(ContaUtil.retornarEstruturaAbaixo("2.1.0.00.00.00")));
+		assertTrue("1.1.2.00.00.00".equals(ContaUtil.retornarEstruturaAbaixo("1.1.1.00.00.00")));
+		assertTrue("1.1.1.04.00.00".equals(ContaUtil.retornarEstruturaAbaixo("1.1.1.03.00.00")));
+	}
+
 
 }

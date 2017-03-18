@@ -3,6 +3,8 @@ package br.com.cnt.model.utils;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 
@@ -100,6 +102,48 @@ public class ContaUtil {
 	public static boolean isPai(Conta conta1, Conta conta2) {
 		int compararNivel = compararNivel(conta1, conta2);
 		return compararNivel>0;
+	}
+
+	public static String retornarEstruturaFilho(String estrutura) {
+		String[] split = estrutura.split("\\.");
+		int[] ints = new int[split.length];
+		boolean incremento = false;
+		for (int i = 0; i < ints.length; i++) {
+			int valueOf = Integer.parseInt(split[i]);
+			if(!incremento && valueOf  == 0){
+				valueOf++;
+				incremento = true;
+			}
+			ints[i] = valueOf;
+		}
+		return formatarEstrutura(ints);
+	}
+
+	public static Object retornarEstruturaAbaixo(String estrutura) {
+		String[] split = estrutura.split("\\.");
+		int[] ints = new int[split.length];
+		boolean incremento = false;
+		for (int i = 0; i < ints.length; i++) {
+			int valueOf = Integer.parseInt(split[i]);
+			if(!incremento && valueOf  == 0){
+				ints[i-1]++;
+				incremento = true;
+			}
+			ints[i] = valueOf;
+		}
+		return formatarEstrutura(ints);
+	}
+
+	private static String formatarEstrutura(int[] ints) {
+		String novaEstrutura = "";
+		for (int i = 0; i < ints.length; i++) {
+			if(i<=2){
+				novaEstrutura += String.format("%d", ints[i])+".";
+			}else{
+				novaEstrutura += String.format("%02d", ints[i])+".";
+			}
+		}
+		return StringUtils.removeEnd(novaEstrutura, ".");
 	}
 
 }

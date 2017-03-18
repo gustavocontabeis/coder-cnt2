@@ -1,7 +1,9 @@
 package br.com.cnt.web.jsf.managedbeans;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -17,6 +19,7 @@ import br.com.cnt.model.dao.balanco.HistoricoPadraoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
 import br.com.cnt.model.dao.balanco.LancamentoPadraoDAO;
 import br.com.cnt.model.entity.balanco.Conta;
+import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.HistoricoPadrao;
 import br.com.cnt.model.entity.balanco.Lancamento;
@@ -55,27 +58,6 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 		getPopularComboExercicio();
 	}
 
-//	private Long id;
-//
-//	public Long getId() {
-//		return id;
-//	}
-//
-//	public void setId(Long id) {
-//		this.id = id;
-//	}
-
-//	public void listener(ComponentSystemEvent evt) throws AbortProcessingException {
-//		if (id != null) {
-//			try { 
-//				lancamento = dao.buscar(new Long(id));
-//			} catch (NumberFormatException e) {
-//				e.printStackTrace();
-//				message(e);
-//			}
-//		}
-//	}
-
 	public List<Conta> buscarConta(String param) {
 		if (StringUtils.isNotBlank(param)) {
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -96,14 +78,6 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 		return true;
 	}
 	
-//	public Lancamento getLancamento() {
-//		return lancamento;
-//	}
-//
-//	public void setLancamento(Lancamento lancamento) {
-//		this.lancamento = lancamento;
-//	}
-
 	public List<Conta> getPopularComboConta() {
 		contas = contaDAO.buscarTodos();
 		return contas;
@@ -169,9 +143,7 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 
 	@Override
 	protected Lancamento novo() {
-		
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-
 		entity = new Lancamento();
 		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
 		entity.setExercicio(exercicio);
@@ -183,5 +155,5 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 	protected BaseDAO getDao() {
 		return dao;
 	}
-
+	
 }

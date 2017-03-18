@@ -29,9 +29,11 @@
 				font-weight: bold;
 			}
 		</style>
-		<p:growl showDetail="true"/>
-		<p:button value="Novo" icon="" onclick="PF('dialogLancamentos').show();return false;" />
-		<p:button value="Filtro" icon="" onclick="PF('dialogFiltros').show();return false;" />
+		<p:growl showDetail="true" id="msg" autoUpdate="true"/>
+		<p:button value="Novo" icon="" onclick="PF('dialogLancamentos').show();return false;" title="Cadastre uma nova conta"/>
+		<p:button value="Filtro" icon="" onclick="PF('dialogFiltros').show();return false;" title="Filtre dados para a sua pesquisa" />
+		<h:outputText value="Plano de contas: #{contaManagedBean.filtro.planoContas.nome}" rendered="#{not empty contaManagedBean.filtro.planoContas}" style="margin-left: 10px" />
+		<h:outputText value="Empresa: #{contaManagedBean.filtro.empresa.razaoSocial}" rendered="#{not empty contaManagedBean.filtro.empresa}" style="margin-left: 10px" />
 		
 		<p:dialog widgetVar="dialogFiltros" header="Filtros" modal="true" appendTo="@(body)">
 			<h:form id="formFiltro">
@@ -39,7 +41,7 @@
               		<p:panelGrid id="pgExercicio" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
               		
 						<p:outputLabel for="planoContas" value="#{labels['conta.planoContas']}" />
-						<p:selectOneMenu id="planoContas" value="#{contaManagedBean.entity.planoContas}" required="false">
+						<p:selectOneMenu id="planoContas" value="#{contaManagedBean.filtro.planoContas}" required="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{contaManagedBean.planocontas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.nome}" />
 							<f:converter converterId="baseEntityConverter"/>
@@ -48,7 +50,7 @@
 						</p:selectOneMenu>
 
 						<p:outputLabel for="empresa" value="#{labels['conta.empresa']}" />
-						<p:selectOneMenu id="empresa" value="#{contaManagedBean.entity.empresa}" required="false">
+						<p:selectOneMenu id="empresa" value="#{contaManagedBean.filtro.empresa}" required="false">
 							<f:selectItem itemLabel="[Selecione]" />
 							<f:selectItems value="#{contaManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
 							<f:converter converterId="baseEntityConverter"/>
@@ -64,7 +66,7 @@
 		</p:dialog>
 		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis" modal="true" appendTo="@(body)">
 		<h:form id="conta">
-			<p:focus />
+			<p:focus for="estrutura"/>
 			<div class="ui-fluid">
 				<div class="ui-g">
 				    <div class="ui-g-2">
@@ -145,12 +147,13 @@
 						<p:commandButton actionListener="#{contaManagedBean.novo}" value="Novo" ajax="true" update="conta" disabled="#{empty contaManagedBean.entity.id}" />
 						<p:commandButton actionListener="#{contaManagedBean.salvar}" value="Salvar" update="@form -contaList" />
 						<p:commandButton actionListener="#{contaManagedBean.excluir}" value="Excluir" update="main" disabled="#{empty contaManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
-						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" />
+						<p:commandButton actionListener="#{contaManagedBean.clonar}" value="Clonar" update="@form" disabled="#{empty contaManagedBean.entity.id}" onsuccess="$('#conta-estrutura').focus();console.log('ok')"/>
 						<p:button value="Fechar" icon="" onclick="PF('dialogLancamentos').hide();return false;" />
 					</p:toolbarGroup>
 				</p:toolbar>
 			</h:form>
 			</p:dialog>
+			
 			<h:form id="contaList">
 				<!-- selectionMode="none" selection="#{contaManagedBean.entity}" rowKey="#{item.id}" 
 				ajax event="rowSelect" update="-conta" onsuccess="PF('dialogLancamentos').show()" />
@@ -165,22 +168,22 @@
 								paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
 								lazy="true" reflow="true"
 								draggableRows="true"
-								>
+								scrollable="true" scrollHeight="100%">
 								
 								<p:ajax event="rowReorder" listener="#{contaManagedBean.onRowReorder}" update="contaList" />
 								
 					<p:column style="width:32px;text-align: center">
-			             <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="Código: #{item.id}">
+			            <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="Código: #{item.id}">
 			                <f:setPropertyActionListener value="#{item}" target="#{contaManagedBean.entity}" />
 			            </p:commandButton>
 			        </p:column>
         
-					<p:column headerText="#{labels['conta.estrutura']}" width="100" sortBy="#{item.estrutura}">
-						<h:outputText value="#{item.estrutura}-#{item.ordem}" />
+					<p:column headerText="#{labels['conta.estrutura']}" width="120" sortBy="#{item.estrutura}">
+						<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" />
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.nome']}" sortBy="#{item.nome}" styleClass="#{item.contaTipo}-#{item.nivel}" >
-						<h:outputText value="#{item.nome}" style="padding:#{item.nivel*3}px" title="#{item.descricao}"/>
+						<h:outputText value="#{item.nome}" style="padding-left:#{item.nivel*10}px" title="#{item.descricao}"/>
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.contaTipo']}" width="80" styleClass="#{item.contaTipo}-#{item.nivel}" style="text-align: center;">

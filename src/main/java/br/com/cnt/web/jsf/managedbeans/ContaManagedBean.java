@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.ReorderEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
@@ -24,20 +27,22 @@ import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.coder.arqprime.web.jsf.filters.SegurancaFilter;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 
 @Named @ViewScoped
 public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
-
+	
 	/**
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private List<Empresa> empresas;
 	private PlanoContas planoconta;
 	private List<PlanoContas> planocontas;
 	private Exercicio exercicio;
 	private List<Exercicio>exercicios;
+	private Conta filtro;
 
 	@Inject private ContaDAO dao;
 	@Inject private EmpresaDAO empresaDAO;
@@ -51,6 +56,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		empresas = getPopularComboEmpresa();
 		planocontas = getPopularComboPlanoContas();
 		//exercicios = getPopularComboExercicio();
+		filtro = new Conta();
 	}
 	
 	@Override
@@ -83,10 +89,10 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	@Override
 	protected Integer getQuantidade2() {
 		try {
-			if(entity != null 
-					&& ((entity.getEmpresa()!=null && entity.getEmpresa().getId()!=null) 
-							|| ((entity.getPlanoContas()!=null && entity.getPlanoContas().getId()!=null) ))){
-				return dao.getQuantidade2(entity);
+			if(filtro != null 
+					&& ((filtro.getEmpresa()!=null && filtro.getEmpresa().getId()!=null) 
+							|| ((filtro.getPlanoContas()!=null && filtro.getPlanoContas().getId()!=null) ))){
+				return dao.getQuantidade2(filtro);
 			}
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -97,10 +103,10 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	@Override
 	protected List<Conta> buscar2() {
 		try {
-			if(entity != null 
-					&& ((entity.getEmpresa()!=null && entity.getEmpresa().getId()!=null) 
-							|| ((entity.getPlanoContas()!=null && entity.getPlanoContas().getId()!=null) ))){
-				return dao.buscar2(entity);
+			if(filtro != null 
+					&& ((filtro.getEmpresa()!=null && filtro.getEmpresa().getId()!=null) 
+							|| ((filtro.getPlanoContas()!=null && filtro.getPlanoContas().getId()!=null) ))){
+				return dao.buscar2(filtro);
 			}
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -113,25 +119,37 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		
 		int fromIndex = event.getFromIndex();
 		int toIndex = event.getToIndex();
+		System.out.println("de "+fromIndex+" para "+toIndex);
 		
-		Conta fromConta = list.get(fromIndex);
+		Conta contaFrom = list.get(fromIndex);
+		
+		Conta contaAcima = list.get(toIndex-1);
 		Conta toConta = list.get(toIndex);
 		
-		String fromContaEstrutura = fromConta.getEstrutura();
-		Integer fromContaConta = fromConta.getOrdem();
+		LOGGER.debug("Conta {} - {}", contaAcima.getEstrutura(), contaAcima.getNome());
+		LOGGER.debug("Conta {} - {}", contaFrom.getEstrutura(), contaFrom.getNome());
 		
-		String toContaEstrutura = toConta.getEstrutura();
-		Integer toContaConta = toConta.getOrdem();
+		//se acima é sintetico e eu sou analitico, então coloca dentro
+		//se acima é analitico e eu sou analitico, então coloca na mesma estrutura em uma ordem abaixo
+		if(ContaTipo.SINTETICA == contaAcima.getContaTipo()
+				&& ContaTipo.ANALITICA == contaFrom.getContaTipo()){
+			String estrutura = ContaUtil.retornarEstruturaFilho(contaAcima.getEstrutura());
+			contaFrom.setEstrutura(estrutura);
+			contaFrom.setOrdem(1);
+		}
+		if(ContaTipo.ANALITICA == contaAcima.getContaTipo()
+				&& ContaTipo.ANALITICA == contaFrom.getContaTipo()){
+			contaFrom.setEstrutura(contaAcima.getEstrutura());
+			if(contaAcima.getOrdem()!=null){
+				contaFrom.setOrdem(contaAcima.getOrdem()+1);
+			}else{
+				contaFrom.setOrdem(1);
+			}
+		}
 		
-		fromConta.setEstrutura(toContaEstrutura);
-		fromConta.setOrdem(toContaConta);
-		
-		//toConta.setEstrutura(fromContaEstrutura);
-		//toConta.setOrdem(fromContaConta);
-		
-		entity = fromConta;
-		salvar(null);
-		entity = toConta;
+		LOGGER.debug("Conta {} - {}", contaFrom.getEstrutura(), contaFrom.getNome());
+		LOGGER.debug("-------");
+		entity = contaFrom;
 		salvar(null);
 	}
 
@@ -193,4 +211,12 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		this.planoconta = planoConta;
 	}
 
+	public Conta getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(Conta filtro) {
+		this.filtro = filtro; 
+	}
+	
 }
