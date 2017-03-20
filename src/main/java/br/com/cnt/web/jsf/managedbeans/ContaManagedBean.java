@@ -119,13 +119,13 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		
 		int fromIndex = event.getFromIndex();
 		int toIndex = event.getToIndex();
-		System.out.println("de "+fromIndex+" para "+toIndex);
 		
 		Conta contaFrom = list.get(fromIndex);
 		
 		Conta contaAcima = list.get(toIndex-1);
 		Conta toConta = list.get(toIndex);
 		
+		LOGGER.debug("De {} para {}", fromIndex, toIndex);
 		LOGGER.debug("Conta {} - {}", contaAcima.getEstrutura(), contaAcima.getNome());
 		LOGGER.debug("Conta {} - {}", contaFrom.getEstrutura(), contaFrom.getNome());
 		
@@ -133,8 +133,8 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		//se acima é analitico e eu sou analitico, então coloca na mesma estrutura em uma ordem abaixo
 		if(ContaTipo.SINTETICA == contaAcima.getContaTipo()
 				&& ContaTipo.ANALITICA == contaFrom.getContaTipo()){
-			String estrutura = ContaUtil.retornarEstruturaFilho(contaAcima.getEstrutura());
-			contaFrom.setEstrutura(estrutura);
+			//String estrutura = ContaUtil.retornarEstruturaFilho(contaAcima.getEstrutura());
+			contaFrom.setEstrutura(contaAcima.getEstrutura());
 			contaFrom.setOrdem(1);
 		}
 		if(ContaTipo.ANALITICA == contaAcima.getContaTipo()
