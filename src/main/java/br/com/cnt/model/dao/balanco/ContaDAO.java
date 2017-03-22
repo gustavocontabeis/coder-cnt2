@@ -95,15 +95,15 @@ public class ContaDAO extends BaseDAO<Conta> {
  		return query.list();
  	}
  	
- 	@Override
- 	public Conta buscar(Long id) throws DaoException {
- 		Session session = getSession();
- 		Query query = session.getNamedQuery("Conta-porId");
- 		query.setLong("id", id);
- 		Conta singleResult = (Conta) query.getSingleResult();
- 		session.close();
- 		return singleResult;
- 	}
+// 	@Override
+// 	public Conta buscar(Long id) throws DaoException {
+// 		Session session = getSession();
+// 		Query query = session.getNamedQuery("Conta-porId");
+// 		query.setLong("id", id);
+// 		Conta singleResult = (Conta) query.getSingleResult();
+// 		session.close();
+// 		return singleResult;
+// 	}
 
 	public List<Conta> buscarTodos() {
 		Session session = getSession();
@@ -191,7 +191,7 @@ public class ContaDAO extends BaseDAO<Conta> {
 		sb.append(" left join fetch obj.planoContas pc ");
 		sb.append(" left join fetch obj.empresa emp ");
 		sb.append(" where pc.id = :pc or emp.id = :emp");
-		sb.append(" order by obj.estrutura,  obj.ordem");
+		sb.append(" order by obj.estrutura, obj.contaTipo desc, obj.ordem");
 		
 		Session session = getSession();
 		Query query = session.createQuery(sb.toString());

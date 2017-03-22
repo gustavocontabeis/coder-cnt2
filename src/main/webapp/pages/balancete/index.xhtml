@@ -25,6 +25,17 @@
 			}
 		</style>
 		<p:messages />
+		<h:form>
+		    <p:commandLink actionListener="#{balanceteManagedBean.exibirAteNivel}" title="Exibe o balancete somente com contas até o vível definido." update="main">
+		        <h:outputText value="Filtrar nível" />
+		    </p:commandLink>
+		    
+		    <p:spinner id="nivel" value="#{balanceteManagedBean.nivel}" size="5"/>
+		    
+		    | <h:outputLink value="${request.contextPath}/pages/balancete/" title="Atualizar balancete">
+		        <h:outputText value="Atualizar" />
+		    </h:outputLink>
+		</h:form>
 		<p:lightBox iframe="true" id="lighbox3" >
 		    <h:outputLink value="${request.contextPath}/pages/lancamentos/popup.jsf" title="Cadastro de lançamentos">
 		        <h:outputText value="Lançamentos" />
@@ -51,11 +62,11 @@
 					<i class="fa fa-pencil"></i>
 				</h:outputLink>
 			</p:column>
-			<p:column width="90">
+			<p:column width="110">
 				<f:facet name="header">
 					<h:outputText value="Estrutura" />
 				</f:facet>
-				<h:outputText value="#{obj.conta.estrutura}" />
+				<h:outputText value="#{obj.conta.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" title="Nível #{obj.conta.nivel}, Tipo: #{obj.conta.contaTipo}, Pai: #{obj.conta.pai.nome}" />
 			</p:column>
 			<p:column>
 				<f:facet name="header">

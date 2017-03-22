@@ -84,7 +84,7 @@
 	</repositories>
 
 	<build>
-		<finalName>coder-cnt2</finalName>
+		<finalName>contabilidade</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

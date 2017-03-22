@@ -42,6 +42,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	private List<PlanoContas> planocontas;
 	private Exercicio exercicio;
 	private List<Exercicio>exercicios;
+	private List<Conta>contas;
 	private Conta filtro;
 
 	@Inject private ContaDAO dao;
@@ -55,6 +56,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		novo(null);
 		empresas = getPopularComboEmpresa();
 		planocontas = getPopularComboPlanoContas();
+		contas = getPopularComboContas();
 		//exercicios = getPopularComboExercicio();
 		filtro = new Conta();
 	}
@@ -175,6 +177,11 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		return exercicios;
 	}
 
+	private List<Conta> getPopularComboContas() {
+		contas = dao.buscarTodos();
+		return contas;
+	}
+
 	public List<PlanoContas> getPlanocontas() {
 		return planocontas;
 	}
@@ -218,5 +225,13 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	public void setFiltro(Conta filtro) {
 		this.filtro = filtro; 
 	}
-	
+
+	public List<Conta> getContas() {
+		return contas;
+	}
+
+	public void setContas(List<Conta> contas) { 
+		this.contas = contas;
+	}
+		
 }

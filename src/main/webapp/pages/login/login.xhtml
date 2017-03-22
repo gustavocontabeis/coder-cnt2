@@ -21,7 +21,7 @@
 	</style>
 		<h:form>
 			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-			<p:focus />			
+			<p:focus />
 			<table width="100%">
 				<tr>
 					<td width="30%"></td>
@@ -39,7 +39,7 @@
 			
 								<f:facet name="footer">
 									<p:commandButton value="Login" ajax="false" actionListener="#{loginManagedBean.login}" />
-									<p:commandButton value="Login-Desenv" ajax="false" immediate="true" actionListener="#{loginManagedBean.loginDesenv}" rendered="#{facesContext.application.projectStage == 'Development'}" />
+									<p:commandButton value="Login-Desenv" ajax="false" immediate="true" actionListener="#{loginManagedBean.loginDesenv}" rendered="#{initParam['desenv'] eq 'true'}" />
 									<p:commandButton value="Recuperar Senha" ajax="false" action="/pages/login/solicitarNovaSenha.xhtml" immediate="true" />
 								</f:facet>
 							</h:panelGrid>

@@ -45,7 +45,6 @@
     -->
     
 	<!-- 
-    <property name="hibernate.hbm2ddl.import_files">/import.sql, /Usuario.sql, /Empresa.sql, /PlanoContas.sql, /Exercicio.sql, /Contas.sql, /Lancamento-teste-2.sql</property>
     <property name="hibernate.hbm2ddl.import_files">
     /scripts/Usuario-postgres.sql, 
     /scripts/Empresa.sql, 

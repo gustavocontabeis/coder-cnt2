@@ -3,6 +3,8 @@ package br.com.cnt.model.entity.balanco;
 
 import static javax.persistence.FetchType.LAZY;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +20,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import br.com.coder.arqprime.model.entity.BaseEntity;
 import br.com.cnt.model.utils.ContaUtil;
@@ -40,7 +44,8 @@ import br.com.cnt.model.utils.ContaUtil;
 				@NamedQuery(name="Conta-porId", query="select obj from Conta obj "
 														+ "left join fetch obj.empresa e "
 														+ "left join fetch obj.planoContas pc "
-														+ "where obj.id = :id")
+														+ "left join fetch obj.pai pai "
+														+ "where obj.id = :id ")
 		}
 )
 public class Conta extends BaseEntity implements Comparable<Conta>{
@@ -83,6 +88,14 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
  	@ManyToOne(targetEntity=PlanoContas.class, fetch=FetchType.LAZY, cascade={CascadeType.DETACH}) 
  	@JoinColumn(name="ID_PLANO_CONTAS", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_PLANO_CONTAS"))
  	private PlanoContas planoContas;
+ 	
+ 	@ManyToOne(targetEntity=Conta.class, fetch=LAZY, cascade={CascadeType.DETACH}) 
+ 	@JoinColumn(name="ID_CONTA_PAI", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_PAI"))
+ 	private Conta pai;
+ 	
+ 	@NotNull 
+ 	@OneToMany(targetEntity=Conta.class, fetch=LAZY, mappedBy="pai", cascade={CascadeType.ALL}) 
+ 	private List<Conta> subContas;
  	
 	public Conta() {
 		super();
@@ -187,17 +200,26 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 	}
 	
 	public Integer getNivel() {
-		//return nivel;
-		return ContaUtil.retornarNivel(this);
+		return nivel;
+		//return ContaUtil.retornarNivel(this);
 	}
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
 	
-
 	@Override
 	public int compareTo(Conta conta) {
-		return ContaUtil.compararNivel(this, conta);
+		
+	    int i = estrutura.compareTo(conta.estrutura);
+	    if (i != 0) return i;
+
+	    i = conta.getContaTipo().compareTo(contaTipo);
+	    if (i != 0) return i;
+
+	    i = ordem.compareTo(conta.getOrdem());
+	    if (i != 0) return i;
+		
+		return nome.compareTo(conta.getNome());
 	}
 	
 	public boolean isPai(Conta conta){
@@ -210,7 +232,28 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 
 	@Override
 	public String toString() {
-		return "Conta [id=" + id + ", estrutura=" + estrutura + ", nome=" + nome + "]";
+		return "Conta [id=" + id 
+				+ ", estrutura=" + estrutura 
+				+ ", ordem=" + (ordem!=null?ordem:" ") 
+				+ ", nivel=" + (nivel) 
+				+ ", contaTipo=" + (contaTipo!=null?contaTipo:"") 
+				+ ", nome=" + String.format("%-50s", nome) + "]";
+	}
+
+	public Conta getPai() {
+		return pai;
+	}
+
+	public void setPai(Conta pai) {
+		this.pai = pai;
+	}
+
+	public List<Conta> getSubContas() {
+		return subContas;
+	}
+
+	public void setSubContas(List<Conta> subContas) {
+		this.subContas = subContas;
 	}
 	
 	

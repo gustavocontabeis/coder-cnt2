@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Named;
@@ -181,6 +182,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
  	}
  	
  	public List<SaldoContabil> buscarSaldosBalancete(Exercicio exercicio, Date de, Date ate){
+ 		
 		LancamentoDAO daoLancamento = new LancamentoDAO();
 		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
 		
@@ -232,107 +234,108 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			sc.setSaldoFinal(saldoFinal);
 		}
 		
-		//calculandoBalancete1(saldosContabeis);
-		calculandoBalancete2(saldosContabeis);
+		calculandoBalancete(saldosContabeis);
 		
 		return saldosContabeis;
  	}
 
-	private void calculandoBalancete2(List<SaldoContabil> saldosContabeis) {
-		/* Ordenando em order crescente de estrutura */
-		Collections.sort(saldosContabeis, new Comparator<SaldoContabil>() {
-			@Override
-			public int compare(SaldoContabil sc1, SaldoContabil sc2) {
-				return sc1.getConta().getEstrutura().compareTo(sc2.getConta().getEstrutura());
-			}
-		});
-		/* Fazendo os somatórios */
-		for (int nivel = 6; nivel > 0; nivel--) {
-			LOGGER.debug("Calculando todos os de nivel "+nivel);
-			List<SaldoContabil> saldosNivel = retornarSaldosContabeisDoNivel(saldosContabeis, nivel);
-			LOGGER.debug("Foram encontrados {} contas no nível {}.",saldosNivel.size(), nivel);
-			for (SaldoContabil saldoContabil : saldosNivel) {
-				List<SaldoContabil> filhos = retornarSaldosNivelInferior(saldosContabeis, saldoContabil);
-				if(filhos.size()>0){
-					LOGGER.debug(String.format("   Calculando:  %s-%s (%d contas)", saldoContabil.getConta().getEstrutura(), saldoContabil.getConta().getNome(), filhos.size()));
-					SaldoContabil total = retornarSoma(filhos);
-					saldoContabil.setSaldoInicial(total.getSaldoInicial());
-					saldoContabil.setDebito(total.getDebito());
-					saldoContabil.setCredito(total.getCredito());
-					saldoContabil.setSaldoFinal(total.getSaldoFinal());
-					LOGGER.debug(String.format("Valor da conta: %s-%-50s (%s - %s - %s - %s)", 
-							saldoContabil.getConta().getEstrutura(), 
-							saldoContabil.getConta().getNome(), 
-							saldoContabil.getSaldoInicial().floatValue(), 
-							saldoContabil.getDebito().floatValue(), 
-							saldoContabil.getCredito().floatValue(), 
-							saldoContabil.getSaldoFinal().floatValue()
-					));
-				}else{
-					System.out.printf("Conta %s-%s não possui filhos\n", saldoContabil.getConta().getEstrutura(), saldoContabil.getConta().getNome(), filhos.size());				
-				}
-					
-			}
-		}
-	}
-
-	private void calculandoBalancete1(List<SaldoContabil> saldosContabeis) {
+ 	/*
+ 	 * Coloca em ordem de estrutura decrescente
+ 	 * Busca o maior nível
+ 	 * Vai somando as contas do menor nível e colocalndo o saldo na próxima conta analitica que deverá ser a de um nível acima.
+ 	 * As contas já utilizadas no calculo deverão ser retiradas da lista atual e colocada em outra lista.
+ 	 * Segue a mesma lógica para os níveis menores até cabar a lista.
+ 	 * Ordenas a lista que agora esta com as contas
+ 	 * Atribuir à referencia da lista anterior 
+ 	 */
+	private void calculandoBalancete(List<SaldoContabil> saldosContabeis) {
+		
+		List<SaldoContabil> jaSomados = new ArrayList<>();
 		
 		/* Ordenando em order decrescente de estrutura */
-		Collections.sort(saldosContabeis, new Comparator<SaldoContabil>() {
-			@Override
-			public int compare(SaldoContabil sc1, SaldoContabil sc2) {
-				return sc2.getConta().getEstrutura().compareTo(sc1.getConta().getEstrutura());
-			}
-		});
+		Collections.sort(saldosContabeis);
+		Collections.reverse(saldosContabeis);
 		
-		SaldoContabil sc1 = null;
-		for (SaldoContabil sc2 : saldosContabeis) {
-			LOGGER.debug("--------------------------");
-			LOGGER.debug("{}", sc1);
-			LOGGER.debug("{}", sc2);
-			if(sc1 == null){
-				sc1 = sc2;
-				continue;
+		//System.out.println("----------- ordem decrescente ---------------------------------");
+		
+		int maiorNivel = buscarMaiorNivel(saldosContabeis);
+		
+		//System.out.println("--------------soma------------------------------");
+		
+		int nivelAtual = maiorNivel;
+		while(nivelAtual >= 1){
+			
+			SaldoContabil soma = null;//retirar este aqui
+			for (Iterator iterator = saldosContabeis.iterator(); iterator.hasNext();) {
+				SaldoContabil saldoContabil = (SaldoContabil) iterator.next();
+				
+				//System.out.println("Tentando calcular: ");
+				//System.out.println("        "+saldoContabil);
+				if(saldoContabil.getConta() .getNivel().intValue() != nivelAtual){
+					//System.out.println("É do nível "+saldoContabil.getConta() .getNivel().intValue() +", não do nível "+nivelAtual);
+					continue;
+				}
+				
+				SaldoContabil saldoContabilPai = buscarContaPai(saldosContabeis, saldoContabil);
+//				if(saldoContabil == null){
+//					System.out.println("Não tem Pai.");
+//				}
+				
+				if(saldoContabilPai !=null){
+					//System.out.println("Antes:  "+saldoContabilPai);
+					saldoContabilPai.setCredito(saldoContabilPai.getCredito().add(saldoContabil.getCredito()));
+					saldoContabilPai.setDebito(saldoContabilPai.getDebito().add(saldoContabil.getDebito()));
+					saldoContabilPai.setSaldoFinal(saldoContabilPai.getSaldoFinal().add(saldoContabil.getSaldoFinal()));
+					saldoContabilPai.setSaldoInicial(saldoContabilPai.getSaldoInicial().add(saldoContabil.getSaldoInicial()));
+					//System.out.println("Depois: "+saldoContabilPai);
+					jaSomados.add(saldoContabil);
+					iterator.remove();
+				}
+				
 			}
-			if(ContaTipo.ANALITICA == sc2.getConta().getContaTipo()){// && ContaUtil.compararNivel(sc1.getConta(), sc2.getConta()) == 0
-				//Soma
-				sc1.setSaldoInicial( sc1.getSaldoInicial().add(sc2.getSaldoInicial()) );
-				sc1.setDebito( sc1.getDebito().add(sc2.getDebito()) );
-				sc1.setCredito( sc1.getCredito().add(sc2.getCredito()) );
-				sc1.setSaldoFinal( sc1.getSaldoFinal().add(sc2.getSaldoFinal()) );
-			}else{
-				sc2.setSaldoInicial( new BigDecimal(sc1.getSaldoInicial().floatValue()) );
-				sc2.setDebito( new BigDecimal(sc1.getDebito().floatValue()) );
-				sc2.setCredito( new BigDecimal(sc1.getCredito().floatValue()) );
-				sc2.setSaldoFinal( new BigDecimal(sc1.getSaldoFinal().floatValue()) );
-			}
-			
-			LOGGER.debug("{}", ContaUtil.retornarNivel(sc1.getConta()));
-			LOGGER.debug("{}", ContaUtil.retornarNivel(sc1.getConta()));
-			
-			//Soma todas as analiticas
-			//Soma as sintéticas
-			
-//			if(ContaUtil.compararNivel(sc1.getConta(), sc2.getConta()) > 0){
-//				//Zera valores
-//				sc1.setSaldoInicial( BigDecimal.ZERO );
-//				sc1.setDebito( BigDecimal.ZERO );
-//				sc1.setCredito( BigDecimal.ZERO );
-//				sc1.setSaldoFinal( BigDecimal.ZERO );
-//			}
-			
+			nivelAtual--;
 		}
 		
-		/* Ordenando em order crescente de estrutura */
-		Collections.sort(saldosContabeis, new Comparator<SaldoContabil>() {
-			@Override
-			public int compare(SaldoContabil sc1, SaldoContabil sc2) {
-				return sc1.getConta().getEstrutura().compareTo(sc2.getConta().getEstrutura());
-			}
-		});
+		saldosContabeis.addAll(jaSomados);
+		Collections.sort(saldosContabeis);
+		
 	}
 
+	private SaldoContabil buscarContaPai(List<SaldoContabil> saldosContabeis, SaldoContabil saldoContabil) {
+		Conta pai = saldoContabil.getConta().getPai();
+		if(pai != null){
+			for (SaldoContabil sc : saldosContabeis) {
+				if(sc.getConta().getId().equals(pai.getId())){
+					return sc;
+				}
+			}
+		}
+		return null;
+	}
+
+	private int buscarMaiorNivel(List<SaldoContabil> saldosContabeis) {
+		int maiorNivel = 0;
+		for (SaldoContabil sc : saldosContabeis) {
+			//System.out.println(sc);
+			if(sc.getConta().getNivel() > maiorNivel){
+				maiorNivel = sc.getConta().getNivel();
+			}
+		}
+		return maiorNivel;
+	}
+	
+	/**
+	 * 
+	 * @param de
+	 * @param para
+	 */
+	private void atribuiValores(SaldoContabil de, SaldoContabil para) {
+		para.setCredito(de.getCredito());
+		para.setDebito(de.getDebito());
+		para.setSaldoFinal(de.getSaldoFinal());
+		para.setSaldoInicial(de.getSaldoInicial());
+	}
+	
 	private SaldoContabil retornarSoma(List<SaldoContabil> filhos) {
 		SaldoContabil soma = new SaldoContabil();
 		inicializarNulos(soma);

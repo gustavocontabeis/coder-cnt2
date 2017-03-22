@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.cnt.model.entity.balanco.Conta;
+import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 
 public class ContaUtilTest {
@@ -21,7 +22,8 @@ public class ContaUtilTest {
 
 	@Test
 	public void testRetornarNivel() {
-		fail("Not yet implemented");
+		assertTrue(1 == ContaUtil.retornarNivel(new Conta(1L, "1.0.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA, null, null)));
+		assertTrue(2 == ContaUtil.retornarNivel(new Conta(1L, "1.1.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA, null, null)));
 	}
 
 	@Test

@@ -20,9 +20,10 @@ public class AppServletContextListener implements ServletContextListener{
 	@Override
     public void contextInitialized(ServletContextEvent event) {
         try {
-			inicializarDados(); 
-			importarArquivosCSV();
-		} catch (DaoException e) {
+			//inicializarDados(); 
+			//importarArquivosCSV();
+        	System.out.println("");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }
@@ -67,7 +68,7 @@ public class AppServletContextListener implements ServletContextListener{
 		usuario.setPerfis("USU-ADM,WEB,USU");
 		String generate = GenerateMD5.generateMD5("123");
 		usuario.setSenha(generate);
-		//new UsuarioDAO().salvar(usuario);
+		new UsuarioDAO().salvar(usuario);
 		
 	}
 

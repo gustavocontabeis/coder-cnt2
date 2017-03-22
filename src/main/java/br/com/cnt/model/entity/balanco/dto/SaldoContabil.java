@@ -7,12 +7,12 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.utils.ContaUtil;
 
-public class SaldoContabil implements Serializable {
+public class SaldoContabil implements Serializable , Comparable<SaldoContabil>{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Conta conta;
-	private BigDecimal saldoInicial, debito, credito, saldoFinal;
+	private BigDecimal saldoInicial = BigDecimal.ZERO, debito = BigDecimal.ZERO, credito = BigDecimal.ZERO, saldoFinal = BigDecimal.ZERO;
 	
 	public Conta getConta() {
 		return conta;
@@ -82,8 +82,17 @@ public class SaldoContabil implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "SaldoContabil [conta=" + conta + ", saldoInicial=" + saldoInicial + ", debito=" + debito + ", credito="
-				+ credito + ", saldoFinal=" + saldoFinal + "]";
+		return "SaldoContabil ["
+				+ "conta=" + conta 
+				+ ", saldoInicial=" + saldoInicial 
+				+ ", debito=" + debito 
+				+ ", credito="+ credito 
+				+ ", saldoFinal=" + saldoFinal + "]";
+	}
+	
+	@Override
+	public int compareTo(SaldoContabil other) {
+		return this.getConta().compareTo(other.getConta());
 	}
 
 }
