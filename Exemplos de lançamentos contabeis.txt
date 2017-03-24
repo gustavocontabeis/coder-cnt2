@@ -1,23 +1,40 @@
 
-Venda Serviços a vista
+
+Venda de serviços a vista
+
+	D - Caixa 
+	C - Venda de Serviços
+	H - Venda de serviços a vista cfe NF nº __________ a _____________________________________.
+	
 Venda Serviços a prazo
 
+	D - Clientes 
+	C - Venda de Serviços
+	
 Compra de Mercadorias para revenda - a prazo
 
 	1. Registro do valor total da nota fiscal do fornecedor:
-		D – Estoque de Mercadorias (Ativo Circulante)
-		C – Fornecedores – Seabra Cia. Ltda. (Passivo Circulante)
-			Compra de mercadorias para revenda cfe nf nº _________ de __________________
+	
+		D - Estoque de Mercadorias (Ativo Circulante)
+		C - Fornecedores - Seabra Cia. Ltda. (Passivo Circulante)
+		H - Compra de mercadorias para revenda cfe nf nº _________ de __________________
+		
 	2. Registro do ICMS recuperável:
-		D – Impostos a Recuperar (Ativo Circulante)
+	
+		D - Impostos a Recuperar (Ativo Circulante)
 		C - Estoques de Mercadorias (Ativo Circulante)
-			ICMS a recuperar cfe nf nº _________ de __________________
-	3 – Registro do frete:
-		D – Estoque de Mercadorias (Ativo Circulante)
-		C - Fornecedores – Transportes Paulista Ltda. (Passivo Circulante)
-		Frete sobre vandas cfe nf nº _________ de __________________
+		H - ICMS a recuperar cfe nf nº _________ de __________________
+		
+	3 - Registro do frete:
+	
+		D - Estoque de Mercadorias (Ativo Circulante)
+		C - Fornecedores - Transportes Paulista Ltda. (Passivo Circulante)
+		H - Frete sobre vandas cfe nf nº _________ de __________________
+		
 	4. Parcelas de crédito do PIS e COFINS não cumulativos:
-		D. PIS a Recuperar (Ativo Circulante)
-		D. COFINS a Recuperar (Ativo Circulante)
-		C. Estoques de Mercadorias (Ativo Circulante)
-		Impostos a recuperar cfe nf nº _________ de __________________
+	
+		D - PIS a Recuperar (Ativo Circulante)
+		D - COFINS a Recuperar (Ativo Circulante)
+		C - Estoques de Mercadorias (Ativo Circulante)
+		H - Impostos a recuperar cfe nf nº _________ de __________________
+		

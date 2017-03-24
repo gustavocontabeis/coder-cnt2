@@ -64,7 +64,7 @@
 				</div>
 			</h:form>
 		</p:dialog>
-		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis" modal="true" appendTo="@(body)">
+		<p:dialog widgetVar="dialogLancamentos" header="Cadastro de contas contábeis" modal="true" appendTo="@(body)" visible="#{not empty contaManagedBean.id}">
 		<h:form id="conta">
 			<p:focus for="estrutura"/>
 			<div class="ui-fluid">
@@ -191,11 +191,11 @@
 			            </p:commandButton>
 			        </p:column>
         
-					<p:column headerText="#{labels['conta.estrutura']}" width="120" sortBy="#{item.estrutura}">
-						<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" />
+					<p:column headerText="#{labels['conta.estrutura']}" width="120">
+						<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" title="Pai: #{item.pai.nome}"/>
 					</p:column>
 	
-					<p:column headerText="#{labels['conta.nome']}" sortBy="#{item.nome}" styleClass="#{item.contaTipo}-#{item.nivel}" >
+					<p:column headerText="#{labels['conta.nome']}" styleClass="#{item.contaTipo}-#{item.nivel}" filterBy="#{item.nome}">
 						<h:outputText value="#{item.nome}" style="padding-left:#{item.nivel*10}px" title="#{item.descricao}"/>
 					</p:column>
 	

@@ -1,0 +1,424 @@
+-------------------------------------------------------------
+MODELO DE UM PLANO DE CONTAS PARA EMPRESAS COMERCIAIS
+-------------------------------------------------------------
+
+1 – ATIVO
+1.1  -  CIRCULANTE
+1.1.1 -  Disponível
+1.1.1.001 - Caixa 
+1.1.1.002 - Bancos Conta Movimento
+
+1.1.2 -  Realizações
+1.1.2.001 - Clientes
+1.1.2.002 - ( - ) Duplicatas Descontadas
+1.1.2.003 – Aplicações Financeiras
+1.1.2.004 – Impostos a Recuperar 
+1.1.2.005 - Despesas do Exercício Seguinte
+1.1.2.006 - ( - ) Provisão para Devedores Duvidosos
+
+1.1.3 – Estoques
+1.1.3.001 - Estoque de Mercadorias
+1.1.3.002 - (-) Provisão para Ajuste ao Valor de Mercado
+
+1.2 - ATIVO REALIZÁVEL A LONGO PRAZO
+1.2.1 - Realizações
+1.2.1.001 - Títulos a Receber
+
+1.3. ATIVO PERMANENTE
+1.3.1 - Investimentos
+1.3.1.001 - Participações em Outras Cias
+1.3.1.002 - Imóveis para Renda
+
+1.3.2 – Imobilizado
+1.3.2.001 - Equipamentos de Informática
+1.3.2.002 - Imóveis 
+1.3.2.003 - Instalações
+1.3.2.004 - Máquinas e Equipamentos
+1.3.2.005 - Móveis e Utensílios
+1.3.2.006 - Veículos
+1.3.2.007 - (-) Depreciação Acumulada
+
+1.3.3 - Diferido
+1.3.3.001 - Despesas Pré-Operacionais
+1.3.3.002 – Despesas com Desenvolvimento de Sistemas
+1.2.2.002 – Despesas com Desenvolvimento de Novos Produtos 
+1.3.3.002 - (-) Amortização Acumulada
+
+ 
+
+2- PASSIVO 
+
+2.1 – CIRCULANTE
+2.1.1 - Obrigações
+2.1.1.001 - Fornecedores
+2.1.1.002 - Aluguéis a Pagar
+2.1.1.003 - Empréstimos a Pagar
+2.1.1.004 - ICMS a Recolher
+2.1.1.005 – Imposto de Renda a Pagar
+2.1.1.006 - IR Fonte a Recolher
+2.1.1.007 - Contribuições Previdenciárias  a Recolher 
+2.1.1.008 - FGTS a Recolher
+2.1.1.009 - Honorários da Diretoria a Pagar
+2.1.1.010 - Salários a Pagar
+2.1.1.011 - Dividendos a pagar
+2.1.1.012 - Outras Obrigações a Pagar
+
+ 2.2 – EXIGÍVEL A LONGO PRAZO
+2.2.1 – Obrigações
+2.2.1.001 - Financiamentos a Pagar
+
+2.3 – RESULTADO DE EXERCÍCIOS FUTUROS
+2.3.1 – Resultados Futuros
+2.3.1.001 - Receitas de Exercícios Futuros 
+2.3.1.002 - ( - ) Custos e Despesas
+
+2.4 – PATRIMÔNIO LÍQUIDO
+
+2.4.1 – Capital
+2.4.1.001 - Capital
+2.4.1.002 - ( - ) Capital a Realizar
+
+2.4.2 - Reservas de Capital
+2.4.2.001 – Ágio na Emissão de Ações
+
+2.4.3 – Reservas de Reavaliação
+2.4.3.001 – Reavaliação do Permanente
+
+2.4.4 - Reservas de Lucros
+2.4.4.001 – Reserva Legal
+
+2.4.5 - Lucros ou Prejuízos Acumulados
+2.4.5.001 – Lucros Acumulados
+2.4.5.002 – ( - ) Prejuízos Acumulados
+
+ 
+
+ 3 - DESPESAS  
+
+3.3 – DESPESAS OPERACIONAIS
+3.3.1 – Despesas com Vendas
+3.3.1.001 - Comissões sobre Vendas
+3.3.1.006 - Fretes e Carretos
+3.3.1.007 - Material de Embalagem
+3.3.1.008 - Propaganda e Publicidade
+3.3.1.009 – Despesas c/ Devedores  Duvidosos
+
+3.3.2 – Despesas Administrativas
+3.3.2.001 - Aluguel 
+3.3.2.002 - Energia Elétrica
+3.3.2.003 - Água 
+3.3.2.004 - Correios 
+3.3.2.005 – Depreciações
+3.3.2.006 - Amortizações
+3.3.2.007 - Fretes e Carretos
+3.3.2.008 - Material de Expediente
+3.3.2.009 - Prêmios de Seguro
+3.3.2.010 - Comunicações
+3.3.2.011 - Impostos e Taxas
+3.3.2.012 - Serviços de Terceiros
+3.3.2.013 - Multas Fiscais
+3.3.2.014 - Salários
+3.3.2.015 - Honorários da Diretoria
+3.3.2.016 - Décimo Terceiro Salário
+3.3.2.017 - Encargos Sociais
+3.3.2.018 - Férias 
+
+3.3.3 – Despesas Financeiras
+3.3.3.001 - Despesas Bancárias
+3.3.3.002 - Juros Passivos
+3.3.3.003 - Descontos Concedidos
+
+3.3.4 – Outras Despesas Operacionais
+3.3.4.001 – Prejuízo de Participação em outras Cias 
+3.3.4.002 – Despesas Eventuais
+
+3.4. DESPESAS NÃO OPERACIONAIS
+3.4.1 - Perdas  não Operacionais
+3.4.1.001 – Perdas na Alienação de Bens
+
+  
+
+4 - RECEITAS 
+
+4.1 – RECEITAS OPERACIONAIS
+4.1.1 – Receitas de Vendas 
+4.1.1.001 – Venda de Mercadorias
+4.1.1.002 - ( - ) Vendas Anuladas
+4.1.1.003 - ( - ) ICMS sobre Vendas
+4.1.1.004 - ( - ) PIS sobre Faturamento
+
+4.1.2 – Receitas Financeiras
+4.1.2.001 - Rendimentos de Aplicações Financeiras
+4.1.2.002 - Descontos Obtidos
+4.1.2.003 - Juros Ativos
+
+4.1.3 – Outras Receitas Operacionais
+4.1.3.001 - Lucros de Participações em Outras Cias
+4.1.3.002 - Reversão de Provisão Para Devedores Duvidosos 
+4.1.3.003 - Receitas Eventuais
+
+ 
+
+4.2 – RECEITAS NÃO OPERACIONAIS
+4.2.1 -  Ganhos não Operacionais
+4.2.1.001 – Ganho na Alienação de Bens
+
+ 
+
+5 – CONTAS DE APURAÇÃO DE RESULTADOS
+
+5.1 – APURAÇÃO DE RESULTADO
+5.1.1 – Apuração de Resultado
+5.1.1.001 - Custo das Mercadorias Vendidas (CMV)
+5.1.1.002 - Resultado com Vendas de Mercadorias (RVM)
+5.1.1.003 - Apuração do Resultado do Exercício (ARE)  
+
+ 
+
+ 
+
+ 
+-------------------------------------------------------------
+MODELO DE UM PLANO DE CONTAS PARA EMPRESAS INDUSTRIAIS
+-------------------------------------------------------------
+
+1 - ATIVO 
+
+1.1  -  CIRCULANTE
+
+1.1.1 -  Disponível
+1.1.1.001 - Caixa 
+1.1.1.002 - Bancos Conta Movimento
+1.1.1.003 - Aplicações de Liquidez Imediata
+
+1.1.2 -  Realizações
+1.1.2.001 - Clientes
+1.1.2.002 - ( - ) Duplicatas Descontadas
+1.1.2.003 - ICMS a Recuperar 
+1.1.2.004 - IPI a Recuperar 
+1.1.2.005 - Despesas do Exercício Seguinte
+1.1.2.006 - ( - ) Provisão para Devedores Duvidosos
+
+1.1.3 - Estoques
+1.1.3.001 - Estoque de Produtos Acabados
+1.1.3.002 - Estoque de Produtos em Elaboração
+1.1.3.003 - Estoque de Matérias-primas 
+1.1.3.004 - Estoque de Materiais Secundários
+1.1.3.005 - Estoque de Materiais de Embalagem
+1.1.3.006 – Estoque de Subprodutos
+1.1.3.007 - (-) Provisão para Ajuste ao Valor de Mercado
+
+ 1.2 - ATIVO REALIZÁVEL A LONGO PRAZO
+
+1.2.1 - Realizações
+1.2.1.001 - Títulos a Receber
+
+ 1.3 - ATIVO PERMANENTE
+
+1.3.1 - Investimentos
+1.3.1.001 - Participações em Outras Cias
+1.3.1.002 - Imóveis para Renda
+
+1.3.2 - Imobilizado
+1.3.2.001 - Equipamentos de Informática
+1.3.2.002 - Imóveis 
+1.3.2.003 - Instalações
+1.3.2.004 - Máquinas e Equipamentos Industriais
+1.3.2.005 - Móveis e Utensílios
+1.3.2.006 - Veículos
+1.3.2.007 - (-) Depreciação Acumulada
+
+1.3.3 - Diferido
+1.3.3.001 - Despesas Pré-Operacionais
+1.3.3.002 - (-) Amortização Acumulada
+
+  
+
+2 - PASSIVO 
+
+2.1 - CIRCULANTE
+
+2.1.1 - Obrigações
+2.1.1.001 - Fornecedores
+2.1.1.002 - Aluguéis a Pagar
+2.1.1.003 - Empréstimos a Pagar
+2.1.1.004 - ICMS a Recolher
+2.1.1.005 - IPI a Recolher
+2.1.1.006 - IRR Fonte a Recolher
+2.1.1.007 - Contribuições Previdenciárias  a Recolher 
+2.1.1.008 - FGTS a Recolher
+2.1.1.009 - Honorários da Diretoria a Pagar
+2.1.1.010 - Salários a Pagar
+2.1.1.011 - Dividendos a pagar
+2.1.1.012 - Outras Obrigações a Pagar
+
+
+2.2 - EXIGÍVEL A LONGO PRAZO
+
+2.2.1 - Obrigações
+2.2.1.001 - Financiamentos a Pagar
+
+ 
+
+2.3 - RESULTADO DE EXERCÍCIOS FUTUROS
+
+2.3.1 - Resultados Futuros
+2.3.1.001 - Receitas de Exercícios Futuros 
+2.3.1.002 - ( - ) Custos e Despesas
+
+ 
+
+2.4 - PATRIMÔNIO LÍQUIDO
+
+2.4.1 - Capital
+2.4.1.001 - Capital
+2.4.1.002 - ( - ) Capital a Realizar
+
+2.4.2 - Reservas de Capital
+2.4.2.001 - Ágio na Emissão de Ações
+
+2.4.3 - Reservas de Reavaliação
+2.4.3.001 - Reavaliação do Permanente
+
+2.4.4 - Reservas de Lucros
+2.4.4.001 - Reserva Legal
+
+2.4.5 - Lucros ou Prejuízos Acumulados
+2.4.5.001 - Lucros Acumulados
+2.4.5.002 - ( - ) Prejuízos Acumulados
+
+ 
+
+ 3 - DESPESAS
+
+ 3.3 - DESPESAS OPERACIONAIS
+
+3.3.1 - Despesas com Vendas
+3.3.1.001 - Comissões sobre Vendas
+3.3.1.006 - Fretes e Carretos
+3.3.1.007 - Material de Embalagem
+3.3.1.008 - Propaganda e Publicidade
+3.3.1.009 - Despesas c/ Devedores  Duvidosos 
+
+3.3.2 - Despesas Administrativas
+3.3.2.001 - Aluguel 
+3.3.2.002 - Energia Elétrica
+3.3.2.003 - Água 
+3.3.2.004 - Correios 
+3.3.2.005 - Depreciação
+3.3.2.006 - Fretes e Carretos
+3.3.2.007 - Material de Expediente
+3.3.2.008 - Prêmios de Seguro
+3.3.2.009 - Comunicações
+3.3.2.010 - Impostos e Taxas
+3.3.2.011 - Serviços de Terceiros
+3.3.2.012 - Multas Fiscais
+3.3.2.013 - Salários
+3.3.2.014 - Honorários da Diretoria
+3.3.2.015 - Décimo Terceiro Salário
+3.3.2.016 - Encargos Sociais
+3.3.2.017 - Férias
+
+3.3.3 - Despesas Financeiras
+3.3.3.001 - Despesas Bancárias
+3.3.3.002 - Juros Passivos
+3.3.3.003 - Descontos Concedidos 
+
+3.3.4 - Outras Despesas Operacionais
+3.3.4.001 - Prejuízo de Participação em outras Cias 
+3.3.4.002 - Despesas Eventuais
+
+ 3.4 - DESPESAS NÃO OPERACIONAIS
+
+3.4.1 - Perdas  não Operacionais
+3.4.1.001 - Perdas na Alienação de Bens
+
+  
+
+4 - CUSTOS 
+
+4.1 - CUSTOS DE PRODUÇÃO
+
+4.1.1 -  Produtos em Elaboração 
+4.1.1.001 - Produto em Elaboração - A
+4.1.1.002 - Produto em Elaboração - B
+4.1.1.003 - Produto em Elaboração - C
+
+4.1.2 - Materiais 
+4.1.2.001 - Matéria-prima
+4.1.2.002 - Materiais Secundários 
+4.1.2.003 - Materiais de Embalagem
+
+4.1.3 - Mão de Obra Direta 
+4.1.3.001 - Salários
+4.1.3.002 - Encargos Sociais
+4.1.3.003 - Décimo Terceiro Salário
+4.1.3.004 - Férias
+4.1.3.005 - Seguro Acidentes do Trabalho
+4.1.3.006 - Fundo de Garantia do Tempo de Serviço
+4.1.3.006 - Lanches e Refeições 
+4.1.3.007 - Outros Gastos com Pessoal 
+
+4.1.4 - Mão de Obra Indireta 
+4.1.4.001 - Salários
+4.1.4.002 - Encargos Sociais
+4.1.4.003 - Décimo Terceiro Salário
+4.1.4.004 - Férias
+4.1.4.005 - Seguro Acidentes do Trabalho 
+4.1.4.006 - Fundo de Garantia do Tempo de Serviço
+4.1.4.007 - Lanches e Refeições 
+4.1.4.008 - Outros Gastos com Pessoal
+
+4.1.5 - Gastos Gerais de Fabricação
+4.1.5.001 - Energia Elétrica
+4.1.5.002 - Aluguéis 
+4.1.5.003 - Depreciação
+4.1.5.004 - Prêmios de Seguro
+4.1.5.005 - Serviços de Terceiros
+4.1.5.006 - Comunicações 
+4.1.5.007 - Água 
+4.1.5.008 - Conservação e Manutenção
+4.1.5.009 - Combustíveis e Lubrificantes
+4.1.5.010 - Materiais de Expediente
+4.1.5.011 - Materiais de Limpeza
+4.1.5.012 - Materiais Diversos
+
+  
+
+5 - RECEITAS 
+
+5.1 - RECEITAS OPERACIONAIS
+
+5.1.1 - Receitas de Vendas 
+5.1.1.001 - Venda de Produtos
+5.1.1.002 - ( - ) Vendas Anuladas
+5.1.1.003 - ( - ) ICMS sobre Vendas
+5.1.1.004 - ( - ) PIS sobre Faturamento
+
+5.1.2 - Receitas Financeiras
+5.1.2.001 - Rendimentos de Aplicações Financeiras
+5.1.2.002 - Descontos Obtidos
+5.1.2.003 - Juros Ativos
+
+5.1.3 - Outras Receitas Operacionais
+5.1.3.001 - Lucros de Participações em Outras Cias
+5.1.3.002 - Receitas Eventuais
+
+ 
+
+5.2 - RECEITAS NÃO OPERACIONAIS
+
+5.2.1 -  Ganhos não Operacionais
+5.2.1.001 - Ganho na Alienação de Bens
+
+ 
+
+6 - CONTAS DE APURAÇÃO DE RESULTADOS 
+
+6.1 - APURAÇÃO DE RESULTADO
+
+6.1.1 - Apuração de Resultado
+6.1.1.001 - Custo dos Produtos Vendidos (CPV)
+6.1.1.002 - Resultado com Vendas de Produtos (RVP)
+6.1.1.003 - Apuração do Resultado do Exercício (ARE)
+

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.ReorderEvent;
+import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,6 +115,11 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	protected String getSortField(String sortField) {
+		return "estrutura asc, contaTipo desc, ordem asc";
 	}
 	
 	public void onRowReorder(ReorderEvent event) throws DaoException {

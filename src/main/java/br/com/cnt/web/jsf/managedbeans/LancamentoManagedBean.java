@@ -69,7 +69,26 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 	}
 	
 	@Override
-	protected boolean salvarAntes(Lancamento entity) {
+	protected boolean excluirAntes(Lancamento entity) {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
+		if(exercicio.getFechado()){
+			messageError(null, "Não é possível excluir lançamentos neste exercício pois "+exercicio.getAno()+" esta encerrado.");
+			return false;
+		}
+		return super.excluirAntes(entity);
+	}
+	
+	@Override
+	protected boolean salvarAntes(Lancamento entity) { 
+		
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
+		if(exercicio.getFechado()){
+			messageError(null, "Não é possível fazer ou alterar lançamentos neste exercício pois "+exercicio.getAno()+" esta encerrado.");
+			return false;
+		}
+		
 		if (entity.getDebito() != null && entity.getCredito() != null) {
 			entity.setLancamentoTipo(LancamentoTipo.SIMPLES);
 		} else {

@@ -127,7 +127,7 @@ public class ContaDAO extends BaseDAO<Conta> {
 			sb.append(" and estrutura like :estrutura");
 		} else if (param.matches("\\d*.?")) {
 			params.put("id", new Long(param));
-			sb.append(" and id = :id");
+			sb.append(" and obj.id = :id");
 		} else {
 			params.put("nome", '%'+param.toUpperCase()+'%');
 			sb.append(" and upper(obj.nome) like :nome");

@@ -2,6 +2,15 @@ package br.com.cnt.model.utils;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,4 +102,20 @@ public class ContaUtilTest {
 	}
 
 
+	@Test
+	public void testXXXX() throws IOException, InterruptedException {
+		Date dt = new GregorianCalendar(2017, Calendar.AUGUST,	26, 9, 10).getTime();
+		String format = new SimpleDateFormat("d MMM yyyy HH:mm:ss").format(dt);
+		//System.out.println(format);
+		Process proc = Runtime.getRuntime().exec(" date --set \"1 feb 2017 00:00:00\"");
+		InputStream stderr = proc.getErrorStream();
+		InputStreamReader isr = new InputStreamReader(stderr);
+		BufferedReader br = new BufferedReader(isr);
+		String line = null;
+		System.out.println("<ERROR>");
+		while( (line = br.readLine()) != null)
+			System.out.println(line);
+		System.out.println("</ERROR>");
+		
+	}
 }

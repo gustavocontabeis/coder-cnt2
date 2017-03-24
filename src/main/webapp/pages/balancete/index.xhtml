@@ -29,14 +29,21 @@
 		    <p:commandLink actionListener="#{balanceteManagedBean.exibirAteNivel}" title="Exibe o balancete somente com contas até o vível definido." update="main">
 		        <h:outputText value="Filtrar nível" />
 		    </p:commandLink>
-		    
 		    <p:spinner id="nivel" value="#{balanceteManagedBean.nivel}" size="5"/>
-		    
-		    | <h:outputLink value="${request.contextPath}/pages/balancete/" title="Atualizar balancete">
-		        <h:outputText value="Atualizar" />
-		    </h:outputLink>
+		    | 
+		    <p:commandLink actionListener="#{balanceteManagedBean.retirarContasSemValor}" title="Não exibir contas que não tiveram movimento neste período" update="main">
+		        <h:outputText value="Retirar contas sem movimento" />
+		    </p:commandLink>
+		    |
+		    <p:commandLink actionListener="#{balanceteManagedBean.exibirBalancoPatrimonial}" title="Exibe o balanço patrimonial" update="main">
+		        <h:outputText value="Balanço Patrimonial" />
+		    </p:commandLink>
+		    | 
+		    <h:outputLabel for="retirarContasSemValor" />
+		    <p:selectBooleanCheckbox id="retirarContasSemValor" value="#{balanceteManagedBean.retirarContasSemValor}" />
+		    <p:commandLink value="Atualizar balancete" actionListener="#{balanceteManagedBean.exibirBalancete}" title="Atualizar balancete" update="main" />
 		</h:form>
-		<p:lightBox iframe="true" id="lighbox3" >
+		<p:lightBox iframe="true" id="lighbox3">
 		    <h:outputLink value="${request.contextPath}/pages/lancamentos/popup.jsf" title="Cadastro de lançamentos">
 		        <h:outputText value="Lançamentos" />
 		    </h:outputLink>
@@ -52,6 +59,8 @@
 			</h:outputFormat>
 		</div>
 		<br />
+		<h:form>
+		<p:remoteCommand name="retirar" actionListener="#{balanceteManagedBean.retirar}" update="main" />
 		<p:dataTable value="#{balanceteManagedBean.balancete.saldos}" var="obj" columnClasses="texto, texto, texto, numero, numero, numero, numero" rendered="#{not empty balanceteManagedBean.balancete.saldos}" width="100%"
 			styleClass="destacarLinha" resizableColumns="true">
 			<p:column width="40">
@@ -61,6 +70,7 @@
 				<h:outputLink value="../conta/index.jsf?id=#{obj.conta.id}" title="Editar conta">
 					<i class="fa fa-pencil"></i>
 				</h:outputLink>
+				<i class="fa fa-times" aria-hidden="true" onclick="retirar([{name:'idConta',value:'#{obj.conta.id}'}]);" style="cursor: pointer;" title="Não exibir esta conta no balancete"></i>
 			</p:column>
 			<p:column width="110">
 				<f:facet name="header">
@@ -111,7 +121,7 @@
 				</h:outputLink>
 			</p:column>
 		</p:dataTable>
-		
+		</h:form>
 	</ui:define>
 
 </ui:composition>
