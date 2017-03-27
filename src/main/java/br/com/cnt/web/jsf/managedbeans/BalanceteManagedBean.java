@@ -194,7 +194,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		while (iterator.hasNext()) {
 			SaldoContabil saldoContabil = (SaldoContabil) iterator.next();
 			if(saldoContabil.getSaldoInicial().equals(BigDecimal.ZERO)
-					&& saldoContabil.getCredito().equals(BigDecimal.ZERO)
+					&& saldoContabil.getDebito().equals(BigDecimal.ZERO)
 					&& saldoContabil.getCredito().equals(BigDecimal.ZERO)){
 				iterator.remove();
 			}

@@ -93,7 +93,7 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
  	@JoinColumn(name="ID_CONTA_PAI", nullable=true, foreignKey = @ForeignKey(name="FK_CONTA_PAI"))
  	private Conta pai;
  	
- 	@NotNull 
+ 	//@NotNull 
  	@OneToMany(targetEntity=Conta.class, fetch=LAZY, mappedBy="pai", cascade={CascadeType.ALL}) 
  	private List<Conta> subContas;
  	
