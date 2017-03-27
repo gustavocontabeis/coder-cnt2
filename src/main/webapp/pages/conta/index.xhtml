@@ -135,10 +135,10 @@
 						<p:outputLabel for="pai" value="#{labels['conta.planoContas']}" />
 						<p:selectOneMenu id="pai" value="#{contaManagedBean.entity.pai}" required="false">
 							<f:selectItem itemLabel="[Selecione]" />
-							<f:selectItems value="#{contaManagedBean.contas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura}-#{obj.nome}" />
+							<f:selectItems value="#{contaManagedBean.list}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura}-#{obj.nome}" />
 							<f:converter converterId="baseEntityConverter"/>
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
-							<f:attribute name="list" value="#{contaManagedBean.contas}" />
+							<f:attribute name="list" value="#{contaManagedBean.list}" />
 						</p:selectOneMenu>
 				    </div>
 				</div>
@@ -192,7 +192,7 @@
 			        </p:column>
         
 					<p:column headerText="#{labels['conta.estrutura']}" width="120">
-						<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" title="Pai: #{item.pai.nome}"/>
+						<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" />
 					</p:column>
 	
 					<p:column headerText="#{labels['conta.nome']}" styleClass="#{item.contaTipo}-#{item.nivel}" filterBy="#{item.nome}">

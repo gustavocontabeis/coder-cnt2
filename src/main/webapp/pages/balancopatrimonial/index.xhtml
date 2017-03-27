@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+
+<ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
+
+	<ui:define name="pageTitle">..:: Balanço Patrimonial ::..</ui:define>
+
+	<ui:define name="body">
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			.SINTETICA-1{
+				font-weight: bold;
+				font-style: italic;
+				font-size: 22 !important;
+			}
+			.SINTETICA-2{
+				font-weight: bold;
+				font-size: 18 !important;
+				font-stretch:wider; 
+			}
+			.SINTETICA-3{
+				font-weight: bold;
+			}
+		</style>
+		<p:messages />
+		<h:form>
+		    <p:commandLink actionListener="#{balanceteManagedBean.exibirBalancoPatrimonial}" title="Exibe o balanço patrimonial" update="main">
+		        <h:outputText value="Balanço Patrimonial" />
+		    </p:commandLink>
+		    |
+		    <p:commandLink actionListener="#{balanceteManagedBean.retirarContasSemValor}" title="Não exibir contas que não tiveram movimento neste período" update="main">
+		        <h:outputText value="Retirar contas sem movimento" />
+		    </p:commandLink>
+		</h:form>
+		<div align="center">
+			<h:outputText value="Balanço Patrimonial" />
+			<br />
+			<h:outputFormat value="#{balanceteManagedBean.balancete.exercicio.empresa.razaoSocial}" />
+			<br />
+			<h:outputFormat value="Período de {0, date} até {1, date}">
+				<f:param value="#{balanceteManagedBean.balancete.de}" />
+				<f:param value="#{balanceteManagedBean.balancete.ate}" />
+			</h:outputFormat>
+		</div>
+		<br />
+		
+		<p:dataTable value="#{balanceteManagedBean.bp.list}" var="obj"
+			columnClasses="texto, texto, texto, texto"  
+			rendered="#{not empty balanceteManagedBean.bp.list}" width="100%"
+			styleClass="destacarLinha" resizableColumns="true">
+			<p:column headerText="Ativo">
+				<h:outputText value="#{obj.ativo.conta.nome}" />
+			</p:column>
+			<p:column style="text-align: right;" headerText="R$">
+				<h:outputText value="#{obj.ativo.saldoFinalContabil}" styleClass="#{obj.ativo.conta.contaTipo}-#{obj.ativo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
+			</p:column>
+			<p:column headerText="Passivo">
+				<h:outputText value="#{obj.passivo.conta.nome}" />
+			</p:column>
+			<p:column style="text-align: right;" headerText="R$">
+				<h:outputText value="#{obj.passivo.saldoFinalContabil}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
+			</p:column>
+		</p:dataTable>
+		
+	</ui:define>
+
+</ui:composition>
+</html>

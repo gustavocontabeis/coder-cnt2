@@ -36,7 +36,8 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	private static final long serialVersionUID = 1L;
 	
 	private Balancete balancete;
-	
+	private BalancoPatrimonial bp;
+		
 	@Inject 
 	private BalanceteDAO dao;
 	
@@ -64,8 +65,8 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	}
 	
 	public void exibirBalancete(ActionEvent evt){
-
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		
+		HttpSession session = getSession();
 		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
 		
 		Date de = (Date) session.getAttribute("de");
@@ -100,6 +101,8 @@ public class BalanceteManagedBean extends BaseManagedBean{
 			retirarContasSemValor(null);
 		}
 		
+		//getSession().setAttribute("balancete", balancete);
+		
 	}
 	
 	public void exibirAteNivel(ActionEvent evt){
@@ -117,7 +120,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	public void exibirBalancoPatrimonial(ActionEvent evt){
 		//this.nivel = 2;
 		//exibirAteNivel(null);
-		BalancoPatrimonial bp = new BalancoPatrimonial();
+		bp = new BalancoPatrimonial();
 		
 		List<SaldoContabil> saldos = this.balancete.getSaldos();
 		Iterator<SaldoContabil> iterator = saldos.iterator();
@@ -145,8 +148,8 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		
 		Iterator<SaldoContabil> iteratorAtivo = ativo.iterator();
 		Iterator<SaldoContabil> iteratorPassivo = passivo.iterator();
+		
 		for (int i = 0; i < size; i++) {
-			
 			
 			SaldoContabil saldoContabilAtivo = iteratorAtivo.hasNext() ? iteratorAtivo.next() : scVazio;
 			SaldoContabil saldoContabilPassivo = iteratorPassivo.hasNext() ? iteratorPassivo.next() : scVazio;
@@ -157,6 +160,8 @@ public class BalanceteManagedBean extends BaseManagedBean{
 					saldoContabilPassivo.getConta().getNome(), 
 					!saldoContabilPassivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilPassivo.getSaldoFinalContabil() : ""
 					);
+			
+			bp.addLinha(saldoContabilAtivo, saldoContabilPassivo);
 			
 		}
 	}
@@ -232,6 +237,14 @@ public class BalanceteManagedBean extends BaseManagedBean{
 
 	public void setRetirarContasSemValor(boolean retirarContasSemValor) {
 		this.retirarContasSemValor = retirarContasSemValor;
+	}
+
+	public BalancoPatrimonial getBp() { 
+		return bp;
+	}
+
+	public void setBp(BalancoPatrimonial bp) {
+		this.bp = bp;
 	}
 	
 }
