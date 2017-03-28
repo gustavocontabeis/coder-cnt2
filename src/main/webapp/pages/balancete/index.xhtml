@@ -26,21 +26,19 @@
 		</style>
 		<p:messages />
 		<h:form>
-		    <p:commandLink actionListener="#{balanceteManagedBean.exibirAteNivel}" title="Exibe o balancete somente com contas até o vível definido." update="main">
+		    <p:commandLink actionListener="#{balanceteManagedBean.exibirAteNivel}"  update="main">
 		        <h:outputText value="Filtrar nível" />
 		    </p:commandLink>
-		    <p:spinner id="nivel" value="#{balanceteManagedBean.nivel}" size="5"/>
+		    <p:spinner id="nivel" value="#{balanceteManagedBean.nivel}" size="5">
+		    	<p:ajax event="change" actionListener="#{balanceteManagedBean.exibirAteNivel}" />
+		    </p:spinner>
 		    | 
 		    <p:commandLink actionListener="#{balanceteManagedBean.retirarContasSemValor}" title="Não exibir contas que não tiveram movimento neste período" update="main">
 		        <h:outputText value="Retirar contas sem movimento" />
 		    </p:commandLink>
 		    |
-		    <p:commandLink actionListener="#{balanceteManagedBean.exibirBalancoPatrimonial}" title="Exibe o balanço patrimonial" update="main">
-		        <h:outputText value="Balanço Patrimonial" />
-		    </p:commandLink>
-		    | 
-		    <h:outputLabel for="retirarContasSemValor" />
-		    <p:selectBooleanCheckbox id="retirarContasSemValor" value="#{balanceteManagedBean.retirarContasSemValor}" />
+		    <h:outputLabel for="retirarContasSemValor" value="Não exibir contas sem movimento" />
+		    <p:selectBooleanCheckbox id="retirarContasSemValor" value="#{balanceteManagedBean.retirarContasSemValor}" title="Não exibir contas sem movimento"/>
 		    <p:commandLink value="Atualizar balancete" actionListener="#{balanceteManagedBean.exibirBalancete}" title="Atualizar balancete" update="main" />
 		</h:form>
 		<p:lightBox iframe="true" id="lighbox3">

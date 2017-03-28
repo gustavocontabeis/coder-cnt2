@@ -3,6 +3,10 @@
 
 <ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
 
+	<f:metadata>
+        <f:event type="preRenderView" listener="#{balanceteManagedBean.exibirBalancoListener}" />
+    </f:metadata>
+
 	<ui:define name="pageTitle">..:: Balanço Patrimonial ::..</ui:define>
 
 	<ui:define name="body">
@@ -26,10 +30,6 @@
 		</style>
 		<p:messages />
 		<h:form>
-		    <p:commandLink actionListener="#{balanceteManagedBean.exibirBalancoPatrimonial}" title="Exibe o balanço patrimonial" update="main">
-		        <h:outputText value="Balanço Patrimonial" />
-		    </p:commandLink>
-		    |
 		    <p:commandLink actionListener="#{balanceteManagedBean.retirarContasSemValor}" title="Não exibir contas que não tiveram movimento neste período" update="main">
 		        <h:outputText value="Retirar contas sem movimento" />
 		    </p:commandLink>
@@ -51,13 +51,13 @@
 			rendered="#{not empty balanceteManagedBean.bp.list}" width="100%"
 			styleClass="destacarLinha" resizableColumns="true">
 			<p:column headerText="Ativo">
-				<h:outputText value="#{obj.ativo.conta.nome}" />
+				<h:outputText value="#{obj.ativo.conta.nome}" styleClass="#{obj.ativo.conta.contaTipo}-#{obj.ativo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="padding-left:#{obj.ativo.conta.nivel*10}px"/>
 			</p:column>
 			<p:column style="text-align: right;" headerText="R$">
 				<h:outputText value="#{obj.ativo.saldoFinalContabil}" styleClass="#{obj.ativo.conta.contaTipo}-#{obj.ativo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
 			</p:column>
 			<p:column headerText="Passivo">
-				<h:outputText value="#{obj.passivo.conta.nome}" />
+				<h:outputText value="#{obj.passivo.conta.nome}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="padding-left:#{obj.passivo.conta.nivel*10}px"/>
 			</p:column>
 			<p:column style="text-align: right;" headerText="R$">
 				<h:outputText value="#{obj.passivo.saldoFinalContabil}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>

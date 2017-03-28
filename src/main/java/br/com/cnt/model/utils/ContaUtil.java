@@ -38,6 +38,9 @@ public class ContaUtil {
 	 * @return
 	 */
 	public static String getValorContabil(BigDecimal valor, ContaOrigem origem){
+		if(origem == null){
+			return "";
+		}
 		float vlr = valor.floatValue();
 		ContaOrigem co = null;
 		if(ContaOrigem.DEVEDORA == origem && vlr < 0f ){

@@ -11,7 +11,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -64,6 +66,15 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		}
 	}
 	
+	public void exibirBalanceteListener(ComponentSystemEvent evt) throws AbortProcessingException{
+		exibirBalancete(null);
+	}
+	
+	public void exibirBalancoListener(ComponentSystemEvent evt) throws AbortProcessingException{
+		exibirBalancoPatrimonial(null);
+	}
+
+	
 	public void exibirBalancete(ActionEvent evt){
 		
 		HttpSession session = getSession();
@@ -73,7 +84,6 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		Date ate = (Date) session.getAttribute("ate");
 		
 		try {
-			
 			this.dao = new BalanceteDAO(lancamentoDAO, exercicioDAO);
 			this.balancete = dao.buscarBalancete(exercicio, de, ate);
 			this.backup = new ArrayList<>(balancete.getSaldos());
@@ -85,23 +95,21 @@ public class BalanceteManagedBean extends BaseManagedBean{
 				}
 			}
 			nivel = maiorNivel;
+				
+			//Identa o nome da conta pelo nível
+			for(SaldoContabil sc : this.balancete.getSaldos()){
+				Integer nivel = sc.getConta().getNivel();
+				String nome = StringUtils.leftPad(sc.getConta().getNome(), nivel, " ");
+				sc.getConta().setNome(nome);
+			}
+			
+			if(retirarContasSemValor){
+				retirarContasSemValor(null);
+			}
 			
 		} catch (DaoException e) {
-			e.printStackTrace();
+			message(e);
 		}
-		
-		//Identa o nome da conta pelo nível
-		for(SaldoContabil sc : this.balancete.getSaldos()){
-			Integer nivel = sc.getConta().getNivel();
-			String nome = StringUtils.leftPad(sc.getConta().getNome(), nivel, " ");
-			sc.getConta().setNome(nome);
-		}
-		
-		if(retirarContasSemValor){
-			retirarContasSemValor(null);
-		}
-		
-		//getSession().setAttribute("balancete", balancete);
 		
 	}
 	
@@ -141,7 +149,9 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		
 		int size = ativo.size();
 		size = size<passivo.size()?passivo.size():size;
-		System.out.println("\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		
+		//System.out.println("\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
 		SaldoContabil scVazio = new SaldoContabil();
 		scVazio.setConta(new Conta(null, ""));
 		scVazio.setSaldoFinal(BigDecimal.ZERO);
@@ -154,15 +164,14 @@ public class BalanceteManagedBean extends BaseManagedBean{
 			SaldoContabil saldoContabilAtivo = iteratorAtivo.hasNext() ? iteratorAtivo.next() : scVazio;
 			SaldoContabil saldoContabilPassivo = iteratorPassivo.hasNext() ? iteratorPassivo.next() : scVazio;
 			
-			System.out.printf("%-80s | %10s || %-80s | %10s\n", 
-					saldoContabilAtivo.getConta().getNome(), 
-					!saldoContabilAtivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilAtivo.getSaldoFinalContabil():"",
-					saldoContabilPassivo.getConta().getNome(), 
-					!saldoContabilPassivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilPassivo.getSaldoFinalContabil() : ""
-					);
+//			System.out.printf("%-80s | %10s || %-80s | %10s\n", 
+//					saldoContabilAtivo.getConta().getNome(), 
+//					!saldoContabilAtivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilAtivo.getSaldoFinalContabil():"",
+//					saldoContabilPassivo.getConta().getNome(), 
+//					!saldoContabilPassivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilPassivo.getSaldoFinalContabil() : ""
+//					);
 			
 			bp.addLinha(saldoContabilAtivo, saldoContabilPassivo);
-			
 		}
 	}
 	
