@@ -73,7 +73,6 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	public void exibirBalancoListener(ComponentSystemEvent evt) throws AbortProcessingException{
 		exibirBalancoPatrimonial(null);
 	}
-
 	
 	public void exibirBalancete(ActionEvent evt){
 		

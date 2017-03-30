@@ -3,9 +3,11 @@ package br.com.cnt.model.dao.balanco;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -183,7 +185,6 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
  	
  	public List<SaldoContabil> buscarSaldosBalancete(Exercicio exercicio, Date de, Date ate){
  		
-		LancamentoDAO daoLancamento = new LancamentoDAO();
 		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
 		
 		/* Busca todas as contas deste plano de contas */
@@ -202,26 +203,26 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		}
 		
 		/* Busca do banco os valores dos saldos iniciais e movimento */
-		List<SaldoContabil> listSID = daoLancamento.buscarSaldoInicialDebito(exercicio, de);
+		List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
 		for (SaldoContabil saldoContabil : listSID) {
 			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
 			sc.setSaldoInicial(saldoContabil.getSaldoInicial());
 		}
 		
-		List<SaldoContabil> listSIC = daoLancamento.buscarSaldoInicialCredito(exercicio, de);
+		List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
 		for (SaldoContabil saldoContabil : listSIC) {
 			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
 			BigDecimal subtract = sc.getSaldoInicial().subtract(saldoContabil.getSaldoInicial());
 			sc.setSaldoInicial(subtract);
 		}
 		
-		List<SaldoContabil> listD = daoLancamento.buscarSaldoDebito(exercicio, de, ate);
+		List<SaldoContabil> listD = buscarSaldoDebito(exercicio, de, ate);
 		for (SaldoContabil saldoContabil : listD) {
 			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
 			sc.setDebito(saldoContabil.getDebito());
 		}
 		
-		List<SaldoContabil> listC = daoLancamento.buscarSaldoCredito(exercicio, de, ate);
+		List<SaldoContabil> listC = buscarSaldoCredito(exercicio, de, ate);
 		for (SaldoContabil saldoContabil : listC) {
 			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
 			sc.setCredito(saldoContabil.getCredito());
@@ -518,6 +519,65 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		SaldoRazao uniqueResult = (SaldoRazao) query.uniqueResult();
  		return uniqueResult;
 	}
+
+ 	public List<SaldoContabil> buscarSaldosBalanco(Exercicio exercicio){
+ 		
+ 		Date de = new GregorianCalendar(exercicio.getAno()+1, Calendar.JANUARY, 1).getTime();
+ 		
+		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
+		
+		/* Busca todas as contas deste plano de contas */
+		List<Conta> contas = daoPlanoContas.retornarContas(exercicio);
+		
+		/* Gera uma lista de Saldos Contabeis */
+		List<SaldoContabil> saldosContabeis = new ArrayList<SaldoContabil>();
+		for (Conta conta : contas) {
+			SaldoContabil sc = new SaldoContabil();
+			sc.setConta(conta);
+			sc.setSaldoInicial(BigDecimal.ZERO);
+			sc.setDebito(BigDecimal.ZERO);
+			sc.setCredito(BigDecimal.ZERO);
+			sc.setSaldoFinal(BigDecimal.ZERO);
+			saldosContabeis.add(sc);
+		}
+		
+		/* Busca do banco os valores dos saldos iniciais e movimento */
+		List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
+		for (SaldoContabil saldoContabil : listSID) {
+			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			sc.setSaldoInicial(saldoContabil.getSaldoInicial());
+		}
+		
+		List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
+		for (SaldoContabil saldoContabil : listSIC) {
+			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			BigDecimal subtract = sc.getSaldoInicial().subtract(saldoContabil.getSaldoInicial());
+			sc.setSaldoInicial(subtract);
+		}
+		
+//		List<SaldoContabil> listD = buscarSaldoDebito(exercicio, de, ate);
+//		for (SaldoContabil saldoContabil : listD) {
+//			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+//			sc.setDebito(saldoContabil.getDebito());
+//		}
+//		
+//		List<SaldoContabil> listC = buscarSaldoCredito(exercicio, de, ate);
+//		for (SaldoContabil saldoContabil : listC) {
+//			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+//			sc.setCredito(saldoContabil.getCredito());
+//		}
+		
+		/* Calcula o saldo final */
+		for (SaldoContabil sc : saldosContabeis) {
+			inicializarNulos(sc);
+			BigDecimal saldoFinal = sc.getSaldoInicial().add(sc.getDebito()).subtract(sc.getCredito());
+			sc.setSaldoFinal(saldoFinal);
+		}
+		
+		calculandoBalancete(saldosContabeis);
+		
+		return saldosContabeis;
+ 	}
 
 }
  

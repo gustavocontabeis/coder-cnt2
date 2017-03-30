@@ -30,27 +30,27 @@ public class LancamentoDAOTest {
 
 	@Test
 	public void testBuscarLancamentos() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	@Test
 	public void testBuscarSaldoInicialDebito() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	@Test
 	public void testBuscarSaldoInicialCredito() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	@Test
 	public void testBuscarSaldoDebito() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	@Test
 	public void testBuscarSaldoCredito() {
-		//fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	@Test
@@ -61,29 +61,23 @@ public class LancamentoDAOTest {
 		exercicio = exercicioDAO.buscar(exercicio.getId());
 		Empresa empresa = exercicio.getEmpresa();
 		exercicio.setEmpresa(empresa);
-		
+
 		Balancete balancete = new Balancete();
 		balancete.setExercicio(exercicio);
 		Date de = new GregorianCalendar(2017, Calendar.JANUARY, 1).getTime();
 		balancete.setDe(de);
 		Date ate = new GregorianCalendar(2017, Calendar.DECEMBER, 31).getTime();
 		balancete.setAte(ate);
-		
+
 		List<SaldoContabil> saldosContabeis = new LancamentoDAO().buscarSaldosBalancete(exercicio, de, ate);
 		balancete.setSaldos(saldosContabeis);
 		for (SaldoContabil saldoContabil : balancete.getSaldos()) {
 			Conta conta = saldoContabil.getConta();
-			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", 
-					conta.getEstrutura(), 
-					conta.getNome(), 
-					saldoContabil.getSaldoInicial(),
-					saldoContabil.getDebito(),
-					saldoContabil.getCredito(),
-					saldoContabil.getSaldoFinal()
-					);
+			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", conta.getEstrutura(), conta.getNome(),
+					saldoContabil.getSaldoInicial(), saldoContabil.getDebito(), saldoContabil.getCredito(),
+					saldoContabil.getSaldoFinal());
 		}
-		
-		
+
 	}
 
 	@Test
@@ -104,6 +98,27 @@ public class LancamentoDAOTest {
 	@Test
 	public void testRetornarSaldoInicialRazaoCredito() {
 		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testRetornarSaldoInicialRazaoCredito2() throws DaoException {
+		
+		LancamentoDAO lancamentoDAO = new LancamentoDAO();
+		
+		Exercicio exercicio = new ExercicioDAO().buscar(1L);
+		
+		List<SaldoContabil> saldos = lancamentoDAO.buscarSaldosBalanco(exercicio);
+		for (SaldoContabil saldoContabil : saldos) {
+			Conta conta = saldoContabil.getConta();
+			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", 
+					conta.getEstrutura(), 
+					conta.getNome(),
+					saldoContabil.getSaldoInicial(), 
+					saldoContabil.getDebito(), 
+					saldoContabil.getCredito(),
+					saldoContabil.getSaldoFinal());
+		}
+
 	}
 
 }
