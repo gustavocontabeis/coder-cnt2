@@ -216,7 +216,7 @@ public class Conta extends BaseEntity implements Comparable<Conta>{
 	    i = conta.getContaTipo().compareTo(contaTipo);
 	    if (i != 0) return i;
 
-	    i = ordem.compareTo(conta.getOrdem());
+	    i = ordem.compareTo(conta.getOrdem()!=null?conta.getOrdem():0);
 	    if (i != 0) return i;
 		
 		return nome.compareTo(conta.getNome());

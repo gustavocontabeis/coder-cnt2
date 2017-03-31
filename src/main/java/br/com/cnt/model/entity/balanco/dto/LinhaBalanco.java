@@ -2,6 +2,8 @@ package br.com.cnt.model.entity.balanco.dto;
 
 import java.io.Serializable;
 
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
+
 public class LinhaBalanco implements Serializable {
 	
 	/**

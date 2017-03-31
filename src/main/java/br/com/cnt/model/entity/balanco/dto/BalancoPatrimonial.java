@@ -3,9 +3,15 @@ package br.com.cnt.model.entity.balanco.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
+import br.com.cnt.model.entity.balanco.Empresa;
+
 public class BalancoPatrimonial {
 	
+	private Empresa empresa;
+	
 	private List<LinhaBalanco> list = new ArrayList<>();
+	private List<SaldoBalanco> saldos = new ArrayList<>();
 
 	public void addLinha(SaldoContabil saldoContabilAtivo, SaldoContabil saldoContabilPassivo) {
 		list.add(new LinhaBalanco(saldoContabilAtivo, saldoContabilPassivo));
@@ -17,6 +23,22 @@ public class BalancoPatrimonial {
 
 	public void setList(List<LinhaBalanco> list) {
 		this.list = list;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public List<SaldoBalanco> getSaldos() {
+		return saldos;
+	}
+
+	public void setSaldos(List<SaldoBalanco> saldos) {
+		this.saldos = saldos;
 	}
 	
 }

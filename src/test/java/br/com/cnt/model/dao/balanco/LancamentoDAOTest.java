@@ -11,11 +11,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.cnt.model.entity.balancete.dto.Balancete;
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
-import br.com.cnt.model.entity.balanco.dto.Balancete;
-import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
+import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
+import br.com.cnt.model.entity.balanco.dto.LinhaBalanco;
+import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
+import br.com.cnt.model.entity.balanco.dto.ValorContabil;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 
 public class LancamentoDAOTest {
@@ -101,23 +105,48 @@ public class LancamentoDAOTest {
 	}
 
 	@Test
-	public void testRetornarSaldoInicialRazaoCredito2() throws DaoException {
+	public void testBalanco() throws DaoException {
 		
 		LancamentoDAO lancamentoDAO = new LancamentoDAO();
 		
 		Exercicio exercicio = new ExercicioDAO().buscar(1L);
 		
-		List<SaldoContabil> saldos = lancamentoDAO.buscarSaldosBalanco(exercicio);
-		for (SaldoContabil saldoContabil : saldos) {
-			Conta conta = saldoContabil.getConta();
-			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", 
-					conta.getEstrutura(), 
-					conta.getNome(),
-					saldoContabil.getSaldoInicial(), 
-					saldoContabil.getDebito(), 
-					saldoContabil.getCredito(),
-					saldoContabil.getSaldoFinal());
+		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarSaldosBalanco(exercicio);
+		
+		System.out.println(buscarSaldosBalanco.getEmpresa().getRazaoSocial());
+		
+		List<SaldoBalanco> saldos = buscarSaldosBalanco.getSaldos();
+		for (SaldoBalanco saldoBalanco : saldos) {
+			Conta conta = saldoBalanco.getConta();
+			System.out.printf("%-60s|", conta.getNome());
+			ValorContabil[] valores = saldoBalanco.getValores();
+			for (ValorContabil valorContabil : valores) {
+				System.out.printf("%-10s|", valorContabil);
+			}
+			System.out.println();
 		}
+		
+		
+//		List<LinhaBalanco> list = buscarSaldosBalanco.getList();
+//		for (LinhaBalanco linhaBalanco : list) {
+//			SaldoContabil ativo = linhaBalanco.getAtivo();
+//			SaldoContabil passivo = linhaBalanco.getPassivo();
+//		}
+		
+		
+		
+		
+//		List<SaldoContabil> saldos = null;
+//		for (SaldoContabil saldoContabil : saldos) {
+//			Conta conta = saldoContabil.getConta();
+//			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", 
+//					conta.getEstrutura(), 
+//					conta.getNome(),
+//					saldoContabil.getSaldoInicial(), 
+//					saldoContabil.getDebito(), 
+//					saldoContabil.getCredito(),
+//					saldoContabil.getSaldoFinal());
+//		}
 
 	}
 

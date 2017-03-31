@@ -23,12 +23,15 @@ import org.slf4j.LoggerFactory;
 
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.Lancamento;
-import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
+import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
+import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
 import br.com.cnt.model.entity.balanco.dto.SaldoRazao;
+import br.com.cnt.model.entity.balanco.dto.ValorContabil;
 import br.com.cnt.model.utils.ContaUtil;
 
 @javax.inject.Named @javax.faces.view.ViewScoped
@@ -302,6 +305,71 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		
 	}
 
+	private void calculandoBalanco(List<SaldoBalanco> saldosBalanco) {
+		List<SaldoBalanco> jaSomados = new ArrayList<>();
+		
+		/* Ordenando em order decrescente de estrutura */
+		Collections.sort(saldosBalanco);
+		Collections.reverse(saldosBalanco);
+		
+		//System.out.println("----------- ordem decrescente ---------------------------------");
+		
+		int maiorNivel = buscarMaiorNivelSaldoBalanco(saldosBalanco);
+		
+		
+		//System.out.println("--------------soma------------------------------");
+		
+		int length = saldosBalanco.iterator().next().getValores().length;
+			
+			for (int j = 0; j < length; j++) {
+				int nivelAtual = maiorNivel;
+				while(nivelAtual >= 1){
+				
+				SaldoBalanco soma = null;//retirar este aqui
+				for (Iterator<SaldoBalanco> iterator = saldosBalanco.iterator(); iterator.hasNext();) {
+					SaldoBalanco saldoContabil = iterator.next();
+					
+					//System.out.println("Tentando calcular: ");
+					//System.out.println("        "+saldoContabil);
+					if(saldoContabil.getConta() .getNivel().intValue() != nivelAtual){
+						//System.out.println("É do nível "+saldoContabil.getConta() .getNivel().intValue() +", não do nível "+nivelAtual);
+						continue;
+					}
+					
+					SaldoBalanco saldoContabilPai = buscarContaPai(saldosBalanco, saldoContabil);
+//				if(saldoContabil == null){
+//					System.out.println("Não tem Pai.");
+//				}
+					
+					if(saldoContabilPai !=null){
+						//System.out.println("Antes:  "+saldoContabilPai);
+						saldoContabilPai.getValores()[j].setValor(saldoContabilPai.getValores()[j].getValor().add(saldoContabil.getValores()[j].getValor()));
+						//System.out.println("Depois: "+saldoContabilPai);
+						jaSomados.add(saldoContabil);
+						iterator.remove();
+					}
+					
+				}
+				nivelAtual--;
+				saldosBalanco.addAll(jaSomados);
+				Collections.sort(saldosBalanco);
+			}
+		}
+		
+	}
+
+	private SaldoBalanco buscarContaPai(List<SaldoBalanco> saldosBalanco, SaldoBalanco saldoContabil) {
+		Conta pai = saldoContabil.getConta().getPai();
+		if(pai != null){
+			for (SaldoBalanco sc : saldosBalanco) {
+				if(sc.getConta().getId().equals(pai.getId())){
+					return sc;
+				}
+			}
+		}
+		return null;
+	}
+
 	private SaldoContabil buscarContaPai(List<SaldoContabil> saldosContabeis, SaldoContabil saldoContabil) {
 		Conta pai = saldoContabil.getConta().getPai();
 		if(pai != null){
@@ -312,6 +380,17 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			}
 		}
 		return null;
+	}
+
+	private int buscarMaiorNivelSaldoBalanco(List<SaldoBalanco> saldosBalanco) {
+		int maiorNivel = 0;
+		for (SaldoBalanco sc : saldosBalanco) {
+			//System.out.println(sc);
+			if(sc.getConta().getNivel() > maiorNivel){
+				maiorNivel = sc.getConta().getNivel();
+			}
+		}
+		return maiorNivel;
 	}
 
 	private int buscarMaiorNivel(List<SaldoContabil> saldosContabeis) {
@@ -520,63 +599,76 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
  		return uniqueResult;
 	}
 
- 	public List<SaldoContabil> buscarSaldosBalanco(Exercicio exercicio){
+ 	public BalancoPatrimonial buscarSaldosBalanco(Exercicio exercicio){
  		
- 		Date de = new GregorianCalendar(exercicio.getAno()+1, Calendar.JANUARY, 1).getTime();
  		
 		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
 		
 		/* Busca todas as contas deste plano de contas */
 		List<Conta> contas = daoPlanoContas.retornarContas(exercicio);
 		
+		int quantExercicios = 3;
+		
+		int[] exercicios = new int[quantExercicios];
+		ValorContabil[] valores = new ValorContabil[quantExercicios];
+		
+		for (int i = 0; i < valores.length; i++) {
+			valores[i] = new ValorContabil(null, BigDecimal.ZERO);
+		}
+		
+		for (int i = 0; i < exercicios.length; i++) {
+			exercicios[i] = exercicio.getAno()-(i);
+		}
+		
 		/* Gera uma lista de Saldos Contabeis */
-		List<SaldoContabil> saldosContabeis = new ArrayList<SaldoContabil>();
+		List<SaldoBalanco> saldosBalanco = new ArrayList<SaldoBalanco>();
+		
 		for (Conta conta : contas) {
-			SaldoContabil sc = new SaldoContabil();
+			SaldoBalanco sc = new SaldoBalanco();
 			sc.setConta(conta);
-			sc.setSaldoInicial(BigDecimal.ZERO);
-			sc.setDebito(BigDecimal.ZERO);
-			sc.setCredito(BigDecimal.ZERO);
-			sc.setSaldoFinal(BigDecimal.ZERO);
-			saldosContabeis.add(sc);
+			sc.setValores(valores);
+			saldosBalanco.add(sc);
 		}
 		
-		/* Busca do banco os valores dos saldos iniciais e movimento */
-		List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
-		for (SaldoContabil saldoContabil : listSID) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-			sc.setSaldoInicial(saldoContabil.getSaldoInicial());
-		}
+		BalancoPatrimonial bp = new BalancoPatrimonial();
+		bp.setEmpresa(exercicio.getEmpresa());
+		bp.setSaldos(saldosBalanco);
 		
-		List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
-		for (SaldoContabil saldoContabil : listSIC) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-			BigDecimal subtract = sc.getSaldoInicial().subtract(saldoContabil.getSaldoInicial());
-			sc.setSaldoInicial(subtract);
-		}
-		
-//		List<SaldoContabil> listD = buscarSaldoDebito(exercicio, de, ate);
-//		for (SaldoContabil saldoContabil : listD) {
-//			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-//			sc.setDebito(saldoContabil.getDebito());
+		int i = 0;
+		for (int ano : exercicios) {
+			
+			Date de = new GregorianCalendar(ano+1, Calendar.JANUARY, 1).getTime();
+			
+			/* Busca do banco os valores dos saldos iniciais e movimento */
+			List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
+			for (SaldoContabil saldoContabil : listSID) {
+				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				sb.setConta(sb.getConta());
+				sb.getValores()[i] = new ValorContabil(sb.getConta(), saldoContabil.getSaldoInicial());
+			}
+			
+			List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
+			for (SaldoContabil saldoContabil : listSIC) {
+				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				BigDecimal subtract = sb.getValores()[i].getValor().subtract(saldoContabil.getSaldoInicial());
+				sb.getValores()[i].setValor(subtract);
+			}
+			
+			
+//		/* Calcula o saldo final */
+//		for (SaldoContabil sc : saldosContabeis) {
+//			inicializarNulos(sc);
+//			BigDecimal saldoFinal = sc.getSaldoInicial().add(sc.getDebito()).subtract(sc.getCredito());
+//			sc.setSaldoFinal(saldoFinal);
 //		}
-//		
-//		List<SaldoContabil> listC = buscarSaldoCredito(exercicio, de, ate);
-//		for (SaldoContabil saldoContabil : listC) {
-//			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-//			sc.setCredito(saldoContabil.getCredito());
-//		}
-		
-		/* Calcula o saldo final */
-		for (SaldoContabil sc : saldosContabeis) {
-			inicializarNulos(sc);
-			BigDecimal saldoFinal = sc.getSaldoInicial().add(sc.getDebito()).subtract(sc.getCredito());
-			sc.setSaldoFinal(saldoFinal);
+			
+			calculandoBalanco(saldosBalanco);
+			i++;
 		}
 		
-		calculandoBalancete(saldosContabeis);
 		
-		return saldosContabeis;
+		
+		return null;
  	}
 
 }

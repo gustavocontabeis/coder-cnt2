@@ -1,4 +1,4 @@
-package br.com.cnt.model.entity.balanco.dto;
+package br.com.cnt.model.entity.balancete.dto;
 
 import java.io.Serializable;
 import java.util.Date;

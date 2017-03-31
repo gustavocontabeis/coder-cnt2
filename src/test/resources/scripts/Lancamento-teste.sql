@@ -1,0 +1,1 @@
+insert into LANCAMENTO (ID_LANCAMENTO, DATA, DEBITO, CREDITO, EXERCICIO, HISTORICO, LANCAMENTO_PRINCIPAL, lancamentoTipo, VALOR) values (default, TO_DATE ('01/06/2017', 'DD/MM/YYYY'),   4,    87, 1, 'Servico prestado a vista cfe nf nr 0001 - Matheus Portela Souza', null, 'SIMPLES', 1000.00);

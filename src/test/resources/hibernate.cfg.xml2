@@ -53,7 +53,18 @@
         <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <property name="hibernate.cache.use_query_cache">true</property>
         -->
-    <property name="hibernate.hbm2ddl.import_files">/import.sql</property>
+	<!-- 
+	 -->
+    <property name="hibernate.hbm2ddl.import_files">
+    /scripts/Usuario-postgres.sql, 
+    /scripts/Empresa.sql, 
+    /scripts/PlanoContas.sql, 
+    /scripts/Exercicio-postgres.sql, 
+    /scripts/Contas-1-comercio-ordem.sql,
+    /scripts/import-hsql.sql,
+    /scripts/LancamentoPadrao.sql, 
+    </property>
+	 
     <!-- Echo all executed SQL to stdout -->
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
@@ -62,40 +73,17 @@
     <property name="hbm2ddl.auto">create</property>
     
 <!-- <mapping class="br.com.imob.model.entity.Arquivo"/> -->
-     <mapping class="br.com.imob.model.entity.Construtora"/> 
-     <mapping class="br.com.imob.model.entity.Imagem"/> 
-     <mapping class="br.com.imob.model.entity.agenda.Agenda"/> 
-     <mapping class="br.com.imob.model.entity.agenda.AgendaEvento"/> 
-     <mapping class="br.com.imob.model.entity.agenda.MotivoEvento"/> 
-
-     <mapping class="br.com.imob.model.entity.endereco.Bairro"/> 
-     <mapping class="br.com.imob.model.entity.endereco.Logradouro"/> 
-     <mapping class="br.com.imob.model.entity.endereco.Municipio"/> 
-
-     <mapping class="br.com.imob.model.entity.imovel.Categoria"/>
-     <mapping class="br.com.imob.model.entity.imovel.DadosEdificio"/> 
-     <mapping class="br.com.imob.model.entity.imovel.Imovel"/> 
-     <mapping class="br.com.imob.model.entity.imovel.Historico"/> 
-	 <mapping class="br.com.imob.model.entity.imovel.ImovelCaracteristicas"/>
-     <mapping class="br.com.imob.model.entity.imovel.ImovelComplemento"/> 
-     <mapping class="br.com.imob.model.entity.imovel.ImovelImagem"/> 
-     <mapping class="br.com.imob.model.entity.imovel.PerfilImovel"/> 
-    
-     <mapping class="br.com.imob.model.entity.negocio.Negocio"/> 
-     <mapping class="br.com.imob.model.entity.negocio.Aluguel"/> 
-     <mapping class="br.com.imob.model.entity.negocio.Venda"/> 
-    
-     <mapping class="br.com.imob.model.entity.pessoas.Cliente"/> 
-     <mapping class="br.com.imob.model.entity.pessoas.Corretor"/>  
-     <mapping class="br.com.imob.model.entity.pessoas.Equipe"/> 
-     <mapping class="br.com.imob.model.entity.pessoas.Pessoa"/> 
-	 <mapping class="br.com.imob.model.entity.pessoas.RedesSociais"/>
-
-     <mapping class="br.com.imob.model.entity.usuarios.Usuario" />  
-     <mapping class="br.com.imob.model.entity.usuarios.PerfilAcesso" />  
-	 <mapping class="br.com.imob.model.entity.usuarios.UsuarioPerfil" />
-    
-    <!-- 
-		 -->
+     <mapping class="br.com.coder.arqprime.model.entity.app.usuarios.Usuario" />  
+     <mapping class="br.com.coder.arqprime.model.entity.app.usuarios.PerfilAcesso" />  
+	 <mapping class="br.com.coder.arqprime.model.entity.app.usuarios.UsuarioPerfil" />
+	 <mapping class="br.com.coder.arqprime.model.entity.app.Configuracao" />
+     <mapping class="br.com.cnt.model.entity.balanco.Conta" />  
+     <mapping class="br.com.cnt.model.entity.balanco.Empresa" />  
+     <mapping class="br.com.cnt.model.entity.balanco.Exercicio" />  
+     <mapping class="br.com.cnt.model.entity.balanco.Lancamento" />  
+     <mapping class="br.com.cnt.model.entity.balanco.LancamentoPadrao" />  
+     <mapping class="br.com.cnt.model.entity.balanco.PlanoContas" />  
+	 <mapping class="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
+	 
   </session-factory>
 </hibernate-configuration>

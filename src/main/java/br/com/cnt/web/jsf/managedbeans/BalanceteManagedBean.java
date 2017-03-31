@@ -22,12 +22,12 @@ import org.apache.commons.lang.StringUtils;
 import br.com.cnt.model.dao.balanco.BalanceteDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
 import br.com.cnt.model.dao.balanco.LancamentoDAO;
+import br.com.cnt.model.entity.balancete.dto.Balancete;
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
-import br.com.cnt.model.entity.balanco.dto.Balancete;
 import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
-import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 

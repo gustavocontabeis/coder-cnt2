@@ -7,11 +7,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
+import br.com.cnt.model.entity.balancete.dto.Balancete;
+import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
-import br.com.cnt.model.entity.balanco.dto.Balancete;
-import br.com.cnt.model.entity.balanco.dto.SaldoContabil;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 
 @javax.inject.Named @javax.faces.view.ViewScoped
