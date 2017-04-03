@@ -1,6 +1,7 @@
 package br.com.cnt.model.entity.balanco.dto;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import br.com.cnt.model.entity.balanco.Conta;
 
@@ -32,4 +33,9 @@ public class SaldoBalanco implements Serializable, Comparable<SaldoBalanco>{
 		return this.getConta().compareTo(other.getConta());
 	}
 
+	@Override
+	public String toString() {
+		return "SaldoBalanco [conta=" + conta + ", valores=" + Arrays.toString(valores) + "]";
+	}
+	
 }

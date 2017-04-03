@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -109,16 +110,18 @@ public class LancamentoDAOTest {
 		
 		LancamentoDAO lancamentoDAO = new LancamentoDAO();
 		
-		Exercicio exercicio = new ExercicioDAO().buscar(1L);
+		Exercicio exercicio = new ExercicioDAO().buscar(153L);
 		
-		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarSaldosBalanco(exercicio);
+		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarSaldosBalanco(exercicio, 3);
 		
 		System.out.println(buscarSaldosBalanco.getEmpresa().getRazaoSocial());
 		
 		List<SaldoBalanco> saldos = buscarSaldosBalanco.getSaldos();
 		for (SaldoBalanco saldoBalanco : saldos) {
 			Conta conta = saldoBalanco.getConta();
-			System.out.printf("%-60s|", conta.getNome());
+			System.out.printf("%-60s", StringUtils.repeat("-", conta.getNivel())+conta.getNome());
+			System.out.print(conta.getContaTipo().name().substring(0,1)+" | ");
+			
 			ValorContabil[] valores = saldoBalanco.getValores();
 			for (ValorContabil valorContabil : valores) {
 				System.out.printf("%-10s|", valorContabil);

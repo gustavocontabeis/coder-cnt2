@@ -13,15 +13,17 @@ import br.com.cnt.model.utils.ContaUtil;
 public class ValorContabil {
 	
 	private Conta conta;
+	private Integer exercicio;
 	private BigDecimal valor;
 	
 	public ValorContabil() {
 		super();
 	}
 	
-	public ValorContabil(Conta conta, BigDecimal valor) {
+	public ValorContabil(Conta conta, Integer exercicio, BigDecimal valor) {
 		super();
 		this.conta = conta;
+		this.exercicio = exercicio;
 		this.valor = valor;
 	}
 	
@@ -33,6 +35,14 @@ public class ValorContabil {
 		this.conta = conta;
 	}
 	
+	public Integer getExercicio() {
+		return exercicio;
+	}
+
+	public void setExercicio(Integer exercicio) {
+		this.exercicio = exercicio;
+	}
+
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -40,6 +50,7 @@ public class ValorContabil {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
+	
 	
 	public boolean isPositivo(){
 		return ContaUtil.isValorContabilPositivo(valor.floatValue(), conta.getContaOrigem());
