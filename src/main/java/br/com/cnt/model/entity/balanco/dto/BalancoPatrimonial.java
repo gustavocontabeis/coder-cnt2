@@ -17,6 +17,10 @@ public class BalancoPatrimonial {
 		list.add(new LinhaBalanco(saldoContabilAtivo, saldoContabilPassivo));
 	}
 
+	public void addLinha(SaldoBalanco saldoContabilAtivo, SaldoBalanco saldoContabilPassivo) {
+		list.add(new LinhaBalanco(saldoContabilAtivo, saldoContabilPassivo));
+	}
+
 	public List<LinhaBalanco> getList() {
 		return list;
 	}

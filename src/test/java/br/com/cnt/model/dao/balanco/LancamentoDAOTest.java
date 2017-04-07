@@ -20,6 +20,7 @@ import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
 import br.com.cnt.model.entity.balanco.dto.LinhaBalanco;
 import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
+import br.com.cnt.model.entity.balanco.dto.SaldoExercicio;
 import br.com.cnt.model.entity.balanco.dto.ValorContabil;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 
@@ -112,44 +113,22 @@ public class LancamentoDAOTest {
 		
 		Exercicio exercicio = new ExercicioDAO().buscar(153L);
 		
-		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarSaldosBalanco(exercicio, 3);
+		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, 3);
 		
 		System.out.println(buscarSaldosBalanco.getEmpresa().getRazaoSocial());
 		
-		List<SaldoBalanco> saldos = buscarSaldosBalanco.getSaldos();
-		for (SaldoBalanco saldoBalanco : saldos) {
+		List<SaldoBalanco> saldosBalanco = buscarSaldosBalanco.getSaldos();
+		for (SaldoBalanco saldoBalanco : saldosBalanco) {
 			Conta conta = saldoBalanco.getConta();
 			System.out.printf("%-60s", StringUtils.repeat("-", conta.getNivel())+conta.getNome());
 			System.out.print(conta.getContaTipo().name().substring(0,1)+" | ");
 			
-			ValorContabil[] valores = saldoBalanco.getValores();
-			for (ValorContabil valorContabil : valores) {
-				System.out.printf("%-10s|", valorContabil);
+			SaldoExercicio[] saldosExercicios = saldoBalanco.getSaldos();
+			for (SaldoExercicio saldoExercicio : saldosExercicios) {
+				System.out.printf("%10s|", saldoExercicio.getValor());
 			}
 			System.out.println();
 		}
-		
-		
-//		List<LinhaBalanco> list = buscarSaldosBalanco.getList();
-//		for (LinhaBalanco linhaBalanco : list) {
-//			SaldoContabil ativo = linhaBalanco.getAtivo();
-//			SaldoContabil passivo = linhaBalanco.getPassivo();
-//		}
-		
-		
-		
-		
-//		List<SaldoContabil> saldos = null;
-//		for (SaldoContabil saldoContabil : saldos) {
-//			Conta conta = saldoContabil.getConta();
-//			System.out.printf("%-20s | %-50s | %20s | %20s | %20s | %20s \n", 
-//					conta.getEstrutura(), 
-//					conta.getNome(),
-//					saldoContabil.getSaldoInicial(), 
-//					saldoContabil.getDebito(), 
-//					saldoContabil.getCredito(),
-//					saldoContabil.getSaldoFinal());
-//		}
 
 	}
 

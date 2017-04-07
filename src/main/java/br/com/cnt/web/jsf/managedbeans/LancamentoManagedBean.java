@@ -175,4 +175,10 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 		return dao;
 	}
 	
+//	@Override
+//	protected Map<String, Object> getFilters(Map<String, Object> filters) {
+//		Exercicio exercicio = (Exercicio) getSession().getAttribute("exercicio");
+//		filters.put("exercicio.id", exercicio.getId());
+//		return filters;
+//	}
 }

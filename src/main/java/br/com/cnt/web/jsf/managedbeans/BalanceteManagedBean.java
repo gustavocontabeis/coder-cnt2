@@ -28,6 +28,8 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
+import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
+import br.com.cnt.model.entity.balanco.dto.SaldoExercicio;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 
@@ -39,6 +41,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	
 	private Balancete balancete;
 	private BalancoPatrimonial bp;
+	BalancoPatrimonial balanco;
 		
 	@Inject 
 	private BalanceteDAO dao;
@@ -52,6 +55,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	private List<SaldoContabil> selecionados;
 	private int nivel = 0;
 	private boolean retirarContasSemValor;
+	private int quantidadeDeExercicios;
 	
 	@PostConstruct
 	private void init() {
@@ -124,6 +128,33 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		}
 	}
 	
+	public void exibirBalancoPatrimonial2(ActionEvent evt){
+LancamentoDAO lancamentoDAO = new LancamentoDAO();
+		
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
+
+		if(quantidadeDeExercicios == 0){
+			quantidadeDeExercicios = 1;
+		}
+		
+		balanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, quantidadeDeExercicios);
+		
+		List<SaldoBalanco> saldosBalanco = balanco.getSaldos();
+		for (SaldoBalanco saldoBalanco : saldosBalanco) {
+			Conta conta = saldoBalanco.getConta();
+			System.out.printf("%-60s", StringUtils.repeat("-", conta.getNivel())+conta.getNome());
+			System.out.print(conta.getContaTipo().name().substring(0,1)+" | ");
+			
+			SaldoExercicio[] saldosExercicios = saldoBalanco.getSaldos();
+			for (SaldoExercicio saldoExercicio : saldosExercicios) {
+				System.out.printf("%10s|", saldoExercicio.getValor());
+			}
+			System.out.println();
+		}
+	}
+	
+	@Deprecated
 	public void exibirBalancoPatrimonial(ActionEvent evt){
 		//this.nivel = 2;
 		//exibirAteNivel(null);
@@ -253,6 +284,22 @@ public class BalanceteManagedBean extends BaseManagedBean{
 
 	public void setBp(BalancoPatrimonial bp) {
 		this.bp = bp;
+	}
+
+	public int getQuantidadeDeExercicios() {
+		return quantidadeDeExercicios;
+	}
+
+	public void setQuantidadeDeExercicios(int quantidadeDeExercicios) {
+		this.quantidadeDeExercicios = quantidadeDeExercicios;
+	}
+
+	public BalancoPatrimonial getBalanco() {
+		return balanco;
+	}
+
+	public void setBalanco(BalancoPatrimonial balanco) {
+		this.balanco = balanco;
 	}
 	
 }

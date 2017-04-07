@@ -84,7 +84,7 @@ public class Conta extends BaseEntity implements Comparable<Conta> {
 	private Conta pai;
 
 	// @NotNull
-	@OneToMany(targetEntity = Conta.class, fetch = LAZY, mappedBy = "pai", cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = Conta.class, fetch = FetchType.EAGER, mappedBy = "pai", cascade = { CascadeType.ALL })
 	private List<Conta> subContas;
 
 	public Conta() {

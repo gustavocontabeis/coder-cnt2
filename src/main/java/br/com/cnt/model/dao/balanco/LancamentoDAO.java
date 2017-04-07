@@ -32,6 +32,7 @@ import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.Lancamento;
 import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
 import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
+import br.com.cnt.model.entity.balanco.dto.SaldoExercicio;
 import br.com.cnt.model.entity.balanco.dto.SaldoRazao;
 import br.com.cnt.model.entity.balanco.dto.ValorContabil;
 import br.com.cnt.model.utils.ContaUtil;
@@ -328,8 +329,8 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 	 * @param saldosBalanco
 	 */
 	private void calculandoBalanco(List<SaldoBalanco> saldosBalanco) {
+		
 		// List<SaldoBalanco> jaSomados = new ArrayList<>();
-
 		
 		/* Ordenando em order decrescente de estrutura */
 		
@@ -351,7 +352,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 
 		// System.out.println("--------------soma------------------------------");
 
-		int length = saldosBalanco.iterator().next().getValores().length;
+		int length = saldosBalanco.iterator().next().getSaldos().length;
 
 		for (int indiceAno = 0; indiceAno < length; indiceAno++) {
 			System.out.println("\nIndice do ano: "+indiceAno);
@@ -378,7 +379,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 
 					if (saldoContabilPai != null) {
 						System.out.println("         Antes: " + saldoContabilPai);
-						saldoContabilPai.getValores()[indiceAno].setValor(saldoContabilPai.getValores()[indiceAno].getValor().add(saldoContabil.getValores()[indiceAno].getValor()));
+						saldoContabilPai.getSaldos()[indiceAno].getValor().setValor(saldoContabilPai.getSaldos()[indiceAno].getValor().getValor().add(saldoContabil.getSaldos()[indiceAno].getValor().getValor()));
 						System.out.println("         Depois: " + saldoContabilPai);
 						// jaSomados.add(saldoContabil);
 						// iterator.remove();
@@ -642,11 +643,12 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 	 * @param quantExercicios
 	 * @return
 	 */
-	public BalancoPatrimonial buscarSaldosBalanco(Exercicio exercicio, int quantExercicios) {
+	public BalancoPatrimonial buscarBalancoPatrimonial(Exercicio exercicio, int quantExercicios) {
 
 		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
 
 		/* Busca todas as contas deste plano de contas */
+		
 		List<Conta> contas = daoPlanoContas.retornarContas(exercicio);
 
 		int[] exercicios = new int[quantExercicios];
@@ -661,16 +663,17 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		List<SaldoBalanco> saldosBalanco = new ArrayList<SaldoBalanco>();
 
 		for (Conta conta : contas) {
-			SaldoBalanco sc = new SaldoBalanco();
-			sc.setConta(conta);
-
-			ValorContabil[] valores = new ValorContabil[quantExercicios];
-			for (int i = 0; i < valores.length; i++) {
-				valores[i] = new ValorContabil(conta, exercicios[i], BigDecimal.ZERO);
+			SaldoBalanco saldoBalanco = new SaldoBalanco();
+			saldoBalanco.setConta(conta);
+			SaldoExercicio[] saldos = new SaldoExercicio[quantExercicios];
+			for (int i = 0; i < saldos.length; i++) {
+				SaldoExercicio saldoExercicio = new SaldoExercicio();
+				saldoExercicio.setValor(new ValorContabil(conta, BigDecimal.ZERO));
+				saldos[i] = saldoExercicio;
 			}
-			sc.setValores(valores);
+			saldoBalanco.setSaldos(saldos);
 
-			saldosBalanco.add(sc);
+			saldosBalanco.add(saldoBalanco);
 		}
 
 		BalancoPatrimonial bp = new BalancoPatrimonial();
@@ -685,39 +688,27 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			/* Busca do banco os valores dos saldos iniciais e movimento */
 			List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
 			for (SaldoContabil saldoContabil : listSID) {
-				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco,
-						new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-				// sb.setConta(sb.getConta());
-				// sb.getValores()[i].setConta(saldoContabil.getConta());
-				sb.getValores()[i].setValor(saldoContabil.getSaldoInicial());
+				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				sb.getSaldos()[i].getValor().setValor(saldoContabil.getSaldoInicial());
 			}
 
 			List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
 			for (SaldoContabil saldoContabil : listSIC) {
-				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco,
-						new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-				BigDecimal subtract = sb.getValores()[i].getValor().subtract(saldoContabil.getSaldoInicial());
-				sb.getValores()[i].setValor(subtract);
+				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				BigDecimal subtract = sb.getSaldos()[i].getValor().getValor().subtract(saldoContabil.getSaldoInicial());
+				sb.getSaldos()[i].getValor().setValor(subtract);
 			}
-
-			// /* Calcula o saldo final */
-			// for (SaldoContabil sc : saldosContabeis) {
-			// inicializarNulos(sc);
-			// BigDecimal saldoFinal =
-			// sc.getSaldoInicial().add(sc.getDebito()).subtract(sc.getCredito());
-			// sc.setSaldoFinal(saldoFinal);
-			// }
 
 			i++;
 		}
 
 		for (SaldoBalanco saldoBalanco : saldosBalanco) {
-			ValorContabil[] valores2 = saldoBalanco.getValores();
-			for (ValorContabil valorContabil : valores2) {
-				if (valorContabil.getConta() == null) {
-					valorContabil.setConta(saldoBalanco.getConta());
+			SaldoExercicio[] saldos = saldoBalanco.getSaldos();
+			for (SaldoExercicio saldoExercicio : saldos) {
+				if (saldoExercicio.getValor().getConta() == null) {
+					saldoExercicio.getValor().setConta(saldoBalanco.getConta());
 				} else {
-					if (!valorContabil.getConta().equals(saldoBalanco.getConta())) {
+					if (!saldoExercicio.getValor().getConta().equals(saldoBalanco.getConta())) {
 						throw new RuntimeException("Erro ao calcular o balanço. A conta não está correta.");
 					}
 				}
@@ -725,6 +716,15 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		}
 
 		calculandoBalanco(saldosBalanco);
+		
+		for(Iterator<SaldoBalanco> it =saldosBalanco.iterator() ; it.hasNext() ;){
+			SaldoBalanco next = it.next();
+			String estrutura = next.getConta().getEstrutura();
+			if( !(estrutura.startsWith("1.") || estrutura.startsWith("2.")) ){
+				System.out.println(estrutura);
+				it.remove();
+			}
+		}
 
 		return bp;
 	}

@@ -13,6 +13,7 @@ import br.com.cnt.model.utils.ContaUtil;
 public class ValorContabil {
 	
 	private Conta conta;
+	@Deprecated
 	private Integer exercicio;
 	private BigDecimal valor;
 	
@@ -20,6 +21,13 @@ public class ValorContabil {
 		super();
 	}
 	
+	public ValorContabil(Conta conta, BigDecimal valor) {
+		super();
+		this.conta = conta;
+		this.valor = valor;
+	}
+	
+	@Deprecated
 	public ValorContabil(Conta conta, Integer exercicio, BigDecimal valor) {
 		super();
 		this.conta = conta;
@@ -35,10 +43,12 @@ public class ValorContabil {
 		this.conta = conta;
 	}
 	
+	@Deprecated
 	public Integer getExercicio() {
 		return exercicio;
 	}
-
+	
+	@Deprecated
 	public void setExercicio(Integer exercicio) {
 		this.exercicio = exercicio;
 	}

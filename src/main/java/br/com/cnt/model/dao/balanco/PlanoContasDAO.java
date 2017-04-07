@@ -7,7 +7,6 @@ import javax.inject.Named;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
@@ -19,11 +18,9 @@ public class PlanoContasDAO extends BaseDAO<PlanoContas> {
 	private static final long serialVersionUID = 1L;
  	
 	/**
-	 * 
- 		Conta conta = null;
- 		conta.getEmpresa().getId();
- 		conta.getPlanoContas().getId();
- 		conta.getExercicio().getId();
+	 * conta.empresa.id;
+ 	 * conta.planoContas.id;
+ 	 * 
 	 * @param empresa
 	 * @param exercicio
 	 * @param planoContas
