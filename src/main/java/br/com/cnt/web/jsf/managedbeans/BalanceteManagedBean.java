@@ -28,6 +28,7 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.dto.BalancoPatrimonial;
+import br.com.cnt.model.entity.balanco.dto.LinhaBalanco;
 import br.com.cnt.model.entity.balanco.dto.SaldoBalanco;
 import br.com.cnt.model.entity.balanco.dto.SaldoExercicio;
 import br.com.coder.arqprime.model.dao.app.DaoException;
@@ -75,7 +76,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	}
 	
 	public void exibirBalancoListener(ComponentSystemEvent evt) throws AbortProcessingException{
-		exibirBalancoPatrimonial(null);
+		exibirBalancoPatrimonial2(null);
 	}
 	
 	public void exibirBalancete(ActionEvent evt){
@@ -129,19 +130,19 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	}
 	
 	public void exibirBalancoPatrimonial2(ActionEvent evt){
-LancamentoDAO lancamentoDAO = new LancamentoDAO();
+		
+		LancamentoDAO lancamentoDAO = new LancamentoDAO();
 		
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		Exercicio exercicio = (Exercicio) session.getAttribute("exercicio");
 
 		if(quantidadeDeExercicios == 0){
-			quantidadeDeExercicios = 1;
+			quantidadeDeExercicios = 3;
 		}
 		
 		balanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, quantidadeDeExercicios);
 		
-		List<SaldoBalanco> saldosBalanco = balanco.getSaldos();
-		for (SaldoBalanco saldoBalanco : saldosBalanco) {
+		for (SaldoBalanco saldoBalanco : balanco.getSaldos()) {
 			Conta conta = saldoBalanco.getConta();
 			System.out.printf("%-60s", StringUtils.repeat("-", conta.getNivel())+conta.getNome());
 			System.out.print(conta.getContaTipo().name().substring(0,1)+" | ");
@@ -152,6 +153,26 @@ LancamentoDAO lancamentoDAO = new LancamentoDAO();
 			}
 			System.out.println();
 		}
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+		List<LinhaBalanco> list = balanco.getList();
+		for (LinhaBalanco linhaBalanco : list) {
+			SaldoBalanco ativo2 = linhaBalanco.getAtivo2();
+			System.out.printf("%-40s | ", ativo2.getConta().getNome());
+			SaldoExercicio[] saldosAtivo = ativo2.getSaldos();
+			for (SaldoExercicio saldoExercicio : saldosAtivo) {
+				System.out.printf("%s | ", saldoExercicio.getAno());
+				System.out.printf("%10s | ", saldoExercicio.getValor());
+			}
+			SaldoBalanco passivo2 = linhaBalanco.getPassivo2();
+			System.out.printf("%-40s | ", passivo2.getConta().getNome());
+			SaldoExercicio[] saldosPassivo = passivo2.getSaldos();
+			for (SaldoExercicio saldoExercicio : saldosPassivo) {
+				System.out.printf("%s | ", saldoExercicio.getAno());
+				System.out.printf("%10s | ", saldoExercicio.getValor());
+			}
+			System.out.println();
+		}
+		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
 	
 	@Deprecated

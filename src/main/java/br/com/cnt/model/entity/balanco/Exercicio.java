@@ -1,6 +1,7 @@
 /* ::::::::::::::::::::::::::::::::::::::::::: */
 package br.com.cnt.model.entity.balanco;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,10 +16,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @Entity
 @Table(name="EXERCICIO")
+@Cacheable
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="Exercicio")
 @NamedQueries(value={
 		@NamedQuery(name="Exercicio-list", query="select obj from Exercicio obj "),
 		@NamedQuery(name="Exercicio-porId", query="select obj from Exercicio obj where obj.id=:id")

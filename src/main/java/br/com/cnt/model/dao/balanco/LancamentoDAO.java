@@ -666,13 +666,14 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			SaldoBalanco saldoBalanco = new SaldoBalanco();
 			saldoBalanco.setConta(conta);
 			SaldoExercicio[] saldos = new SaldoExercicio[quantExercicios];
-			for (int i = 0; i < saldos.length; i++) {
+			
+			for (int i = 0; i < exercicios.length; i++) {
 				SaldoExercicio saldoExercicio = new SaldoExercicio();
 				saldoExercicio.setValor(new ValorContabil(conta, BigDecimal.ZERO));
+				saldoExercicio.setAno(exercicios[i]);
 				saldos[i] = saldoExercicio;
 			}
 			saldoBalanco.setSaldos(saldos);
-
 			saldosBalanco.add(saldoBalanco);
 		}
 
@@ -689,14 +690,19 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
 			for (SaldoContabil saldoContabil : listSID) {
 				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				sb.setExercicio(exercicios[i]);
 				sb.getSaldos()[i].getValor().setValor(saldoContabil.getSaldoInicial());
+				sb.getSaldos()[i].setAno(exercicios[i]);
+				
 			}
 
 			List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
 			for (SaldoContabil saldoContabil : listSIC) {
 				SaldoBalanco sb = (SaldoBalanco) CollectionUtils.find(saldosBalanco, new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+				sb.setExercicio(exercicios[i]);
 				BigDecimal subtract = sb.getSaldos()[i].getValor().getValor().subtract(saldoContabil.getSaldoInicial());
 				sb.getSaldos()[i].getValor().setValor(subtract);
+				sb.getSaldos()[i].setAno(exercicios[i]);
 			}
 
 			i++;
@@ -717,14 +723,58 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 
 		calculandoBalanco(saldosBalanco);
 		
-		for(Iterator<SaldoBalanco> it =saldosBalanco.iterator() ; it.hasNext() ;){
-			SaldoBalanco next = it.next();
-			String estrutura = next.getConta().getEstrutura();
-			if( !(estrutura.startsWith("1.") || estrutura.startsWith("2.")) ){
-				System.out.println(estrutura);
-				it.remove();
+		
+		Iterator<SaldoBalanco> iterator = saldosBalanco.iterator();
+		
+		List<SaldoBalanco> ativo = new ArrayList<>();
+		List<SaldoBalanco> passivo = new ArrayList<>();
+		List<SaldoBalanco> dre = new ArrayList<>();
+		
+		while (iterator.hasNext()) {
+			SaldoBalanco saldoContabil = (SaldoBalanco) iterator.next();
+			if(saldoContabil.getConta().getEstrutura().startsWith("1.")){
+				ativo.add(saldoContabil);
+			}else if(saldoContabil.getConta().getEstrutura().startsWith("2.")){
+				passivo.add(saldoContabil);
+			}else{
+				dre.add(saldoContabil);
 			}
 		}
+
+		int size = ativo.size();
+		size = size<passivo.size()?passivo.size():size;
+		
+		SaldoBalanco scVazio = new SaldoBalanco();
+		scVazio.setConta(new Conta());
+		SaldoExercicio[] saldos = new SaldoExercicio[quantExercicios];
+		for (int y = 0; y < saldos.length; y++) {
+			SaldoExercicio saldoExercicio = new SaldoExercicio();
+			saldoExercicio.setValor(new ValorContabil(new Conta(), BigDecimal.ZERO));
+			saldos[y] = saldoExercicio;
+		}
+		scVazio.setSaldos(saldos);
+
+		
+		Iterator<SaldoBalanco> iteratorAtivo = ativo.iterator();
+		Iterator<SaldoBalanco> iteratorPassivo = passivo.iterator();
+		
+		for (int t = 0; t < size; t++) {
+			
+			SaldoBalanco saldoContabilAtivo = iteratorAtivo.hasNext() ? iteratorAtivo.next() : scVazio;
+			SaldoBalanco saldoContabilPassivo = iteratorPassivo.hasNext() ? iteratorPassivo.next() : scVazio;
+			
+			bp.addLinha(saldoContabilAtivo, saldoContabilPassivo);
+		}
+
+//		
+//		for(Iterator<SaldoBalanco> it =saldosBalanco.iterator() ; it.hasNext() ;){
+//			SaldoBalanco next = it.next();
+//			String estrutura = next.getConta().getEstrutura();
+//			if( !(estrutura.startsWith("1.") || estrutura.startsWith("2.")) ){
+//				System.out.println(estrutura);
+//				it.remove();
+//			}
+//		}
 
 		return bp;
 	}

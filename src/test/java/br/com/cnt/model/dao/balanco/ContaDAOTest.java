@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,6 +13,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,6 +26,7 @@ import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.coder.arqprime.model.utils.Filtro;
+import br.com.coder.arqprime.model.utils.HibernateUtil;
 
 public class ContaDAOTest {
 
@@ -61,6 +64,30 @@ public class ContaDAOTest {
 		for (Conta conta : buscar2) {
 			System.out.println(conta);
 		}
+	}
+
+	@Test
+	//@Ignore
+	public void testCache() {
+		
+		Session session = HibernateUtil.getSession();
+		Transaction transaction = session.beginTransaction();
+		Exercicio conta = session.get(Exercicio.class, 1L);
+		transaction.commit();
+		//session.close();
+		System.out.println(Objects.toString(conta));
+		
+		Transaction transaction2 = session.beginTransaction();
+		Exercicio conta2 = session.get(Exercicio.class, 1L);
+		transaction2.commit();
+		session.close();
+		
+		System.out.println(Objects.toString(conta2));
+		
+//		net.sf.ehcache.hibernate.EhCacheRegionFactory a ;
+//		net.sf.ehcache.hibernate.EhCacheRegionFactory b;
+//		org.hibernate.cache.spi.RegionFactory c;
+		
 	}
 
 	@Test

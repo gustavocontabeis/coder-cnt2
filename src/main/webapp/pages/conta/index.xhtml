@@ -135,7 +135,7 @@
 						<p:outputLabel for="pai" value="#{labels['conta.planoContas']}" />
 						<p:selectOneMenu id="pai" value="#{contaManagedBean.entity.pai}" required="false">
 							<f:selectItem itemLabel="[Selecione]" />
-							<f:selectItems value="#{contaManagedBean.list}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura}-#{obj.nome}" />
+							<f:selectItems value="#{contaManagedBean.list}" var="obj" itemValue="#{obj}" itemLabel="#{obj.estrutura}-#{obj.nome}" itemDescription="Cod: #{obj.id}" />
 							<f:converter converterId="baseEntityConverter"/>
 							<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Conta" />
 							<f:attribute name="list" value="#{contaManagedBean.list}" />

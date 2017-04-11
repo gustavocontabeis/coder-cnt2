@@ -63,6 +63,25 @@
 				<h:outputText value="#{obj.passivo.saldoFinalContabil}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
 			</p:column>
 		</p:dataTable>
+		<br />
+		???
+		<p:dataTable value="#{balanceteManagedBean.balanco.list}" var="obj"
+			columnClasses="texto, texto, texto, texto"  
+			rendered="#{not empty balanceteManagedBean.balanco.saldos}" width="100%"
+			styleClass="destacarLinha" resizableColumns="true">
+			<p:column headerText="Ativo">
+				<h:outputText value="#{obj.ativo2.conta.nome} #{obj.ativo2.saldos[0]} | #{obj.ativo2.saldos[0].valor} | #{obj.ativo2.saldos[0].ano}" styleClass="#{obj.ativo2.conta.contaTipo}-#{obj.ativo2.conta.nivel}" />
+			</p:column>
+			<p:columns value="#{obj.ativo2.saldos}" var="column" columnIndexVar="colIndex">
+	            <f:facet name="header">
+	                <h:outputText value="#{column.ano}" />
+	            </f:facet>
+	            <h:outputText value="#{column.valor}" />
+        	</p:columns>
+			<p:column headerText="Passivo">
+				<h:outputText value="#{obj.passivo2.conta.nome}" styleClass="#{obj.passivo2.conta.contaTipo}-#{obj.passivo2.conta.nivel}" />
+			</p:column>
+		</p:dataTable>
 		
 	</ui:define>
 
