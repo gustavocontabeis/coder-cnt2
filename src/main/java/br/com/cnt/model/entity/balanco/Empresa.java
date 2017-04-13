@@ -3,16 +3,36 @@ package br.com.cnt.model.entity.balanco;
 
 import static javax.persistence.FetchType.LAZY;
 
-import java.util.*;
-import java.math.*;
-import javax.validation.constraints.*;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
+
 import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @XmlRootElement
-@Entity @Table(name="EMPRESA", 
+@Entity 
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="contas")
+@Table(name="EMPRESA", 
 	indexes={
 		@Index(name="INDEX_EMPRESA_RAZAO_SOCIAL", columnList = "RAZAO_SOCIAL"),
 		@Index(name="INDEX_EMPRESA_CNPJ", columnList = "CNPJ"),

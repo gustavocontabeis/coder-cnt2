@@ -11,11 +11,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @Entity
+//@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="contas")
 @Table(name="PLANO_CONTAS")
 @NamedQueries(value={
 		@NamedQuery(name="PlanoContas-list", query="select obj from PlanoContas obj "),

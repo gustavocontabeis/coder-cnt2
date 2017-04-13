@@ -101,21 +101,4 @@ public class ContaUtilTest {
 		assertTrue("1.1.1.04.00.00".equals(ContaUtil.retornarEstruturaAbaixo("1.1.1.03.00.00")));
 	}
 
-
-	@Test
-	public void testXXXX() throws IOException, InterruptedException {
-		Date dt = new GregorianCalendar(2017, Calendar.AUGUST,	26, 9, 10).getTime();
-		String format = new SimpleDateFormat("d MMM yyyy HH:mm:ss").format(dt);
-		//System.out.println(format);
-		Process proc = Runtime.getRuntime().exec(" date --set \"1 feb 2017 00:00:00\"");
-		InputStream stderr = proc.getErrorStream();
-		InputStreamReader isr = new InputStreamReader(stderr);
-		BufferedReader br = new BufferedReader(isr);
-		String line = null;
-		System.out.println("<ERROR>");
-		while( (line = br.readLine()) != null)
-			System.out.println(line);
-		System.out.println("</ERROR>");
-		
-	}
 }

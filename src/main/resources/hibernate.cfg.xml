@@ -40,10 +40,21 @@
     
     <!-- Disable the second-level cache  
     <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-    -->
     <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+    
+    <property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
+    <property name="net.sf.ehcache.configurationResourceName">ehcache.xml</property>
+    <property name="hibernate.cache.use_second_level_cache">true</property>
     <property name="hibernate.cache.use_query_cache">true</property>
     <property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.EhCacheRegionFactory</property>
+    -->
+    
+    <!-- 
+     -->
+    <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+    <property name="hibernate.cache.use_second_level_cache">true</property>
+	<property name="hibernate.cache.use_query_cache">true</property>
+ 	<property name="net.sf.ehcache.configurationResourceName">/ehcache.xml</property>
     
 	<!-- 
     <property name="hibernate.hbm2ddl.import_files">

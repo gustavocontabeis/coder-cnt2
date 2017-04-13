@@ -25,6 +25,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.coder.arqprime.model.entity.BaseEntity;
 import br.com.cnt.model.utils.ContaUtil;
 
@@ -33,6 +36,7 @@ import br.com.cnt.model.utils.ContaUtil;
  *
  */
 @Entity
+//@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="contas")
 @Table(name = "CONTAS", indexes = { @Index(name = "INDEX_CONTA_NOME", columnList = "NOME"),
 		@Index(name = "INDEX_CONTA_ESTRUTURA", columnList = "ESTRUTURA"), })
 @NamedQueries(value = { @NamedQuery(name = "Conta-list", query = "select obj from Conta obj "),

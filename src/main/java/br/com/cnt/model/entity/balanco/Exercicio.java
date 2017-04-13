@@ -23,8 +23,8 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @Entity
 @Table(name="EXERCICIO")
-@Cacheable
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="Exercicio")
+//@Cacheable
+//@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="Exercicio")
 @NamedQueries(value={
 		@NamedQuery(name="Exercicio-list", query="select obj from Exercicio obj "),
 		@NamedQuery(name="Exercicio-porId", query="select obj from Exercicio obj where obj.id=:id")
