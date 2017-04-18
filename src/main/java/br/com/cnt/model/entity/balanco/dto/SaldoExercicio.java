@@ -33,5 +33,9 @@ public class SaldoExercicio implements Serializable {
 	public void setValor(ValorContabil valor) {
 		this.valor = valor;
 	}
+	@Override
+	public String toString() {
+		return "SaldoExercicio [ano=" + ano + ", valor=" + valor + "]";
+	}
 
 }

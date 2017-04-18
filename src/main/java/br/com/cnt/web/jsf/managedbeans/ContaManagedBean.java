@@ -94,6 +94,8 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 					&& ((filtro.getEmpresa()!=null && filtro.getEmpresa().getId()!=null) 
 							|| ((filtro.getPlanoContas()!=null && filtro.getPlanoContas().getId()!=null) ))){
 				return dao.getQuantidade2(filtro);
+			}else{
+				
 			}
 		} catch (DaoException e) {
 			e.printStackTrace();

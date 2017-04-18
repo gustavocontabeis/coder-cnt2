@@ -9,8 +9,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 
@@ -323,12 +325,65 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		Collections.sort(saldosContabeis);
 
 	}
+	
+	private void calculandoBalanco2(List<SaldoBalanco> saldosBalanco, List<Conta> contas) {
+		
+		Map<Conta, SaldoBalanco> map = new HashMap<>();
+		for (SaldoBalanco saldoBalanco : saldosBalanco) {
+			map.put(saldoBalanco.getConta(), saldoBalanco);
+		}
+		
+		for (Conta conta : contas) {
+			if(conta.getContaTipo() == ContaTipo.ANALITICA){
+				System.out.println(conta);
+				while(conta.getPai() != null){
+					
+					Conta pai = conta.getPai();
+					
+					SaldoBalanco saldoBalancoConta = map.get(conta);
+					SaldoBalanco saldoBalancoPai = map.get(pai);
+					
+					for (int i = 0; i < saldoBalancoConta.getSaldos().length; i++) {
+						ValorContabil valor = saldoBalancoConta.getSaldos()[i].getValor();
+						ValorContabil valorPai = saldoBalancoPai.getSaldos()[i].getValor();
+						valorPai.add(valor);
+					}
+					
+					conta = pai;
+					
+				}
+				
+			}
+			
+			
+		}
+		
+//		for (SaldoBalanco saldoBalanco : saldosBalanco) {
+//			if(saldoBalanco.getConta().getContaTipo() == ContaTipo.ANALITICA){
+//				
+//				do{
+//					
+//					Conta conta = saldoBalanco.getConta();
+//					Conta pai = conta.getPai();
+//					
+//					SaldoExercicio[] saldos = saldoBalanco.getSaldos();
+//					for (int i = 0; i < saldos.length; i++) {
+//						ValorContabil valorPai = map.get(pai).getSaldos()[i].getValor();
+//						BigDecimal add = valorPai.getValor().add(saldos[i].getValor().getValor());
+//						valorPai.setValor(add);
+//					}
+//					conta = pai;
+//				}while(pai != null);
+//			}
+//		}
+		
+	}
 
 	/**
 	 * 
 	 * @param saldosBalanco
 	 */
-	private void calculandoBalanco(List<SaldoBalanco> saldosBalanco) {
+	private void calculandoBalanco1(List<SaldoBalanco> saldosBalanco) {
 		
 		// List<SaldoBalanco> jaSomados = new ArrayList<>();
 		
@@ -660,22 +715,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		ArrayUtils.reverse(exercicios);
 
 		/* Gera uma lista de Saldos de Balanco */
-		List<SaldoBalanco> saldosBalanco = new ArrayList<SaldoBalanco>();
-
-		for (Conta conta : contas) {
-			SaldoBalanco saldoBalanco = new SaldoBalanco();
-			saldoBalanco.setConta(conta);
-			SaldoExercicio[] saldos = new SaldoExercicio[quantExercicios];
-			
-			for (int i = 0; i < exercicios.length; i++) {
-				SaldoExercicio saldoExercicio = new SaldoExercicio();
-				saldoExercicio.setValor(new ValorContabil(conta, BigDecimal.ZERO));
-				saldoExercicio.setAno(exercicios[i]);
-				saldos[i] = saldoExercicio;
-			}
-			saldoBalanco.setSaldos(saldos);
-			saldosBalanco.add(saldoBalanco);
-		}
+		List<SaldoBalanco> saldosBalanco = gerarSaldosBalanco(quantExercicios, contas, exercicios);
 
 		BalancoPatrimonial bp = new BalancoPatrimonial();
 		bp.setEmpresa(exercicio.getEmpresa());
@@ -707,12 +747,13 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 
 			i++;
 		}
-
+		//	ATENÇÃO: ESTA FERIFICAÇÃO PODERÁ SER RETIRADA
 		for (SaldoBalanco saldoBalanco : saldosBalanco) {
 			SaldoExercicio[] saldos = saldoBalanco.getSaldos();
 			for (SaldoExercicio saldoExercicio : saldos) {
 				if (saldoExercicio.getValor().getConta() == null) {
 					saldoExercicio.getValor().setConta(saldoBalanco.getConta());
+					throw new RuntimeException("TESTE PARA VER SE ESTA VERIFICAÇÃO É IMPORTANTE.");
 				} else {
 					if (!saldoExercicio.getValor().getConta().equals(saldoBalanco.getConta())) {
 						throw new RuntimeException("Erro ao calcular o balanço. A conta não está correta.");
@@ -721,7 +762,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			}
 		}
 
-		calculandoBalanco(saldosBalanco);
+		calculandoBalanco2(saldosBalanco, contas);// 2 em experimento. tem o 1
 		
 		
 		Iterator<SaldoBalanco> iterator = saldosBalanco.iterator();
@@ -777,6 +818,26 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 //		}
 
 		return bp;
+	}
+
+	private List<SaldoBalanco> gerarSaldosBalanco(int quantExercicios, List<Conta> contas, int[] exercicios) {
+		List<SaldoBalanco> saldosBalanco = new ArrayList<SaldoBalanco>();
+
+		for (Conta conta : contas) {
+			SaldoBalanco saldoBalanco = new SaldoBalanco();
+			saldoBalanco.setConta(conta);
+			SaldoExercicio[] saldos = new SaldoExercicio[quantExercicios];
+			
+			for (int i = 0; i < exercicios.length; i++) {
+				SaldoExercicio saldoExercicio = new SaldoExercicio();
+				saldoExercicio.setValor(new ValorContabil(conta, BigDecimal.ZERO));
+				saldoExercicio.setAno(exercicios[i]);
+				saldos[i] = saldoExercicio;
+			}
+			saldoBalanco.setSaldos(saldos);
+			saldosBalanco.add(saldoBalanco);
+		}
+		return saldosBalanco;
 	}
 
 }

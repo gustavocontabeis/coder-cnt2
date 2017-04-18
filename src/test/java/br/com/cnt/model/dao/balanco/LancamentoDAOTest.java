@@ -113,7 +113,7 @@ public class LancamentoDAOTest {
 		
 		Exercicio exercicio = new ExercicioDAO().buscar(153L);
 		
-		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, 3);
+		BalancoPatrimonial buscarSaldosBalanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, 1);
 		
 		System.out.println(buscarSaldosBalanco.getEmpresa().getRazaoSocial());
 		

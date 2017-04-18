@@ -82,4 +82,12 @@ public class ValorContabil {
 		return ContaUtil.getValorContabil(valor, conta.getContaOrigem());
 	}
 
+	public void add(ValorContabil valor2) {
+		if(conta.getContaOrigem() == valor2.getConta().getContaOrigem()){
+			valor = valor.add(valor2.getValor());
+		}else{
+			valor = valor.subtract(valor2.getValor());
+		}
+	}
+
 }

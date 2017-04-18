@@ -31,7 +31,7 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @XmlRootElement
 @Entity 
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="contas")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="empresa")
 @Table(name="EMPRESA", 
 	indexes={
 		@Index(name="INDEX_EMPRESA_RAZAO_SOCIAL", columnList = "RAZAO_SOCIAL"),
@@ -109,6 +109,17 @@ public class Empresa extends BaseEntity {
 	}
 	public void setExercicios(List<Exercicio> exercicios){
  		this.exercicios = exercicios;
+	}
+
+	@Override
+	public String toString() {
+		return "Empresa ["
+				+ "id=" + id 
+				//+ ", matriz=" + matriz 
+				+ ", cnpj=" + cnpj 
+				+ ", razaoSocial=" + razaoSocial
+				//+ ", exercicios=" + exercicios 
+				+ "]";
 	}
 	
 }
