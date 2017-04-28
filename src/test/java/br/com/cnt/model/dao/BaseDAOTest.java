@@ -36,11 +36,25 @@ import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.Empresa;
 import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
+import br.com.coder.arqprime.model.dao.app.BaseDAO;
+import br.com.coder.arqprime.model.dao.app.CriteriaDTO;
 import br.com.coder.arqprime.model.utils.Filtro;
 
 public class BaseDAOTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BaseDAOTest.class.getSimpleName());
+	
+	
+	@Test
+	public void testCriarCriteriaParaFiltro2(){
+		
+		HashMap<String, Object> filters = new HashMap<String, Object>();
+		
+		Filtro filtro = new Filtro<>(Conta.class, 0, 10, null, SortOrder.ASCENDING, filters);
+		BaseDAO<Conta>dao = new BaseDAO<>();
+		CriteriaDTO dto = dao.criarCriteriaParaFiltro2(filtro);
+		
+	}
 
 	@Test
 	public void testWhere() {

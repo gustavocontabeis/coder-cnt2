@@ -1,23 +1,21 @@
 package br.com.cnt.web.jsf.managedbeans;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.primefaces.event.ReorderEvent;
-import org.primefaces.model.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import br.com.cnt.model.dao.balanco.ContaDAO;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
 import br.com.cnt.model.dao.balanco.ExercicioDAO;
+import br.com.cnt.model.dao.balanco.HibernateUtility;
 import br.com.cnt.model.dao.balanco.PlanoContasDAO;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
@@ -28,7 +26,8 @@ import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
-import br.com.coder.arqprime.web.jsf.filters.SegurancaFilter;
+import br.com.coder.arqprime.model.utils.Filtro;
+import br.com.coder.arqprime.model.utils.HibernateUtil;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 
 @Named @ViewScoped
@@ -56,8 +55,15 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		novo(null);
 		empresas = getPopularComboEmpresa();
 		planocontas = getPopularComboPlanoContas();
-		//exercicios = getPopularComboExercicio();
 		filtro = new Conta();
+	}
+	
+	@Override
+	protected Filtro getFiltro(Filtro filtro) {
+		filtro.getFetchs().add("planoContas");
+		filtro.getFetchs().add("pai.planoContas");
+		filtro.setPropriedadeOrdenacao("estrutura asc, contaTipo desc, ordem asc");
+		return filtro;
 	}
 	
 	@Override
@@ -66,7 +72,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	}
 
 	public Conta novo() {
-		entity = new Conta(); //refatorar. mao posso abrigar aqui a refetenciar yhis.entity.
+		entity = new Conta();
 		return entity;
 	}
 	
@@ -76,17 +82,6 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 		return true;
 	}
 	
-//	@Override
-//	protected Map<String, Object> getFilters() {
-//		if(exercicio !=null){
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("empresa.id", exercicio.getEmpresa().getId());
-//			map.put("planoContas.id", exercicio.getPlanoContas().getId());
-//			return map;
-//		}
-//		return super.getFilters();
-//	}
-
 	@Override
 	protected Integer getQuantidade2() {
 		try {
@@ -115,11 +110,6 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	@Override
-	protected String getSortField(String sortField) {
-		return "estrutura asc, contaTipo desc, ordem asc";
 	}
 	
 	public void onRowReorder(ReorderEvent event) throws DaoException {

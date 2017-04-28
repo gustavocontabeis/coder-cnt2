@@ -7,6 +7,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.SessionFactoryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.stat.Statistics;
+
+import br.com.cnt.model.dao.balanco.HibernateUtility;
 
 /**
  * Versão do hibernate 5
@@ -48,6 +51,14 @@ public class HibernateUtil {
     public static Session getSession(){
 //        return sessionFactory.withOptions().interceptor(new LoggingInterceptor()).openSession();
     	return sessionFactory.openSession();
+    }
+    
+    public Statistics getStatistics(){
+    	Statistics statistics = sessionFactory.getStatistics();
+    	if(!statistics.isStatisticsEnabled()){
+    		statistics.setStatisticsEnabled(true);
+    	}
+    	return statistics;
     }
 
 }

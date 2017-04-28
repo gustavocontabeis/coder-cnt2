@@ -83,7 +83,7 @@ public class Conta extends BaseEntity implements Comparable<Conta> {
 	@ManyToOne(targetEntity = PlanoContas.class, fetch = FetchType.LAZY, cascade = { CascadeType.DETACH })
 	@JoinColumn(name = "ID_PLANO_CONTAS", nullable = true, foreignKey = @ForeignKey(name = "FK_CONTA_PLANO_CONTAS"))
 	private PlanoContas planoContas;
-
+	
 	@ManyToOne(targetEntity = Conta.class, fetch = LAZY, cascade = { CascadeType.DETACH })
 	@JoinColumn(name = "ID_CONTA_PAI", nullable = true, foreignKey = @ForeignKey(name = "FK_CONTA_PAI"))
 	private Conta pai;

@@ -31,6 +31,7 @@ public class AppServletContextListener implements ServletContextListener{
     public void contextInitialized(ServletContextEvent event) {
         try {
         	//inicializarCache();
+        	//inicializarCache();
 			//inicializarDados(); 
 			//importarArquivosCSV();
         	System.out.println("");
@@ -41,39 +42,39 @@ public class AppServletContextListener implements ServletContextListener{
 
 	private void inicializarCache() {
 		
-		Session session = HibernateUtility.getSession();
-		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
-		Statistics statistics = sessionFactory.getStatistics();
-		
-		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
-		statistics.setStatisticsEnabled(true);
-		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
-		
-    	List<Empresa> empresas = session.createCriteria(Empresa.class).list();
-    	for (Empresa object : empresas) {
-			session.load(Empresa.class, object.getId());
-		}
-    	printStats(statistics, 1);
-    	
-		List<PlanoContas> PlanoContasList = session.createCriteria(PlanoContas.class).list();
-		for (PlanoContas planoContas : PlanoContasList) {
-			session.load(PlanoContas.class, planoContas.getId());
-		}
-		printStats(statistics, 2);
-		
-		List<Exercicio> exercicioList = session.createCriteria(Exercicio.class).list();
-		for (Exercicio exercicio : exercicioList) {
-			session.load(Exercicio.class, exercicio.getId());
-		}
-		printStats(statistics, 3);
-		
-		List<Conta> contaList = session.createCriteria(Conta.class).list();
-		for (Conta conta : contaList) {
-			session.load(Conta.class, conta.getId());
-		}
-		printStats(statistics, 4);
-		
-		session.close();
+//		Session session = HibernateUtility.getSession();
+//		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+//		Statistics statistics = sessionFactory.getStatistics();
+//		
+//		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
+//		statistics.setStatisticsEnabled(true);
+//		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
+//		
+//    	List<Empresa> empresas = session.createCriteria(Empresa.class).list();
+//    	for (Empresa object : empresas) {
+//			session.load(Empresa.class, object.getId());
+//		}
+//    	printStats(statistics, 1);
+//    	
+//		List<PlanoContas> PlanoContasList = session.createCriteria(PlanoContas.class).list();
+//		for (PlanoContas planoContas : PlanoContasList) {
+//			session.load(PlanoContas.class, planoContas.getId());
+//		}
+//		printStats(statistics, 2);
+//		
+//		List<Exercicio> exercicioList = session.createCriteria(Exercicio.class).list();
+//		for (Exercicio exercicio : exercicioList) {
+//			session.load(Exercicio.class, exercicio.getId());
+//		}
+//		printStats(statistics, 3);
+//		
+//		List<Conta> contaList = session.createCriteria(Conta.class).list();
+//		for (Conta conta : contaList) {
+//			session.load(Conta.class, conta.getId());
+//		}
+//		printStats(statistics, 4);
+//		
+//		session.close();
 	}
 	
 	private static void printStats(Statistics stats, int i) {

@@ -23,7 +23,11 @@ public class HibernateUtility {
 	}
 	
 	public static Session getSession() {
-		return factory.openSession();
+		if(factory.getCurrentSession() == null){
+			return factory.openSession();
+		}else{
+			return factory.getCurrentSession();
+		}
 	}
 	
 }
