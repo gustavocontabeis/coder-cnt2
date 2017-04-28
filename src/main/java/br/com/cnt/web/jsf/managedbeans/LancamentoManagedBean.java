@@ -27,6 +27,7 @@ import br.com.cnt.model.entity.balanco.LancamentoPadrao;
 import br.com.cnt.model.entity.balanco.LancamentoTipo;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.coder.arqprime.model.utils.Filtro;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 
 //@ManagedBean @ViewScoped
@@ -56,6 +57,13 @@ public class LancamentoManagedBean extends CrudManagedBean<Lancamento, Lancament
 		//loadLazyModel();
 		getPopularComboConta();
 		getPopularComboExercicio();
+	}
+	
+	@Override
+	protected Filtro getFiltro(Filtro filtro) {
+		filtro.getFetchs().add("debito");
+		filtro.getFetchs().add("credito");
+		return filtro;
 	}
 
 	public List<Conta> buscarConta(String param) {

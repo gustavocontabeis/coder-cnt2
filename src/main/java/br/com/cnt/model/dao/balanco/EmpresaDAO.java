@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -39,6 +40,8 @@ public class EmpresaDAO extends BaseDAO<Empresa> {
 	public List<Empresa> buscarTodos() {
  		Session session = getSession();
  		Query query = session.createQuery("select obj from Empresa obj order by obj.razaoSocial asc");
+ 		query.setCacheable(true);
+ 		query.setCacheRegion("Empresa-buscarTodos");
  		List list = query.list();
  		session.close();
 		return list;

@@ -34,7 +34,7 @@ public class ExercicioDAO extends BaseDAO<Exercicio> {
 
 	public List<Exercicio> buscarExercicio(Empresa empresa) {
  		Session session = getSession();
- 		Query query = session.createQuery("select obj from Exercicio obj where obj.empresa.id = :empresa");
+ 		Query query = session.createQuery("select obj from Exercicio obj inner join fetch obj.empresa emp where emp.id = :empresa");
  		query.setLong("empresa", empresa.getId());
  		List list = query.list();
  		session.close();

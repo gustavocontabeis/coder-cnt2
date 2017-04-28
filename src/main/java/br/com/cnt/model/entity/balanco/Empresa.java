@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -52,7 +53,7 @@ public class Empresa extends BaseEntity {
  	@Column(name="ID_EMPRESA", length=10,  nullable=true)
  	private Long id;
  
-	@ManyToOne(cascade=CascadeType.DETACH) 
+	@ManyToOne(cascade=CascadeType.DETACH, fetch=FetchType.EAGER) 
 	@JoinColumn(name="ID_EMPRESA_MATRIZ", nullable=true, foreignKey=@ForeignKey(name="EMPRESA_MATRIZ_fk"))
  	private Empresa matriz;
  
