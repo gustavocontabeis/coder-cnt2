@@ -3,11 +3,21 @@ package br.com.coder.cms.web.listeners;
 import java.io.File;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
+
+import br.com.cnt.model.dao.balanco.HibernateUtility;
+import br.com.cnt.model.entity.balanco.Conta;
+import br.com.cnt.model.entity.balanco.Empresa;
+import br.com.cnt.model.entity.balanco.Exercicio;
+import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.model.dao.app.usuarios.UsuarioDAO;
 import br.com.coder.arqprime.model.entity.app.usuarios.Usuario;
@@ -20,6 +30,7 @@ public class AppServletContextListener implements ServletContextListener{
 	@Override
     public void contextInitialized(ServletContextEvent event) {
         try {
+        	//inicializarCache();
 			//inicializarDados(); 
 			//importarArquivosCSV();
         	System.out.println("");
@@ -27,6 +38,52 @@ public class AppServletContextListener implements ServletContextListener{
 			e.printStackTrace();
 		}
     }
+
+	private void inicializarCache() {
+		
+		Session session = HibernateUtility.getSession();
+		SessionFactory sessionFactory = HibernateUtility.getSessionFactory();
+		Statistics statistics = sessionFactory.getStatistics();
+		
+		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
+		statistics.setStatisticsEnabled(true);
+		System.out.println("Stats enabled="+statistics.isStatisticsEnabled());
+		
+    	List<Empresa> empresas = session.createCriteria(Empresa.class).list();
+    	for (Empresa object : empresas) {
+			session.load(Empresa.class, object.getId());
+		}
+    	printStats(statistics, 1);
+    	
+		List<PlanoContas> PlanoContasList = session.createCriteria(PlanoContas.class).list();
+		for (PlanoContas planoContas : PlanoContasList) {
+			session.load(PlanoContas.class, planoContas.getId());
+		}
+		printStats(statistics, 2);
+		
+		List<Exercicio> exercicioList = session.createCriteria(Exercicio.class).list();
+		for (Exercicio exercicio : exercicioList) {
+			session.load(Exercicio.class, exercicio.getId());
+		}
+		printStats(statistics, 3);
+		
+		List<Conta> contaList = session.createCriteria(Conta.class).list();
+		for (Conta conta : contaList) {
+			session.load(Conta.class, conta.getId());
+		}
+		printStats(statistics, 4);
+		
+		session.close();
+	}
+	
+	private static void printStats(Statistics stats, int i) {
+		System.out.println("***** " + i + " *****");
+		System.out.println("Fetch Count=" + stats.getEntityFetchCount());
+		System.out.println("Cache Hit Count=" + stats.getSecondLevelCacheHitCount());
+		System.out.println("Cache Miss Count=" + stats.getSecondLevelCacheMissCount());
+		System.out.println("Cache Put Count=" + stats.getSecondLevelCachePutCount());
+		System.out.println();
+	}
 
 	private void importarArquivosCSV() {
 		URL resource = this.getClass().getResource("/csv");

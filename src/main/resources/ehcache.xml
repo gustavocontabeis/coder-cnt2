@@ -18,6 +18,7 @@
 		<persistence strategy="localTempSwap" />
 	</defaultCache>
 
+<!-- 
 	<cache 
 		name="contas" 
 		maxEntriesLocalHeap="10000" 
@@ -26,6 +27,7 @@
 		timeToLiveSeconds="10">
 		<persistence strategy="localTempSwap" />
 	</cache>
+ -->
 
 	<cache 
 		name="org.hibernate.cache.internal.StandardQueryCache"
