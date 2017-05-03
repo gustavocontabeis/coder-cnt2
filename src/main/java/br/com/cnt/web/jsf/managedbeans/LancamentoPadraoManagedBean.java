@@ -40,9 +40,15 @@ public class LancamentoPadraoManagedBean extends CrudManagedBean<LancamentoPadra
 
 	@PostConstruct
 	private void init() {
-		novo(null);
-		loadLazyModel();
+		//novo(null);
+		//loadLazyModel();
 		getPopularComboConta();
+	}
+	
+	@Override
+	protected Filtro getFiltro(Filtro filtro) {
+		filtro.addFetch("debito", "credito", "historicoPadrao");
+		return filtro;
 	}
 
 	@Override

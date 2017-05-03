@@ -41,7 +41,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	private static final long serialVersionUID = 1L;
 	
 	private Balancete balancete;
-	private BalancoPatrimonial bp;
+	//private BalancoPatrimonial bp;
 	private BalancoPatrimonial balanco;
 		
 	@Inject 
@@ -187,57 +187,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		System.out.println(":::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 	}
 	
-	@Deprecated
-	public void exibirBalancoPatrimonial(ActionEvent evt){
-		//this.nivel = 2;
-		//exibirAteNivel(null);
-		bp = new BalancoPatrimonial();
-		
-		List<SaldoContabil> saldos = this.balancete.getSaldos();
-		Iterator<SaldoContabil> iterator = saldos.iterator();
-		
-		List<SaldoContabil> ativo = new ArrayList<>();
-		List<SaldoContabil> passivo = new ArrayList<>();
-		List<SaldoContabil> dre = new ArrayList<>();
-		while (iterator.hasNext()) {
-			SaldoContabil saldoContabil = (SaldoContabil) iterator.next();
-			if(saldoContabil.getConta().getEstrutura().startsWith("1.")){
-				ativo.add(saldoContabil);
-			}else if(saldoContabil.getConta().getEstrutura().startsWith("2.")){
-				passivo.add(saldoContabil);
-			}else{
-				dre.add(saldoContabil);
-			}
-		}
-		
-		int size = ativo.size();
-		size = size<passivo.size()?passivo.size():size;
-		
-		//System.out.println("\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-		SaldoContabil scVazio = new SaldoContabil();
-		scVazio.setConta(new Conta(null, ""));
-		scVazio.setSaldoFinal(BigDecimal.ZERO);
-		
-		Iterator<SaldoContabil> iteratorAtivo = ativo.iterator();
-		Iterator<SaldoContabil> iteratorPassivo = passivo.iterator();
-		
-		for (int i = 0; i < size; i++) {
-			
-			SaldoContabil saldoContabilAtivo = iteratorAtivo.hasNext() ? iteratorAtivo.next() : scVazio;
-			SaldoContabil saldoContabilPassivo = iteratorPassivo.hasNext() ? iteratorPassivo.next() : scVazio;
-			
-//			System.out.printf("%-80s | %10s || %-80s | %10s\n", 
-//					saldoContabilAtivo.getConta().getNome(), 
-//					!saldoContabilAtivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilAtivo.getSaldoFinalContabil():"",
-//					saldoContabilPassivo.getConta().getNome(), 
-//					!saldoContabilPassivo.getSaldoFinal().equals(BigDecimal.ZERO) ? saldoContabilPassivo.getSaldoFinalContabil() : ""
-//					);
-			
-			bp.addLinha(saldoContabilAtivo, saldoContabilPassivo);
-		}
-	}
-	
 	public void retirar(ActionEvent evt){
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String string = params.get("idConta");
@@ -309,14 +259,6 @@ public class BalanceteManagedBean extends BaseManagedBean{
 
 	public void setRetirarContasSemValor(boolean retirarContasSemValor) {
 		this.retirarContasSemValor = retirarContasSemValor;
-	}
-
-	public BalancoPatrimonial getBp() { 
-		return bp;
-	}
-
-	public void setBp(BalancoPatrimonial bp) {
-		this.bp = bp;
 	}
 
 	public int getQuantidadeDeExercicios() {

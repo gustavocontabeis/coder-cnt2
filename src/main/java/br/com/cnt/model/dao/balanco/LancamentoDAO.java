@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.coder.arqprime.model.utils.CollectionUtil;
 import br.com.cnt.model.entity.balancete.dto.SaldoContabil;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaTipo;
@@ -206,6 +207,15 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		PlanoContasDAO daoPlanoContas = new PlanoContasDAO();
 
 		/* Busca todas as contas deste plano de contas */
+		
+		try {
+			Object list = new ContaDAO().carregarCache();
+		} catch (DaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		List<Conta> contas = daoPlanoContas.retornarContas(exercicio);
 
 		/* Gera uma lista de Saldos Contabeis */
@@ -223,31 +233,34 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		/* Busca do banco os valores dos saldos iniciais e movimento */
 		List<SaldoContabil> listSID = buscarSaldoInicialDebito(exercicio, de);
 		for (SaldoContabil saldoContabil : listSID) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis,
-					new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			SaldoContabil sc = (SaldoContabil) CollectionUtil.find(saldosContabeis, "conta.id", saldoContabil.getConta().getId());
+			if(sc == null)
+				throw new RuntimeException("Ao pesquisar os saldos iniciais a debito, a conta "+saldoContabil.getConta()+" não foi encontrada na listagem.");
 			sc.setSaldoInicial(saldoContabil.getSaldoInicial());
 		}
 
 		List<SaldoContabil> listSIC = buscarSaldoInicialCredito(exercicio, de);
 		for (SaldoContabil saldoContabil : listSIC) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis,
-					new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			SaldoContabil sc = (SaldoContabil) CollectionUtil.find(saldosContabeis, "conta.id", saldoContabil.getConta().getId());
+			if(sc == null)
+				throw new RuntimeException("Ao pesquisar os saldos iniciais a credito, a conta "+saldoContabil.getConta()+" não foi encontrada na listagem.");
 			BigDecimal subtract = sc.getSaldoInicial().subtract(saldoContabil.getSaldoInicial());
 			sc.setSaldoInicial(subtract);
 		}
 
 		List<SaldoContabil> listD = buscarSaldoDebito(exercicio, de, ate);
 		for (SaldoContabil saldoContabil : listD) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis,
-					new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
-			
+			SaldoContabil sc = (SaldoContabil) CollectionUtil.find(saldosContabeis, "conta.id", saldoContabil.getConta().getId());
+			if(sc == null)
+				throw new RuntimeException("Ao pesquisar os saldos a débito, a conta "+saldoContabil.getConta()+" não foi encontrada na listagem.");
 			sc.setDebito(saldoContabil.getDebito());
 		}
 
 		List<SaldoContabil> listC = buscarSaldoCredito(exercicio, de, ate);
 		for (SaldoContabil saldoContabil : listC) {
-			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis,
-					new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			SaldoContabil sc = (SaldoContabil) CollectionUtil.find(saldosContabeis, "conta.id", saldoContabil.getConta().getId());
+			if(sc == null)
+				throw new RuntimeException("Ao pesquisar os saldos a credito, a conta "+saldoContabil.getConta()+" não foi encontrada na listagem.");
 			sc.setCredito(saldoContabil.getCredito());
 		}
 
@@ -712,8 +725,8 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		for (int i = 0; i < exercicios.length; i++) {
 			exercicios[i] = exercicio.getAno() - (i);
 		}
-
-		//ArrayUtils.reverse(exercicios);
+		
+		ArrayUtils.reverse(exercicios);
 
 		/* Gera uma lista de Saldos de Balanco */
 		List<SaldoBalanco> saldosBalanco = gerarSaldosBalanco(quantExercicios, contas, exercicios);
