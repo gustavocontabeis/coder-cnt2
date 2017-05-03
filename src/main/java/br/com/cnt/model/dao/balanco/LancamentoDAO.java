@@ -240,6 +240,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 		for (SaldoContabil saldoContabil : listD) {
 			SaldoContabil sc = (SaldoContabil) CollectionUtils.find(saldosContabeis,
 					new BeanPropertyValueEqualsPredicate("conta.id", saldoContabil.getConta().getId()));
+			
 			sc.setDebito(saldoContabil.getDebito());
 		}
 
@@ -712,7 +713,7 @@ public class LancamentoDAO extends BaseDAO<Lancamento> {
 			exercicios[i] = exercicio.getAno() - (i);
 		}
 
-		ArrayUtils.reverse(exercicios);
+		//ArrayUtils.reverse(exercicios);
 
 		/* Gera uma lista de Saldos de Balanco */
 		List<SaldoBalanco> saldosBalanco = gerarSaldosBalanco(quantExercicios, contas, exercicios);

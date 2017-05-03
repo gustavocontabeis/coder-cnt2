@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.coder.arqprime.model.utils.DirecaoOrdenacao;
 import br.com.coder.arqprime.model.utils.Filtro;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
 import br.com.cnt.model.dao.balanco.EmpresaDAO;
@@ -29,9 +30,9 @@ public class ExercicioManagedBean extends CrudManagedBean<Exercicio, ExercicioDA
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Exercicio exercicio;
-	protected LazyDataModel<Exercicio> model;
-	protected Filtro filtro;
+	//private Exercicio exercicio;
+	//protected LazyDataModel<Exercicio> model;
+	//protected Filtro filtro;
 	
 	@Inject private ExercicioDAO dao;
 	@Inject private EmpresaDAO empresaDAO;
@@ -43,10 +44,18 @@ public class ExercicioManagedBean extends CrudManagedBean<Exercicio, ExercicioDA
 
 	@PostConstruct
 	private void init() {
-		novo(null);
-		loadLazyModel();
+		//novo(null);
+		//loadLazyModel();
 		getPopularComboEmpresa();
 		getPopularComboPlanoContas();
+	}
+	
+	@Override
+	protected Filtro getFiltro(Filtro filtro) {
+		filtro.addFetch("empresa");
+		filtro.addOrder("empresa.razaoSocial");
+		filtro.addOrder("ano", DirecaoOrdenacao.DESC);
+		return filtro;
 	}
 
 	public List<Empresa> getPopularComboEmpresa() {

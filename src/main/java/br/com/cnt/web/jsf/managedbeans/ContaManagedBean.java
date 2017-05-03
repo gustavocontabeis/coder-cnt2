@@ -26,6 +26,7 @@ import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.DaoException;
+import br.com.coder.arqprime.model.utils.DirecaoOrdenacao;
 import br.com.coder.arqprime.model.utils.Filtro;
 import br.com.coder.arqprime.model.utils.HibernateUtil;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.CrudManagedBean;
@@ -62,7 +63,9 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	protected Filtro getFiltro(Filtro filtro) {
 		filtro.getFetchs().add("planoContas");
 		filtro.getFetchs().add("pai.planoContas");
-		filtro.setPropriedadeOrdenacao("estrutura asc, contaTipo desc, ordem asc");
+		filtro.addOrder("estrutura");
+		filtro.addOrder("contaTipo", DirecaoOrdenacao.DESC);
+		filtro.addOrder("ordem");
 		return filtro;
 	}
 	
