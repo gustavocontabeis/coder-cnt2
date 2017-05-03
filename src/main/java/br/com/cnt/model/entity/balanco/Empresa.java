@@ -32,7 +32,7 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @XmlRootElement
 @Entity 
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="Empresa")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="Empresa")
 @Table(name="EMPRESA", 
 	indexes={
 		@Index(name="INDEX_EMPRESA_RAZAO_SOCIAL", columnList = "RAZAO_SOCIAL"),
