@@ -1,5 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui" xmlns:cc="http://java.sun.com/jsf/composite">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:cc="http://java.sun.com/jsf/composite">
 
 <ui:composition template="/pages/templates/#{loginManagedBean.template}.xhtml">
 
@@ -15,34 +21,50 @@
 		<h:form id="empresa">
 			<p:focus />
 			<div class="ui-fluid">
-				<p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+				<p:tabView>
+					<p:tab title="Empresa">
 					
-					<h:panelGroup>
-						<p:outputLabel for="id" value="#{labels['empresa.id']}" rendered="#{not empty empresaManagedBean.entity.id}" /> 
-					</h:panelGroup>
-					<h:panelGroup>
-						<h:outputText id="id" value="#{empresaManagedBean.entity.id}" styleClass="ui-widget" >
-							<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
-						</h:outputText>
-						<h:inputHidden  id="idHidden" value="#{empresaManagedBean.entity.id}" />
-					 </h:panelGroup>
-
-					<p:outputLabel for="matriz" value="#{labels['empresa.matriz']}" />
-					<p:selectOneMenu id="matriz" value="#{empresaManagedBean.entity.matriz}" required="false">
-						<f:selectItem itemLabel="[Selecione]" />
-						<f:selectItems value="#{empresaManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
-						<f:converter converterId="baseEntityConverter"/>
-						<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
-						<f:attribute name="list" value="#{empresaManagedBean.empresas}" />
-					</p:selectOneMenu>
-
-					<p:outputLabel for="cnpj" value="#{labels['empresa.cnpj']}" />
-					<p:inputMask id="cnpj" value="#{empresaManagedBean.entity.cnpj}" required="true" mask="999.999/9999-99"/>
-
-					<p:outputLabel for="razaoSocial" value="#{labels['empresa.razaoSocial']}" />
-					<p:inputText id="razaoSocial" value="#{empresaManagedBean.entity.razaoSocial}" required="true" maxlength="60" />
-
-				</p:panelGrid>
+						<p:panelGrid id="pg" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+							
+							<h:panelGroup>
+								<p:outputLabel for="id" value="#{labels['empresa.id']}" rendered="#{not empty empresaManagedBean.entity.id}" /> 
+							</h:panelGroup>
+							<h:panelGroup>
+								<h:outputText id="id" value="#{empresaManagedBean.entity.id}" styleClass="ui-widget" >
+									<f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+								</h:outputText>
+								<h:inputHidden  id="idHidden" value="#{empresaManagedBean.entity.id}" />
+							 </h:panelGroup>
+		
+							<p:outputLabel for="matriz" value="#{labels['empresa.matriz']}" />
+							<p:selectOneMenu id="matriz" value="#{empresaManagedBean.entity.matriz}" required="false">
+								<f:selectItem itemLabel="[Selecione]" />
+								<f:selectItems value="#{empresaManagedBean.empresas}" var="obj" itemValue="#{obj}" itemLabel="#{obj.razaoSocial}" />
+								<f:converter converterId="baseEntityConverter"/>
+								<f:attribute name="tipo" value="br.com.cnt.model.entity.balanco.Empresa" />
+								<f:attribute name="list" value="#{empresaManagedBean.empresas}" />
+							</p:selectOneMenu>
+		
+							<p:outputLabel for="cnpj" value="#{labels['empresa.cnpj']}" />
+							<p:inputMask id="cnpj" value="#{empresaManagedBean.entity.cnpj}" required="true" mask="999.999/9999-99"/>
+		
+							<p:outputLabel for="razaoSocial" value="#{labels['empresa.razaoSocial']}" />
+							<p:inputText id="razaoSocial" value="#{empresaManagedBean.entity.razaoSocial}" required="true" maxlength="60" />
+		
+						</p:panelGrid>
+					
+					</p:tab>
+					<p:tab title="Contas">
+						
+					<p:toolbar>
+						<p:toolbarGroup>
+							<p:button value="Novo"/>
+						</p:toolbarGroup>
+					</p:toolbar>
+						
+					</p:tab>
+					<p:tab title="Exercícios">Exercícios</p:tab>
+				</p:tabView>
 				
 				
 				</div>

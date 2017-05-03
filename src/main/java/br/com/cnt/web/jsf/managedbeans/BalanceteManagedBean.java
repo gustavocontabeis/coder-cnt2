@@ -1,7 +1,6 @@
 package br.com.cnt.web.jsf.managedbeans;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -35,13 +34,13 @@ import br.com.coder.arqprime.model.dao.app.DaoException;
 import br.com.coder.arqprime.web.jsf.managedbeans.app.BaseManagedBean;
 
 //@ManagedBean @ViewScoped
-@javax.inject.Named @javax.faces.view.ViewScoped //@javax.enterprise.context.RequestScoped
+//@javax.enterprise.context.RequestScoped
+@javax.inject.Named @javax.faces.view.ViewScoped 
 public class BalanceteManagedBean extends BaseManagedBean{
 	
 	private static final long serialVersionUID = 1L;
 	
 	private Balancete balancete;
-	//private BalancoPatrimonial bp;
 	private BalancoPatrimonial balanco;
 		
 	@Inject 
@@ -76,7 +75,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	}
 	
 	public void exibirBalancoListener(ComponentSystemEvent evt) throws AbortProcessingException{
-		exibirBalancoPatrimonial2(null);
+		exibirBalancoPatrimonial(null);
 	}
 	
 	public void exibirBalancete(ActionEvent evt){
@@ -129,7 +128,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		}
 	}
 	
-	public void exibirBalancoPatrimonial2(ActionEvent evt){
+	public void exibirBalancoPatrimonial(ActionEvent evt){
 		
 		LancamentoDAO lancamentoDAO = new LancamentoDAO();
 		
