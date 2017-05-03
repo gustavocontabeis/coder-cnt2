@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import br.com.coder.arqprime.model.entity.BaseEntity;
 
 @Entity
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="PlanoContas")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="PlanoContas")
 @Table(name="PLANO_CONTAS")
 @NamedQueries(value={
 		@NamedQuery(name="PlanoContas-list", query="select obj from PlanoContas obj "),

@@ -37,7 +37,7 @@ import br.com.cnt.model.utils.ContaUtil;
  *
  */
 @Entity
-@Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="Conta")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="Conta")
 @Table(name = "CONTAS", indexes = { @Index(name = "INDEX_CONTA_NOME", columnList = "NOME"),
 		@Index(name = "INDEX_CONTA_ESTRUTURA", columnList = "ESTRUTURA"), })
 @NamedQueries(value = { @NamedQuery(name = "Conta-list", query = "select obj from Conta obj "),

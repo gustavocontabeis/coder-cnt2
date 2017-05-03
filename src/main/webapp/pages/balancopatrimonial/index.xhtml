@@ -45,42 +45,49 @@
 			</h:outputFormat>
 		</div>
 		<br />
-		
-		<p:dataTable value="#{balanceteManagedBean.bp.list}" var="obj"
-			columnClasses="texto, texto, texto, texto"  
-			rendered="#{not empty balanceteManagedBean.bp.list}" width="100%"
-			styleClass="destacarLinha" resizableColumns="true">
-			<p:column headerText="Ativo">
-				<h:outputText value="#{obj.ativo.conta.nome}" styleClass="#{obj.ativo.conta.contaTipo}-#{obj.ativo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="padding-left:#{obj.ativo.conta.nivel*10}px"/>
-			</p:column>
-			<p:column style="text-align: right;" headerText="R$">
-				<h:outputText value="#{obj.ativo.saldoFinalContabil}" styleClass="#{obj.ativo.conta.contaTipo}-#{obj.ativo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
-			</p:column>
-			<p:column headerText="Passivo">
-				<h:outputText value="#{obj.passivo.conta.nome}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="padding-left:#{obj.passivo.conta.nivel*10}px"/>
-			</p:column>
-			<p:column style="text-align: right;" headerText="R$">
-				<h:outputText value="#{obj.passivo.saldoFinalContabil}" styleClass="#{obj.passivo.conta.contaTipo}-#{obj.passivo.conta.nivel} #{not obj.ativo.saldoFinalPositivo?'red':''}" style="text-align: right;"/>
-			</p:column>
-		</p:dataTable>
-		<br />
-		???
 		<p:dataTable value="#{balanceteManagedBean.balanco.list}" var="obj"
 			columnClasses="texto, texto, texto, texto"  
 			rendered="#{not empty balanceteManagedBean.balanco.saldos}" width="100%"
 			styleClass="destacarLinha" resizableColumns="true">
-			<p:column headerText="Ativo">
-				<h:outputText value="#{obj.ativo2.conta.nome} #{obj.ativo2.saldos[0]} | #{obj.ativo2.saldos[0].valor} | #{obj.ativo2.saldos[0].ano}" styleClass="#{obj.ativo2.conta.contaTipo}-#{obj.ativo2.conta.nivel}" />
+			<p:column headerText="Ativo" width="200">
+				<h:outputText value="#{obj.ativo2.conta.nome}" styleClass="#{obj.ativo2.conta.contaTipo}-#{obj.ativo2.conta.nivel}" />
 			</p:column>
-			<p:columns value="#{obj.ativo2.saldos}" var="column" columnIndexVar="colIndex">
-	            <f:facet name="header">
-	                <h:outputText value="#{column.ano}" />
-	            </f:facet>
-	            <h:outputText value="#{column.valor}" />
-        	</p:columns>
-			<p:column headerText="Passivo">
+			<p:column headerText="#{balanceteManagedBean.exercicios[0]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.ativo2.saldos[0].ano}" value="#{obj.ativo2.saldos[0].valor}" />
+				</div>
+			</p:column>
+			<p:column headerText="#{balanceteManagedBean.exercicios[1]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.ativo2.saldos[1].ano}" value="#{obj.ativo2.saldos[1].valor}" />
+				</div>
+			</p:column>
+			<p:column headerText="#{balanceteManagedBean.exercicios[2]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.ativo2.saldos[2].ano}" value="#{obj.ativo2.saldos[2].valor}" />
+				</div>
+			</p:column>
+			<p:column headerText="Passivo" width="200">
 				<h:outputText value="#{obj.passivo2.conta.nome}" styleClass="#{obj.passivo2.conta.contaTipo}-#{obj.passivo2.conta.nivel}" />
 			</p:column>
+			<p:column headerText="#{balanceteManagedBean.exercicios[0]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.passivo2.saldos[0].ano}" value="#{obj.passivo2.saldos[0].valor}" />
+				</div>
+			</p:column>
+			<p:column headerText="#{balanceteManagedBean.exercicios[1]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.passivo2.saldos[1].ano}"  value="#{obj.passivo2.saldos[1].valor}" />
+				</div>
+			</p:column>
+			<p:column headerText="#{balanceteManagedBean.exercicios[2]}">
+				<div style="text-align: right;">
+					<h:outputText title="#{obj.passivo2.saldos[2].ano}" value="#{obj.passivo2.saldos[2].valor}" />
+				</div>
+			</p:column>
+			<p:columns value="#{obj.passivo2.saldos}" var="column" columnIndexVar="colIndex" rendered="true">
+	            <h:outputText value="#{obj.passivo2.saldos[colIndex].ano}" />
+        	</p:columns>
 		</p:dataTable>
 		
 	</ui:define>

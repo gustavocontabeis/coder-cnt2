@@ -42,11 +42,10 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	
 	private Balancete balancete;
 	private BalancoPatrimonial bp;
-	BalancoPatrimonial balanco;
+	private BalancoPatrimonial balanco;
 		
 	@Inject 
 	private BalanceteDAO dao;
-	
 	@Inject
 	private LancamentoDAO lancamentoDAO;
 	@Inject
@@ -57,6 +56,7 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	private int nivel = 0;
 	private boolean retirarContasSemValor;
 	private int quantidadeDeExercicios;
+	private int[] exercicios;
 	
 	@PostConstruct
 	private void init() {
@@ -142,6 +142,18 @@ public class BalanceteManagedBean extends BaseManagedBean{
 		
 		balanco = lancamentoDAO.buscarBalancoPatrimonial(exercicio, quantidadeDeExercicios);
 		
+		if(!balanco.getSaldos().isEmpty()){
+			SaldoExercicio[] saldos = balanco.getSaldos().iterator().next().getSaldos();
+			exercicios = new int[saldos.length];
+			for (int i = 0; i < saldos.length; i++) {
+				exercicios[i] = saldos[i].getAno().intValue();
+			}
+		}
+		
+		//printBalanco();
+	}
+
+	private void printBalanco() {
 		for (SaldoBalanco saldoBalanco : balanco.getSaldos()) {
 			Conta conta = saldoBalanco.getConta();
 			System.out.printf("%-60s", StringUtils.repeat("-", conta.getNivel())+conta.getNome());
@@ -322,5 +334,13 @@ public class BalanceteManagedBean extends BaseManagedBean{
 	public void setBalanco(BalancoPatrimonial balanco) {
 		this.balanco = balanco;
 	}
-	
+
+	public int[] getExercicios() {
+		return exercicios;
+	}
+
+	public void setExercicios(int[] exercicios) {
+		this.exercicios = exercicios;
+	}
+		
 }
