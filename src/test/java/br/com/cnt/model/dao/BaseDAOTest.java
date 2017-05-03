@@ -24,6 +24,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.junit.Ignore;
@@ -38,6 +40,7 @@ import br.com.cnt.model.entity.balanco.Exercicio;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 import br.com.coder.arqprime.model.dao.app.BaseDAO;
 import br.com.coder.arqprime.model.dao.app.CriteriaDTO;
+import br.com.coder.arqprime.model.utils.DirecaoOrdenacao;
 import br.com.coder.arqprime.model.utils.Filtro;
 
 public class BaseDAOTest {
@@ -51,8 +54,29 @@ public class BaseDAOTest {
 		HashMap<String, Object> filters = new HashMap<String, Object>();
 		
 		Filtro filtro = new Filtro<>(Conta.class, 0, 10, null, SortOrder.ASCENDING, filters);
-		BaseDAO<Conta>dao = new BaseDAO<>();
+		filtro.addFetch("planoContas", "pai.planoContas");
+		filtro.addOrder("planoContas.id");
+		filtro.addOrder("pai.planoContas.id", DirecaoOrdenacao.DESC);
+		
+		BaseDAO<Conta> dao = new BaseDAO<>();
 		CriteriaDTO dto = dao.criarCriteriaParaFiltro2(filtro);
+		
+		Query createQuery = dto.session.createQuery(dto.criteriaQueryClass);
+        
+        //Paginacao
+        if (filtro.getQuantRegistros() != 0) {
+        	LOGGER.debug("Paginação: primeiro {} mais {} registros", filtro.getPrimeiroRegistro(), filtro.getQuantRegistros());
+            createQuery.setFirstResult(filtro.getPrimeiroRegistro());
+    		createQuery.setMaxResults(filtro.getQuantRegistros());
+        }
+
+        List list = createQuery.getResultList();
+    	LOGGER.debug("Retornado {} registros.", list.size());
+    	if(LOGGER.isDebugEnabled()){
+	    	for (Object object : list) {
+	    		LOGGER.debug("	{}", ReflectionToStringBuilder.toString(object, ToStringStyle.DEFAULT_STYLE));
+	    	}
+    	}
 		
 	}
 
