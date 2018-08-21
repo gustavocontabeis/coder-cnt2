@@ -18,6 +18,7 @@ import org.junit.Test;
 import br.com.cnt.model.entity.balanco.Conta;
 import br.com.cnt.model.entity.balanco.ContaOrigem;
 import br.com.cnt.model.entity.balanco.ContaTipo;
+import br.com.cnt.model.entity.balanco.Empresa;
 
 public class ContaUtilTest {
 
@@ -31,8 +32,8 @@ public class ContaUtilTest {
 
 	@Test
 	public void testRetornarNivel() {
-		assertTrue(1 == ContaUtil.retornarNivel(new Conta(1L, "1.0.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA, null, null)));
-		assertTrue(2 == ContaUtil.retornarNivel(new Conta(1L, "1.1.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA, null, null)));
+		assertTrue(1 == ContaUtil.retornarNivel(new Conta(1L, "1.0.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA)));
+		assertTrue(2 == ContaUtil.retornarNivel(new Conta(1L, "1.1.0.00.00.00.00", 0, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.CREDORA)));
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class ContaUtilTest {
 	}
 
 	private Conta buildConta(long id, String estrutura, int nuvel, ContaTipo tipo) {
-		return new Conta(id, estrutura, 4, null, null, tipo, null, null, null);
+		return new Conta(id, estrutura, 4, null, null, tipo, null);
 	}
 
 	@Test

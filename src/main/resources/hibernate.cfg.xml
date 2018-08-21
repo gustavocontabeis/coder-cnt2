@@ -29,7 +29,7 @@
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <property name="connection.url">jdbc:postgresql://localhost:5432/contabilidade</property>
     <property name="connection.username">postgres</property>
-    <property name="hibernate.connection.password">1q2w3e4r</property>
+    <property name="hibernate.connection.password">1q2w3e</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         
     <!-- JDBC connection pool (use the built-in) -->
@@ -81,12 +81,13 @@
 	 <mapping class="br.com.coder.arqprime.model.entity.app.usuarios.UsuarioPerfil" />
 	 <mapping class="br.com.coder.arqprime.model.entity.app.Configuracao" />
      <mapping class="br.com.cnt.model.entity.balanco.Conta" />  
+     <mapping class="br.com.cnt.model.entity.balanco.ContaModelo" />  
      <mapping class="br.com.cnt.model.entity.balanco.Empresa" />  
      <mapping class="br.com.cnt.model.entity.balanco.Exercicio" />  
      <mapping class="br.com.cnt.model.entity.balanco.Lancamento" />  
      <mapping class="br.com.cnt.model.entity.balanco.LancamentoPadrao" />  
      <mapping class="br.com.cnt.model.entity.balanco.PlanoContas" />  
 	 <mapping class="br.com.cnt.model.entity.balanco.HistoricoPadrao" />
-    
+	 
   </session-factory>
 </hibernate-configuration>

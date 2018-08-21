@@ -22,8 +22,7 @@ public class ValorContabilTest {
 		Empresa empresa = new Empresa();
 		PlanoContas planoContas = new PlanoContas();
 		
-		Conta conta = new Conta(1L, "estrutura", 3, "nome", "descricao", ContaTipo.ANALITICA,
-				ContaOrigem.DEVEDORA, empresa, planoContas);
+		Conta conta = new Conta(1L, "estrutura", 3, "nome", "descricao", ContaTipo.ANALITICA, ContaOrigem.DEVEDORA);
 				
 		ValorContabil valor = new ValorContabil(conta, exercicio.getAno(), new BigDecimal(123456.789));
 		

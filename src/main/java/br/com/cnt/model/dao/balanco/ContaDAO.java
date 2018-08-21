@@ -35,28 +35,11 @@ public class ContaDAO extends BaseDAO<Conta> {
  					"conta.contaTipo, " +
  					"conta.nome, " +
  					"conta.contaOrigem, " +
- 					"conta.descricao, " +
- 					"emp.id, " +
- 					"emp.razaoSocial, " +
- 					"pc.id, " +
- 					"ex.id " +
+ 					"conta.descricao" +
  				"from " +
  					"Conta conta " +
- 					"left join conta.empresa emp " +
- 					"left join conta.planoContas pc " +
- 					"left join conta.exercicio ex " +
  				"where ";
  				
- 				if(conta.getPlanoContas() != null){
-					hql += " or pc.id = :planoContasId";
-			 		param.put("planoContasId", conta.getPlanoContas().getId());
-				}
- 				
-				if(conta.getEmpresa() != null){
- 					hql += " or emp.id = :empresaId";
- 			 		param.put("empresaId", conta.getEmpresa().getId());
- 				}
-				
 				hql = hql.replace("where  and ", "where ").replace("where  or", "where ");
 				if(hql.endsWith("where ")){
 					hql = hql.replace("where ", "");
@@ -79,10 +62,6 @@ public class ContaDAO extends BaseDAO<Conta> {
 				conta.setNome((String)tuple[4]);
 				conta.setContaOrigem((ContaOrigem)tuple[5]);
 				conta.setDescricao(tuple[6]!=null?(String)tuple[6]:null);
-				if(tuple[7]!=null)
-				conta.setEmpresa(new Empresa((Long)tuple[7], (String)tuple[8]));
-				if(tuple[9]!=null)
-					conta.setPlanoContas(new PlanoContas((Long)tuple[9]) );
 				return conta;
 			}
 			@SuppressWarnings("rawtypes")
@@ -119,7 +98,6 @@ public class ContaDAO extends BaseDAO<Conta> {
 		StringBuilder sb = new StringBuilder(); 
 		sb.append("select obj from Conta obj ");
 		sb.append("left join obj.empresa emp ");
-		sb.append("left join obj.planoContas pc ");
 		sb.append("where 1=1 ");
 		
 		if (param.length() >= 2 && param.substring(0, 2).matches("\\d\\.")) {
@@ -136,10 +114,6 @@ public class ContaDAO extends BaseDAO<Conta> {
 		params.put("contaTipo", ContaTipo.ANALITICA);
 		sb.append(" and obj.contaTipo = :contaTipo ");
 		
-		params.put("empresa", exercicio.getEmpresa().getId());
-		params.put("planoContas", exercicio.getPlanoContas().getId());
-		sb.append(" and (obj.empresa.id = :empresa or obj.planoContas.id = :planoContas)");
-	
 		Session session = getSession();
 		Query query = session.createQuery(sb.toString());
 		Set<String> keySet = params.keySet();
@@ -157,22 +131,10 @@ public class ContaDAO extends BaseDAO<Conta> {
 		sb.append("select count(obj) from Conta obj ");
 		sb.append(" left join obj.planoContas pc ");
 		sb.append(" left join obj.empresa emp ");
-		sb.append(" where pc.id = :pc or emp.id = :emp");
 		
 		Session session = getSession();
 		Query query = session.createQuery(sb.toString());
 		
-		if(conta.getPlanoContas()!=null && conta.getPlanoContas().getId() != null){
-			query.setParameter("pc", conta.getPlanoContas().getId());
-		}else{
-			query.setParameter("pc", 0L);
-		}
-		if(conta.getEmpresa()!= null && conta.getEmpresa().getId() != null){
-			query.setParameter("emp", conta.getEmpresa().getId());
-		}else{
-			query.setParameter("emp", 0L);
-		}
-	
 		List<Long> list = query.list();
 		session.close();
 		
@@ -190,23 +152,11 @@ public class ContaDAO extends BaseDAO<Conta> {
 		sb.append("select obj from Conta obj ");
 		sb.append(" left join fetch obj.planoContas pc ");
 		sb.append(" left join fetch obj.empresa emp ");
-		sb.append(" where pc.id = :pc or emp.id = :emp");
 		sb.append(" order by obj.estrutura, obj.contaTipo desc, obj.ordem");
 		
 		Session session = getSession();
 		Query query = session.createQuery(sb.toString());
 		
-		if(conta.getPlanoContas() != null && conta.getPlanoContas().getId() != null){
-			query.setParameter("pc", conta.getPlanoContas().getId());
-		}else{
-			query.setParameter("pc", 0L);
-		}
-		if(conta.getEmpresa() != null && conta.getEmpresa().getId() != null){
-			query.setParameter("emp", conta.getEmpresa().getId());
-		}else{
-			query.setParameter("emp", 0L);
-		}
-	
 		List<Conta> list = query.list();
 		session.close();
 		

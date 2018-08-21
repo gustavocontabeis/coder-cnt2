@@ -23,11 +23,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import br.com.cnt.model.utils.ContaUtil;
 import br.com.coder.arqprime.model.entity.BaseEntity;
 
 /**
@@ -35,25 +33,25 @@ import br.com.coder.arqprime.model.entity.BaseEntity;
  *
  */
 @Entity
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="Conta")
-@Table(name = "CONTAS", indexes = { 
-		@Index(name = "INDEX_CONTA_NOME", columnList = "NOME"),
-		@Index(name = "INDEX_CONTA_ESTRUTURA", columnList = "ESTRUTURA"), }
+@Cache(usage=CacheConcurrencyStrategy.NONE, region="ContaModelo")
+@Table(name = "CONTA_MODELO", indexes = { 
+		@Index(name = "INDEX_CONTA_MODELO_NOME", columnList = "NOME"),
+		@Index(name = "INDEX_CONTA_MODELO_ESTRUTURA", columnList = "ESTRUTURA"), }
 )
 @NamedQueries(value = { 
-		@NamedQuery(name = "Conta-list", query = "select obj from Conta obj "),
-		@NamedQuery(name = "Conta-porId", query = 
+		@NamedQuery(name = "ContaModelo-list", query = "select obj from ContaModelo obj "),
+		@NamedQuery(name = "ContaModelo-porId", query = 
 		"select obj from Conta obj " 
 		+ "left join fetch obj.pai pai " 
 		+ "where obj.id = :id ") })
-public class Conta extends BaseEntity implements Comparable<Conta> {
+public class ContaModelo extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(generator = "SEQ_CONTA", strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "SEQ_CONTA", sequenceName = "SEQ_CONTA", initialValue = 1000)
-	@Column(name = "ID_CONTA", length = 10, nullable = false)
+	@GeneratedValue(generator = "SEQ_CONTA_MODELO", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "SEQ_CONTA_MODELO", sequenceName = "SEQ_CONTA_MODELO", initialValue = 1000)
+	@Column(name = "ID_CONTA_MODELO", length = 10, nullable = false)
 	private Long id;
 
 	@Column(name = "ESTRUTURA", length = 20, nullable = false)
@@ -79,49 +77,35 @@ public class Conta extends BaseEntity implements Comparable<Conta> {
 	@Column(name = "CONTA_ORIGEM")
 	private ContaOrigem contaOrigem;
 
-	@ManyToOne(targetEntity = Conta.class, fetch = LAZY, cascade = { CascadeType.DETACH })
-	@JoinColumn(name = "ID_CONTA_PAI", nullable = true, foreignKey = @ForeignKey(name = "FK_CONTA_PAI"))
-	private Conta pai;
+	@ManyToOne(targetEntity = PlanoContas.class, fetch = FetchType.EAGER, cascade = { CascadeType.DETACH })
+	@JoinColumn(name = "ID_PLANO_CONTAS", nullable = true, foreignKey = @ForeignKey(name = "FK_CONTA_PLANO_CONTAS"))
+	private PlanoContas planoContas;
+	
+	@ManyToOne(targetEntity = ContaModelo.class, fetch = LAZY, cascade = { CascadeType.DETACH })
+	@JoinColumn(name = "ID_CONTA_MODELO_PAI", nullable = true, foreignKey = @ForeignKey(name = "FK_CONTA_MODELO_PAI"))
+	private ContaModelo pai;
 
-	// @NotNull
-	@OneToMany(targetEntity = Conta.class, fetch = FetchType.EAGER, mappedBy = "pai", cascade = { CascadeType.ALL })
-	private List<Conta> subContas;
+	@OneToMany(targetEntity = Conta.class, fetch = FetchType.LAZY, mappedBy = "pai", cascade = { CascadeType.ALL })
+	private List<ContaModelo> subContas;
 
-	public Conta() {
+	public ContaModelo() {
 		super();
 	}
 
-	public Conta(Long id) {
+	public ContaModelo(Long id) {
 		super();
 		this.id = id;
 	}
 
-	public Conta(Long id, String nome) {
+	public ContaModelo(Long id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
 	}
 
-	/**
-	 * @param id
-	 * @param estrutura
-	 * @param nivel
-	 * @param nome
-	 * @param descricao
-	 * @param contaTipo
-	 * @param contaOrigem
-	 */
-	public Conta(Long id, String estrutura, Integer nivel, 
-			String nome, String descricao, ContaTipo contaTipo,
-			ContaOrigem contaOrigem) {
+	public ContaModelo(PlanoContas planoContas) {
 		super();
-		this.id = id;
-		this.estrutura = estrutura;
-		this.nivel = nivel;
-		this.nome = nome;
-		this.descricao = descricao;
-		this.contaTipo = contaTipo;
-		this.contaOrigem = contaOrigem;
+		this.planoContas = planoContas;
 	}
 
 	public Long getId() {
@@ -164,6 +148,14 @@ public class Conta extends BaseEntity implements Comparable<Conta> {
 		this.contaOrigem = contaOrigem;
 	}
 
+	public PlanoContas getPlanoContas() {
+		return this.planoContas;
+	}
+
+	public void setPlanoContas(PlanoContas planoContas) {
+		this.planoContas = planoContas;
+	}
+
 	public String getEstrutura() {
 		return estrutura;
 	}
@@ -189,52 +181,19 @@ public class Conta extends BaseEntity implements Comparable<Conta> {
 		this.nivel = nivel;
 	}
 
-	@Override
-	public int compareTo(Conta conta) {
-
-		int i = estrutura.compareTo(conta.estrutura);
-		if (i != 0)
-			return i;
-
-		i = conta.getContaTipo().compareTo(contaTipo);
-		if (i != 0)
-			return i;
-
-		i = (ordem != null ? ordem : new Integer(0)).compareTo(conta.getOrdem() != null ? conta.getOrdem() : 0);
-		if (i != 0)
-			return i;
-
-		return nome.compareTo(conta.getNome());
-	}
-
-	public boolean isPai(Conta conta) {
-		return ContaUtil.isPai(this, conta);
-	}
-
-	public boolean isFilho(Conta conta) {
-		return ContaUtil.isFilho(this, conta);
-	}
-
-	@Override
-	public String toString() {
-		return "Conta [id=" + id + ", estrutura=" + estrutura + ", ordem=" + (ordem != null ? ordem : " ") + ", nivel="
-				+ (nivel) + ", contaTipo=" + (contaTipo != null ? contaTipo : "") + ", nome="
-				+ String.format("%-50s", nome) + "]";
-	}
-
-	public Conta getPai() {
+	public ContaModelo getPai() {
 		return pai;
 	}
 
-	public void setPai(Conta pai) {
+	public void setPai(ContaModelo pai) {
 		this.pai = pai;
 	}
 
-	public List<Conta> getSubContas() {
+	public List<ContaModelo> getSubContas() {
 		return subContas;
 	}
 
-	public void setSubContas(List<Conta> subContas) {
+	public void setSubContas(List<ContaModelo> subContas) {
 		this.subContas = subContas;
 	}
 

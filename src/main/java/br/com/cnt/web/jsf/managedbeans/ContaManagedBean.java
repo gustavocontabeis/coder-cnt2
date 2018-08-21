@@ -88,9 +88,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	@Override
 	protected Integer getQuantidade2() {
 		try {
-			if(filtro != null 
-					&& ((filtro.getEmpresa()!=null && filtro.getEmpresa().getId()!=null) 
-							|| ((filtro.getPlanoContas()!=null && filtro.getPlanoContas().getId()!=null) ))){
+			if(filtro != null){
 				return dao.getQuantidade2(filtro);
 			}else{
 				
@@ -104,9 +102,7 @@ public class ContaManagedBean extends CrudManagedBean<Conta, ContaDAO> {
 	@Override
 	protected List<Conta> buscar2() {
 		try {
-			if(filtro != null 
-					&& ((filtro.getEmpresa()!=null && filtro.getEmpresa().getId()!=null) 
-							|| ((filtro.getPlanoContas()!=null && filtro.getPlanoContas().getId()!=null) ))){
+			if(filtro != null){
 				return dao.buscar2(filtro);
 			}
 		} catch (DaoException e) {

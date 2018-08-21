@@ -8,36 +8,90 @@
 	<ui:define name="body">
 		<p:growl showDetail="true"/>
 		<h:form id="planoContas">
-			<div class="ui-fluid">
-				<p:focus />
-                <p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
-					<p:outputLabel for="id" value="#{labels['planoContas.id']}" />
-					<p:column>
-                        <h:outputText id="id" value="#{planoContasManagedBean.planoContas.id}" styleClass="ui-widget" >
-                            <f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
-                        </h:outputText>
-                        <h:inputHidden  id="idHidden" value="#{planoContasManagedBean.planoContas.id}" />
-					</p:column>
-
-					<p:outputLabel for="nome" value="#{labels['planoContas.nome']}" />
-					<p:inputText id="nome" value="#{planoContasManagedBean.planoContas.nome}" required="true" size="80" maxlength="150" />
-
-				</p:panelGrid>
-			</div>			
+			<p:tabView>
+				<p:tab title="Empresa">
+					<div class="ui-fluid">
+						<p:focus />
+		                <p:panelGrid id="pgImovel" columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+		                
+							<p:outputLabel for="id" value="#{labels['planoContas.id']}" />
+							<p:column>
+		                        <h:outputText id="id" value="#{planoContasManagedBean.entity.id}" styleClass="ui-widget" >
+		                            <f:convertNumber type="number" integerOnly="true" groupingUsed="false"/>
+		                        </h:outputText>
+		                        <h:inputHidden  id="idHidden" value="#{planoContasManagedBean.entity.id}" />
+							</p:column>
+		
+							<p:outputLabel for="nome" value="#{labels['planoContas.nome']}" />
+							<p:inputText id="nome" value="#{planoContasManagedBean.entity.nome}" required="true" size="80" maxlength="150" />
+		
+						</p:panelGrid>
+					</div>			
+				</p:tab>
+				<p:tab title="Contas">
+				
+					<p:dataTable 	id="contaList"
+									var="item" 
+									value="#{planoContasManagedBean.entity.contas}" 
+									emptyMessage="#{labels['cfg.table.empty']}" 
+									rendered="#{not empty planoContasManagedBean.entity.contas}">
+									
+						<ui:remove>
+							<p:ajax event="rowReorder" listener="#{planoContasManagedBean.onRowReorder}" update="contaList" />
+						</ui:remove>
+									
+						<ui:remove>
+							<p:column style="width:32px;text-align: center">
+					            <p:commandButton update="-conta" oncomplete="PF('dialogLancamentos').show()" icon="ui-icon-search" title="Código: #{item.id}">
+					                <f:setPropertyActionListener value="#{item}" target="#{planoContasManagedBean.conta}" />
+					            </p:commandButton>
+					        </p:column>
+						</ui:remove>
+	        
+						<p:column headerText="#{labels['conta.estrutura']}" width="120">
+							<h:outputText value="#{item.estrutura}#{not empty item.ordem ? '-'.concat(item.ordem) : ''}" />
+						</p:column>
+		
+						<p:column headerText="#{labels['conta.nome']}" styleClass="#{item.contaTipo}-#{item.nivel}" filterBy="#{item.nome}">
+							<h:outputText value="#{item.nome}" style="padding-left:#{item.nivel*10}px" title="#{item.descricao}"/>
+						</p:column>
+		
+						<p:column headerText="#{labels['conta.contaTipo']}" width="80" styleClass="#{item.contaTipo}-#{item.nivel}" style="text-align: center;">
+							<h:outputText title="#{item.contaOrigem}" value="#{item.contaOrigem eq 'DEVEDORA'? 'D' : 'C' }"/>  |  
+							<h:outputText title="#{item.contaTipo}"   value="#{item.contaTipo eq 'ANALITICA' ? 'A': 'S'}" />
+						</p:column>
+		
+						<p:column headerText="#{labels['conta.planoContas']}">
+							<h:outputText value="#{item.planoContas.nome}" />
+							<h:outputText value="#{item.empresa.razaoSocial}" />
+						</p:column>
+		
+					</p:dataTable>				
+				</p:tab>
+			</p:tabView>
 			<p:toolbar>
 				<p:toolbarGroup>
-					<p:commandButton actionListener="#{planoContasManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty planoContasManagedBean.planoContas.id}" />
+					<p:commandButton actionListener="#{planoContasManagedBean.novo}" value="Novo" ajax="false" disabled="#{empty planoContasManagedBean.entity.id}" />
 					<p:commandButton actionListener="#{planoContasManagedBean.salvar}" value="Salvar" update="@all" />
-					<p:commandButton actionListener="#{planoContasManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty planoContasManagedBean.planoContas.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
+					<p:commandButton actionListener="#{planoContasManagedBean.excluir}" value="Excluir" update="@all" disabled="#{empty planoContasManagedBean.entity.id}" onstart="return confirm('Tem certesa que deseja excluir?')" />
 				</p:toolbarGroup>
 			</p:toolbar>
 		</h:form>
 		
 		<h:form id="planoContasList">
-			<p:dataTable var="item" value="#{planoContasManagedBean.model}" 
-							emptyMessage="#{labels['cfg.table.empty']}" paginator="true" rows="#{labels['cfg.table.rows']}" 
-							paginatorTemplate="#{labels['cfg.table.template']}" rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
-							selectionMode="single" selection="#{planoContasManagedBean.planoContas}" rowKey="#{item.id}" lazy="true" reflow="true">
+			<p:dataTable var="item" 
+							value="#{planoContasManagedBean.model}" 
+							emptyMessage="#{labels['cfg.table.empty']}" 
+							paginator="true" 
+							rows="#{labels['cfg.table.rows']}" 
+							paginatorTemplate="#{labels['cfg.table.template']}" 
+							rowsPerPageTemplate="#{labels['cfg.table.template.pages']}" 
+							paginatorPosition="#{labels['cfg.table.template.paginatorPosition']}"
+							selectionMode="single" 
+							selection="#{planoContasManagedBean.entity}" 
+							rowKey="#{item.id}" 
+							lazy="true" 
+							reflow="true">
 							<p:ajax event="rowSelect" update="@all" />
 				<p:column headerText="#{labels['planoContas.id']}" width="80">
 					<h:outputText value="#{item.id}" />

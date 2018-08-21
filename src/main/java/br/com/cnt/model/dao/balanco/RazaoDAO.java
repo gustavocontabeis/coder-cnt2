@@ -10,7 +10,7 @@ import br.com.cnt.model.entity.balanco.dto.Razao;
 import br.com.cnt.model.entity.balanco.dto.SaldoRazao;
 import br.com.cnt.model.utils.ContaUtil;
 
-public class RazaoDAO implements Serializable {
+public class RazaoDAO implements Serializable { 
 	
 	/**
 	 * 

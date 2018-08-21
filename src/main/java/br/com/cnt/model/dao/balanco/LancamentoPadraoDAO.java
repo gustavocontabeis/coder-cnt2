@@ -15,7 +15,7 @@ import br.com.cnt.model.entity.balanco.LancamentoPadrao;
 import br.com.cnt.model.entity.balanco.PlanoContas;
 
 @Named
-public class LancamentoPadraoDAO extends BaseDAO<LancamentoPadrao> {
+public class LancamentoPadraoDAO extends BaseDAO<LancamentoPadrao> { 
  	
 	private static final long serialVersionUID = 1L;
  	

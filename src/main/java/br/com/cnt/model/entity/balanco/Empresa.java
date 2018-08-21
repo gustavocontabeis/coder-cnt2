@@ -65,10 +65,10 @@ public class Empresa extends BaseEntity {
 	@Column(name="RAZAO_SOCIAL", length=80,  nullable=false)
  	private String razaoSocial;
  
-	@NotNull 
- 	@OneToMany(targetEntity=Exercicio.class, fetch=LAZY, mappedBy="empresa", cascade={CascadeType.ALL}) 
- 	private List<Exercicio> exercicios;
- 
+//	@NotNull 
+// 	@OneToMany(targetEntity=Conta.class, fetch=LAZY, mappedBy="empresa", cascade={CascadeType.ALL}) 
+// 	private List<Conta> contas;
+// 
  	public Empresa() {
 	}
  	
@@ -105,12 +105,13 @@ public class Empresa extends BaseEntity {
 	public void setRazaoSocial(String razaoSocial){
  		this.razaoSocial = razaoSocial;
 	}
-	public List<Exercicio> getExercicios(){
- 		return this.exercicios;
-	}
-	public void setExercicios(List<Exercicio> exercicios){
- 		this.exercicios = exercicios;
-	}
+//	public List<Conta> getContas() {
+//		return contas;
+//	}
+//
+//	public void setContas(List<Conta> contas) {
+//		this.contas = contas;
+//	}
 
 	@Override
 	public String toString() {
